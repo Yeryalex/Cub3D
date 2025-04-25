@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/04/22 12:06:45 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/04/25 11:24:02 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,16 @@
 # define COLLISION_MARGIN 0.1 // Evita quedarse pegado, revisar unidad
 # define SUCCESS 1
 # define ERROR 0
+# define NORTH 0x01
+# define SOUTH 0x02
+# define WEST  0x04
+# define EAST  0x08
+# define FLOOR 0x10
+# define CEILING 0x20
+
+#ifndef O_DIRECTORY
+# define O_DIRECTORY 00200000
+#endif
 
 /* COLORS */
 # define RESET	"\e[0m"
@@ -139,6 +149,7 @@ int		parse_texture(char **tokens, t_config *config);
 void	validate_scene_elements(t_config *config);
 void	process_map_data(t_list **map_list, t_config *config);
 void	transfer_config_to_vars(t_config *config, t_mlx_vars *vars);
+void	validate_map(char **grid, t_config *config);
 
 /* UTILS*/
 void	exit_error(char *message, char *details, t_mlx_vars *vars);

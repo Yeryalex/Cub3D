@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 10:35:26 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/04/16 11:51:39 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/04/25 10:11:16 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,8 @@ static int	is_valid_map_char(char c)
 
 static void	validate_map_borders(char **grid, int height, int width)
 {
-    int	i;
-    int	j;
-
+    int i;
+  
     i = 0;
     while (grid[0][i])
     {
@@ -36,7 +35,6 @@ static void	validate_map_borders(char **grid, int height, int width)
             exit_error("Map validation error", "Map is not closed at the bottom", NULL);
         i++;
     }
-    // Validar primera y ultima columna
     i = 0;
     while (i < height)
     {

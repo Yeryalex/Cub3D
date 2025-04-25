@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:28:07 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/04/22 12:21:19 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/04/25 13:51:23 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int handle_line(char *line, t_config *c, int *map_started, t_list **ml)
         if (parse_config_line(tokens, c) == ERROR)
             return (free_split(tokens), ERROR);
     }
-    else if (is_map_line(tokens))
+    else if (*map_started || is_map_line(tokens))
     {
         *map_started = 1;
         if (add_map_line(line, ml) == ERROR)
@@ -67,7 +67,6 @@ static int handle_line(char *line, t_config *c, int *map_started, t_list **ml)
     }
     else
         return (free_split(tokens), ERROR);
-    
     return (SUCCESS);
 }
 
@@ -81,9 +80,9 @@ static char	*process_file_lines(t_config *c, t_list **map_list, int fd)
     {
         if (handle_line(line, c, &map_started, map_list) == ERROR)
         {
-            free(line);
             ft_lstclear(map_list, free);
-            exit_error("Invalid line in scene file", line, NULL);
+            exit_error("Invalid line in scene file:", line, NULL);
+            free(line);
         }
         free(line);
     }
@@ -102,18 +101,18 @@ int	parse_scene_file(char *filename, t_config *config)
 	t_list	*map_list;
 
 	if (!ft_strnstr(filename, ".cub", ft_strlen(filename)) || 
-        ft_strlen(filename) < 5 || 
-        ft_strncmp(filename, ".cub", ft_strlen(filename) != 0))
-        exit_error("File error", "Invalid file extension. Expected .cub", NULL);
+        ft_strlen(filename) < 5) 
+        //ft_strncmp(filename, ".cub", ft_strlen(filename) != 0))
+        exit_error("File error ", "Invalid file extension. Expected .cub", NULL);
 	dir_fd = open(filename, O_DIRECTORY);
 	if (dir_fd >= 0)
 	{
 		close(dir_fd);
-		exit_error("File error", "Provided path is a directory, not a file", NULL);
+		exit_error("File error ", "Provided path is a directory, not a file", NULL);
 	}
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		exit_error("File open error", filename, NULL);
+		exit_error("File open error: ", filename, NULL);
 	map_list = NULL;
 	process_file_lines(config, &map_list, fd);
 	close(fd);

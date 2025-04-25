@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 09:41:44 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/04/22 12:46:27 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/04/25 09:54:22 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ void	transfer_config_to_vars(t_config *config, t_mlx_vars *vars)
 void	free_config(t_config *config)
 {
 	int	i;
-	
+    
     if (!config)
-        return ;
-	free(config->north_tex.path);
+       return ;
+    free(config->north_tex.path);
     free(config->south_tex.path);
     free(config->east_tex.path);
     free(config->west_tex.path);
@@ -93,7 +93,7 @@ int	is_config_identifier(char *token)
     i = 0;
     while (identifiers[i])
     {
-        if (ft_strncmp(token, identifiers[i], ft_strlen(token[0])) == 0)
+        if (ft_strncmp(token, identifiers[i], ft_strlen(token)) == 0)
             return (1);
         i++;
     }

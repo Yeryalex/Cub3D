@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:25:02 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/04/22 09:02:28 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/04/25 13:59:21 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,21 @@
 int	is_map_line(char **tokens)
 {
 	int	i;
+	int	j;
 
-	if (!tokens[0])
+	if (!tokens || !tokens[0])
 		return (0);
-	i = -1;
-	while (tokens[0][++i])
+	i = 0;
+	while (tokens[i])
 	{
-		if (!ft_strchr(" 01NSEW", tokens[0][i]))
+		j = 0;
+		while (tokens[i][j])
+		{
+			if (!ft_strchr(" 01NSEW", tokens[i][j]))
 			return (0);
+			j++;
+		}
+		i++;
 	}
 	return (1);
 }

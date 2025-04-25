@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:48:56 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/04/22 12:56:12 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/04/25 13:15:31 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	exit_error(char *message, char *details, t_mlx_vars *vars)
             mlx_destroy_image(vars->mlx_ptr, vars->config.east_tex.img_ptr);
         if (vars->config.west_tex.img_ptr)
             mlx_destroy_image(vars->mlx_ptr, vars->config.west_tex.img_ptr);
-        // Destruir la ventana
         if (vars->win_ptr)
             mlx_destroy_window(vars->mlx_ptr, vars->win_ptr);
         mlx_destroy_display(vars->mlx_ptr);
@@ -67,6 +66,8 @@ int	main (int ac, char **av)
 	if (parser_scene(av, &vars) != 0)
         return (1);
     /* cargar texturas, cargar colores, render images */
+	mlx_init(); //Inicializar la conexión con el servidor gráfico.
+	vars.win_ptr = mlx_new_window(vars.mlx_ptr, vars.config.win_width, vars.config.win_height, WIN_TITLE);
     print_controls();
     
 	return (0);
