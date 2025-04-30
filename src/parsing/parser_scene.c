@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:28:07 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/04/25 13:51:23 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/04/30 13:28:22 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	parse_config_line(char **tokens, t_config *c)
         {"NO", parse_texture}, {"SO", parse_texture},
         {"WE", parse_texture}, {"EA", parse_texture},
         {"F", parse_color},    {"C", parse_color},
-        {NULL, NULL}
+        {NULL, NULL},
     };
 	int				i;
 
@@ -44,29 +44,33 @@ static int handle_line(char *line, t_config *c, int *map_started, t_list **ml)
 
     if (!line || !c || !ml)
         return (ERROR);
-    if (is_empty_line(line))
-    {
-        if (*map_started)
-            return (ERROR);
-        return (SUCCESS);
-    }    
-    tokens = ft_split(line, ' '); /*  Revisar Mejor que split(' ') para manejar múltiples espacios */
+    tokens = ft_split(line, ' '); // Manejar múltiples espacios
     if (!tokens)
         exit_error("Memory error", "ft_split failed", NULL);
-    
     if (!*map_started && is_config_identifier(tokens[0]))
     {
         if (parse_config_line(tokens, c) == ERROR)
             return (free_split(tokens), ERROR);
     }
-    else if (*map_started || is_map_line(tokens))
+    else
+    {
+        free_split(tokens);
+        return (ERROR);
+    }
+    if (is_empty_line(line))
+    {
+        if (*map_started)
+            return (ERROR);
+        return (SUCCESS);
+    }
+    if (*map_started || is_map_line(line))
     {
         *map_started = 1;
         if (add_map_line(line, ml) == ERROR)
-            return (free_split(tokens), ERROR);
+            return (ERROR);
+        return (SUCCESS);
     }
-    else
-        return (free_split(tokens), ERROR);
+    free_split(tokens);
     return (SUCCESS);
 }
 
@@ -76,21 +80,30 @@ static char	*process_file_lines(t_config *c, t_list **map_list, int fd)
     int		map_started;
 
     map_started = 0;
+    printf ("Fd valor antes de gnl: %d\n", fd);
     while ((line = get_next_line(fd)) != NULL)
     {
+        printf("Line map: %s\n", line);
         if (handle_line(line, c, &map_started, map_list) == ERROR)
         {
+            free(line);
             ft_lstclear(map_list, free);
             exit_error("Invalid line in scene file:", line, NULL);
-            free(line);
         }
         free(line);
     }
     if (line == NULL)
     {
+        free(line);
         ft_lstclear(map_list, free);
         exit_error("File read error", "get_next_line failed", NULL);
 	}
+    if (!map_started) // Si no se encontró un mapa, es un error
+    {
+        free(line);
+        ft_lstclear(map_list, free);
+        exit_error("Map error", "No map found in scene file", NULL);
+    }
 	return (line);
 }
 
@@ -114,7 +127,7 @@ int	parse_scene_file(char *filename, t_config *config)
 	if (fd < 0)
 		exit_error("File open error: ", filename, NULL);
 	map_list = NULL;
-	process_file_lines(config, &map_list, fd);
+    process_file_lines(config, &map_list, fd);
 	close(fd);
 	validate_scene_elements(config);
 	process_map_data(&map_list, config);

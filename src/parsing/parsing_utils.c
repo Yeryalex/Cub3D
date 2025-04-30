@@ -6,33 +6,29 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:25:02 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/04/25 13:59:21 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/04/30 13:14:33 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
 
-int	is_map_line(char **tokens)
+int is_map_line(char *line)
 {
-	int	i;
-	int	j;
+    int i;
 
-	if (!tokens || !tokens[0])
-		return (0);
-	i = 0;
-	while (tokens[i])
-	{
-		j = 0;
-		while (tokens[i][j])
-		{
-			if (!ft_strchr(" 01NSEW", tokens[i][j]))
-			return (0);
-			j++;
-		}
-		i++;
-	}
-	return (1);
+    if (!line)
+        return (0);
+    i = 0;
+    while (line[i])
+    {
+        // Verificar si cada carácter es válido para una línea del mapa
+        if (!ft_strchr(" 01NSEW ", line[i]))
+            return (0);
+        i++;
+    }
+    return (1);
 }
+
 int	add_map_line(char *line, t_list **map_list)
 {
 	char	*trimmed;

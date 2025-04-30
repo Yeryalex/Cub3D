@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/04/25 11:24:02 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/04/30 13:04:37 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ typedef struct s_mlx_vars
 int		parser_scene(char **av, t_mlx_vars *vars);
 int		parse_scene_file(char *filename, t_config *config);
 int		add_map_line(char *line, t_list **map_list);
-int		is_map_line(char **tokens);
+int		is_map_line(char *line);
 int		parse_color(char **tokens, t_config *config);
 int		parse_texture(char **tokens, t_config *config);
 
