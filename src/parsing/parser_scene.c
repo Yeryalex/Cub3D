@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:28:07 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/04/30 13:28:22 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/01 11:22:53 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	parse_config_line(char **tokens, t_config *c)
 
 	i = -1;
 	if (tokens == NULL || tokens[0] == NULL)
-    	return (ERROR);
+    	return (free_split(tokens), ERROR);
 	while (parsers[++i].id)
 	{
 		if (ft_strncmp(tokens[0], parsers[i].id, ft_strlen (tokens[0])) == 0)
@@ -41,70 +41,96 @@ static int	parse_config_line(char **tokens, t_config *c)
 static int handle_line(char *line, t_config *c, int *map_started, t_list **ml)
 {
     char **tokens;
-
+    
     if (!line || !c || !ml)
         return (ERROR);
-    tokens = ft_split(line, ' '); // Manejar múltiples espacios
-    if (!tokens)
-        exit_error("Memory error", "ft_split failed", NULL);
-    if (!*map_started && is_config_identifier(tokens[0]))
-    {
-        if (parse_config_line(tokens, c) == ERROR)
-            return (free_split(tokens), ERROR);
-    }
-    else
-    {
-        free_split(tokens);
-        return (ERROR);
-    }
+    printf("Processing line: %s", line); // control line
     if (is_empty_line(line))
     {
         if (*map_started)
             return (ERROR);
         return (SUCCESS);
+    } 
+    /*   
+    // Procesar configuración si el mapa no ha empezado
+    if (!*map_started)
+    {
+        tokens = ft_split(line, ' ');
+        if (!tokens)
+            exit_error("Memory error", "ft_split failed", NULL);
+        if (is_config_identifier(tokens[0]))
+        {
+            if (parse_config_line(tokens, c) == ERROR)
+                return (free_split(tokens), ERROR);
+            
+        }
     }
-    if (*map_started || is_map_line(line))
+    // Si es línea de mapa, añadirla
+    if (is_map_line(line) || *map_started)
+    {
+        *map_started = 1;
+        return (add_map_line(line, ml));
+    }
+    return (ERROR); // Línea inválida*/
+    tokens = ft_split(line, ' '); /*  Revisar Mejor que split(' ') para manejar múltiples espacios */
+    if (!tokens)
+        exit_error("Memory error", "ft_split failed", NULL);
+    
+    if (!*map_started && is_config_identifier(tokens[0]))
+    {
+        if (parse_config_line(tokens, c) == ERROR)
+            return (free_split(tokens), ERROR);
+    }
+    else if (*map_started || is_map_line(tokens[0]))
+    {
+        if (is_map_line(tokens[0]))
+            *map_started = 1;
+        if (add_map_line(line, ml) == ERROR)
+            return (free_split(tokens), ERROR);
+    }
+    else if (*map_started && is_empty_line(line))
+    {
+        free_split(tokens);
+        return (SUCCESS);
+    }
+    else if (*map_started && !is_empty_line(line))
     {
         *map_started = 1;
         if (add_map_line(line, ml) == ERROR)
-            return (ERROR);
-        return (SUCCESS);
+            return (free_split(tokens), ERROR);
     }
-    free_split(tokens);
+    else
+        return (free_split(tokens), ERROR);
     return (SUCCESS);
 }
 
-static char	*process_file_lines(t_config *c, t_list **map_list, int fd)
+static char *process_file_lines(t_config *c, t_list **map_list, int fd)
 {
-    char	*line;
-    int		map_started;
+    char    *line;
+    char    *line_copy;
+    int     map_started;
 
     map_started = 0;
-    printf ("Fd valor antes de gnl: %d\n", fd);
     while ((line = get_next_line(fd)) != NULL)
     {
-        printf("Line map: %s\n", line);
+        line_copy = ft_strdup(line);
+        if (!line_copy)
+            exit_error("Memory error", "ft_strdup failed", NULL);
         if (handle_line(line, c, &map_started, map_list) == ERROR)
         {
             free(line);
             ft_lstclear(map_list, free);
-            exit_error("Invalid line in scene file:", line, NULL);
+            exit_error("Invalid line:", line_copy, NULL);
         }
+        free(line_copy);
         free(line);
     }
-    if (line == NULL)
+    if (!map_started)
     {
-        free(line);
         ft_lstclear(map_list, free);
-        exit_error("File read error", "get_next_line failed", NULL);
-	}
-    if (!map_started) // Si no se encontró un mapa, es un error
-    {
-        free(line);
-        ft_lstclear(map_list, free);
-        exit_error("Map error", "No map found in scene file", NULL);
+        exit_error("Map error", "No map found", NULL);
     }
-	return (line);
+    return (NULL);
 }
 
 int	parse_scene_file(char *filename, t_config *config)

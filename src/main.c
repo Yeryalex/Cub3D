@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:48:56 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/04/25 13:15:31 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/01 10:54:03 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,18 @@
 
 void	exit_error(char *message, char *details, t_mlx_vars *vars)
 {
+	char	*details_copy;
 	printf("Error\n");
 	if (message)
 		printf("%s ", message);
 	if (details)
+	{
+		details_copy = ft_strdup(details);
+		if (!details_copy)
+			printf("Memory error strdup failed\n");
 		printf ("%s ", details);
+		free(details_copy);
+	}
 	if (vars && vars->mlx_ptr)
     {
         if (vars->config.north_tex.img_ptr)
@@ -66,8 +73,12 @@ int	main (int ac, char **av)
 	if (parser_scene(av, &vars) != 0)
         return (1);
     /* cargar texturas, cargar colores, render images */
-	mlx_init(); //Inicializar la conexión con el servidor gráfico.
-	vars.win_ptr = mlx_new_window(vars.mlx_ptr, vars.config.win_width, vars.config.win_height, WIN_TITLE);
+	//mlx_init(); //Inicializar la conexión con el servidor gráfico.
+	vars.mlx_ptr = mlx_init();
+    if (!vars.mlx_ptr)
+        exit_error("MLX init failed", NULL, &vars);
+	else
+		vars.win_ptr = mlx_new_window(vars.mlx_ptr, vars.config.win_width, vars.config.win_height, WIN_TITLE);
     print_controls();
     
 	return (0);
