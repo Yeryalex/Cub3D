@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:28:07 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/02 11:55:53 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/02 13:22:37 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ static char *process_file_lines(t_config *c, t_list **map_list, int fd)
         }
         free(line_copy);
         free(line);
+        config->map.height += 1;
     }
     if (!map_started)
     {

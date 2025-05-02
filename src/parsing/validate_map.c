@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 10:35:26 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/04/25 10:11:16 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/02 13:00:32 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,25 +22,31 @@ static void	validate_map_borders(char **grid, int height, int width)
     int i;
   
     i = 0;
+    printf ("Lado derecho es, %d\n", width);
+    printf ("Alto del mapa %d\n", height);
     while (grid[0][i])
     {
-        if (grid[0][i] != '1' && grid[0][i] != ' ')
+        //if (grid[0][i] != '1' && grid[0][i] != ' ')
+        if (grid[0][i] != '1')
             exit_error("Map validation error", "Map is not closed at the top", NULL);
         i++;
     }
     i = 0;
     while (grid[height - 1][i])
     {
-        if (grid[height - 1][i] != '1' && grid[height - 1][i] != ' ')
+        //if (grid[height - 1][i] != '1' && grid[height - 1][i] != ' ')
+        if (grid[height - 1][i] != '1')
             exit_error("Map validation error", "Map is not closed at the bottom", NULL);
         i++;
     }
     i = 0;
     while (i < height)
     {
-        if (grid[i][0] != '1' && grid[i][0] != ' ')
+        //if (grid[i][0] != '1' && grid[i][0] != ' ')
+        if (grid[i][0] != '1')
             exit_error("Map validation error", "Map is not closed on the left", NULL);
-        if (grid[i][width - 1] != '1' && grid[i][width - 1] != ' ')
+        //if (grid[i][width - 1] != '1' && grid[i][width - 1] != ' ')
+        if (grid[i][width - 1] != '1')
             exit_error("Map validation error", "Map is not closed on the right", NULL);
         i++;
     }
