@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 09:41:44 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/04/25 09:54:22 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/02 11:17:08 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	transfer_config_to_vars(t_config *config, t_mlx_vars *vars)
 {
     if (!config || !vars)
         return ;
+    /* copiar resolucion (todavia no se si se customiza o darle una base)*/
     vars->config.win_width = config->win_width;
     vars->config.win_height = config->win_height;
     vars->config.res_set = config->res_set;

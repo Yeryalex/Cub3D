@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:28:07 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/01 11:22:53 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/02 11:55:53 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,34 +44,13 @@ static int handle_line(char *line, t_config *c, int *map_started, t_list **ml)
     
     if (!line || !c || !ml)
         return (ERROR);
-    printf("Processing line: %s", line); // control line
+    printf("Processing line: %s", line);
     if (is_empty_line(line))
     {
         if (*map_started)
             return (ERROR);
         return (SUCCESS);
     } 
-    /*   
-    // Procesar configuración si el mapa no ha empezado
-    if (!*map_started)
-    {
-        tokens = ft_split(line, ' ');
-        if (!tokens)
-            exit_error("Memory error", "ft_split failed", NULL);
-        if (is_config_identifier(tokens[0]))
-        {
-            if (parse_config_line(tokens, c) == ERROR)
-                return (free_split(tokens), ERROR);
-            
-        }
-    }
-    // Si es línea de mapa, añadirla
-    if (is_map_line(line) || *map_started)
-    {
-        *map_started = 1;
-        return (add_map_line(line, ml));
-    }
-    return (ERROR); // Línea inválida*/
     tokens = ft_split(line, ' '); /*  Revisar Mejor que split(' ') para manejar múltiples espacios */
     if (!tokens)
         exit_error("Memory error", "ft_split failed", NULL);
@@ -98,6 +77,7 @@ static int handle_line(char *line, t_config *c, int *map_started, t_list **ml)
         *map_started = 1;
         if (add_map_line(line, ml) == ERROR)
             return (free_split(tokens), ERROR);
+            //Aqui debo guardar los valores de personaje/posicion camara
     }
     else
         return (free_split(tokens), ERROR);
@@ -120,7 +100,8 @@ static char *process_file_lines(t_config *c, t_list **map_list, int fd)
         {
             free(line);
             ft_lstclear(map_list, free);
-            exit_error("Invalid line:", line_copy, NULL);
+            return (NULL);
+            //exit_error("Invalid line:", line_copy, NULL);
         }
         free(line_copy);
         free(line);
@@ -147,7 +128,7 @@ int	parse_scene_file(char *filename, t_config *config)
 	if (dir_fd >= 0)
 	{
 		close(dir_fd);
-		exit_error("File error ", "Provided path is a directory, not a file", NULL);
+		exit_error("File error: ", "Provided path is a directory, not a file", NULL);
 	}
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
@@ -155,18 +136,28 @@ int	parse_scene_file(char *filename, t_config *config)
 	map_list = NULL;
     process_file_lines(config, &map_list, fd);
 	close(fd);
-	validate_scene_elements(config);
+    printf ("LLegamos a antes de validar los elementos del mapa->config\n");
+    printf ("Resolution width: %d\n", config->win_width);
+    printf ("Resolution width: %d\n", config->win_height);
+    printf ("Resolution ok es: %d\n", config->res_set);
 	process_map_data(&map_list, config);
-	return (SUCCESS);
+    printf ("Lo hemos validado elementos, procesamos mapa para config\n");
+    validate_scene_elements(config);
+    return (SUCCESS);
 }
 int	parser_scene(char **av, t_mlx_vars *vars)
 {
 	t_config	config;
 
-	ft_memset(&config, 0, sizeof(t_config));
+    ft_memset(&config, 0, sizeof(t_config));
+    config.win_width = 1920;
+    config.win_height = 1020;
+    config.res_set = 1;
 	if (parse_scene_file(av[1], &config) == ERROR)
 		exit_error("Scene parsing failed", av[1], vars);
+    printf ("Validado lo pasamos a la estructura config\n");
 	transfer_config_to_vars(&config, vars);
-	free_config(&config);
+    printf ("Todo guardado lo devolvememos a main\n");
+	//free_config(&config);
 	return (0);
 }

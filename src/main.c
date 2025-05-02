@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:48:56 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/01 10:54:03 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/02 11:44:45 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,18 @@ int	main (int ac, char **av)
 	/* Inicializar vars a cero/NULL */
 	ft_memset(&vars, 0, sizeof(t_mlx_vars));
 	if (parser_scene(av, &vars) != 0)
-        return (1);
+		printf("Algo falla en el parseo, devolucion a main\n");
+        //return (1);
     /* cargar texturas, cargar colores, render images */
 	//mlx_init(); //Inicializar la conexión con el servidor gráfico.
+	print_controls();
 	vars.mlx_ptr = mlx_init();
     if (!vars.mlx_ptr)
         exit_error("MLX init failed", NULL, &vars);
 	else
 		vars.win_ptr = mlx_new_window(vars.mlx_ptr, vars.config.win_width, vars.config.win_height, WIN_TITLE);
-    print_controls();
-    
+    mlx_loop(vars.mlx_ptr);
+	/* Limpiar config, y todo los elementos antes de salir del programa*/
+	free(vars.mlx_ptr);
 	return (0);
 }
