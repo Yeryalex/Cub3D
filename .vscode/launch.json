@@ -5,7 +5,7 @@
       "name": "C/C++ Runner: Debug Session",
       "type": "cppdbg",
       "request": "launch",
-      "args": [],
+      "args": ["./cub3d", "maps/library.cub"],
       "stopAtEntry": false,
       "externalConsole": true,
       "cwd": "//wsl.localhost/Ubuntu/home/rbuitrag/Cursus42/Circle_4/Cub3d/src/parsing",
