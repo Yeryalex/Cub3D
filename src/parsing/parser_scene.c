@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:28:07 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/03 12:20:35 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/03 20:02:03 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,21 +54,19 @@ static int handle_line(char *line, t_config *config, int map_started)
     tokens = ft_split(line, ' '); // Revisar Mejor que split(' ') para manejar múltiples espacios
     if (!tokens)
         exit_error("Memory error", "ft_split failed", NULL);
-    
-    if (!map_started && is_config_identifier(tokens[0]))
+    if (map_started == 0 && is_config_identifier(tokens[0]))
     {
         if (parse_config_line(tokens, config) == ERROR)
             return (free_split(tokens), ERROR);
     }
-    else if (map_started || is_map_line(tokens[0]))
+    else if (map_started == 1)
     {
+        if (is_empty_line(line))
+            return (free_split(tokens), ERROR);
         if (is_map_line(tokens[0]))
-        {
-           map_started = 1;
-           return (MAP_LINE);
-        }
-        if (add_map_line(line) == ERROR)
-            return (free_split(tokens), ERROR);                 
+            return (free_split(tokens), MAP_LINE);
+        else
+            return (free_split(tokens), ERROR);
     }
     return (SUCCESS);
 }

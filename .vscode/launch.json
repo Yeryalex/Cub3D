@@ -1,8 +1,9 @@
 {
 	"version": "0.2.0",
 	"configurations": [
+		
 	  {
-		"name": "Debug Minishell",
+		"name": "Debug cub3d",
 		"type": "cppdbg",
 		"request": "launch",
 		"program": "${workspaceFolder}/cub3d",  // Ruta del ejecutable
