@@ -6,13 +6,13 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:45:24 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/04/25 10:09:51 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/03 09:20:41 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
 
-/* Función para contar elementos en un array de strings */
+/* Función para contar elementos en un array de strings asi guardo los valores*/
 static int count_tokens(char **tokens)
 {
     int count = 0;

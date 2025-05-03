@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/02 11:22:02 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/03 11:48:56 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,21 @@
 # include <errno.h>
 
     /* --- Constantes --- */
-# define WIN_TITLE "Cub3D"
+# define WIN_TITLE "Cub3D por Yery & rBuitrag 42 BCN"
 # define MOVE_SPEED 0.1
 # define COLLISION_MARGIN 0.1 // Evita quedarse pegado, revisar unidad
 # define SUCCESS 1
 # define ERROR 0
+# define MAP_LINE 2
 # define NORTH 0x01
 # define SOUTH 0x02
 # define WEST  0x04
 # define EAST  0x08
 # define FLOOR 0x10
 # define CEILING 0x20
+# define MAX_MAP_HEIGHT 200
+# define RES_WINHEIGHT 1200
+# define RES_WINWIDHT 1920
 
 #ifndef O_DIRECTORY
 # define O_DIRECTORY 00200000
@@ -82,13 +86,6 @@ typedef struct s_map
 	int     width;
 	int     height;
 } t_map;
-
-typedef struct s_list
-{
-    void			*content;
-    struct s_list	*next;
-} t_list;
-
 
 typedef struct s_player
 {
@@ -137,27 +134,27 @@ typedef struct s_mlx_vars
 	t_config    config; // Contiene toda la configuración parseada
 } t_mlx_vars;
 
+/* INIT*/
+void	init_config(t_config *config);
+
 /* PARSING*/
 int		parser_scene(char **av, t_mlx_vars *vars);
 int		parse_scene_file(char *filename, t_config *config);
-int		add_map_line(char *line, t_list **map_list);
+int		add_map_line(char *line);
+int		store_map_line(t_config *config, char *line, int index);
 int		is_map_line(char *line);
 int		parse_color(char **tokens, t_config *config);
 int		parse_texture(char **tokens, t_config *config);
 
 /* VALIDATE*/
 void	validate_scene_elements(t_config *config);
-void	process_map_data(t_list **map_list, t_config *config);
+void	process_map_data(t_config *config);
 void	transfer_config_to_vars(t_config *config, t_mlx_vars *vars);
-void	validate_map(char **grid, t_config *config);
+void	validate_map(t_config *config);
 
 /* UTILS*/
 void	exit_error(char *message, char *details, t_mlx_vars *vars);
 void	free_config(t_config *config);
-int		ft_lstsize(t_list *lst);
-void	ft_lstclear(t_list **lst, void (*del)(void *));
-t_list	*ft_lstnew(void *content);
-void	ft_lstadd_back(t_list **lst, t_list *new);
 int		is_config_identifier(char *token);
 int		is_empty_line(char *line);
 void	free_split(char **tokens);

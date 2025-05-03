@@ -6,7 +6,7 @@
 		"type": "cppdbg",
 		"request": "launch",
 		"program": "${workspaceFolder}/cub3d",  // Ruta del ejecutable
-		"args": ["maps/library.cub"],  // Argumentos para pasar a tu minishell si es necesario
+		"args": ["maps/creepy.cub"],  // Argumentos para pasar a tu minishell si es necesario
 		"stopAtEntry": false,
 		"cwd": "${workspaceFolder}",  // Directorio de trabajo
 		"environment": [],

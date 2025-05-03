@@ -6,7 +6,7 @@
 #    By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/10 12:06:04 by rbuitrag          #+#    #+#              #
-#    Updated: 2025/04/25 09:58:12 by rbuitrag         ###   ########.fr        #
+#    Updated: 2025/05/03 09:18:15 by rbuitrag         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ MLX_A = inc/minilibx/libmlx_Linux.a
 CFLAGS = -Wall -Werror -Wextra  -g #-fsanitize=address -fsanitize=leak
 
 CFILES =	main.c \
-			parsing/map_list.c \
+			parsing/config_utils.c \
 			parsing/parser_scene.c \
 			parsing/parsing_utils.c \
 			parsing/parsing_utils2.c \

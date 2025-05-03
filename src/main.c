@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:48:56 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/02 11:44:45 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/03 09:09:25 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	exit_error(char *message, char *details, t_mlx_vars *vars)
         free(vars->mlx_ptr);
         vars->mlx_ptr = NULL;
     }
+	if (vars)
+		free_config(&vars->config);
     exit (EXIT_FAILURE);
 }
 static void	print_controls(void)
@@ -60,29 +62,25 @@ static void	print_controls(void)
 	printf("\n");
 }
 
-int	main (int ac, char **av)
+int	main(int ac, char **av)
 {
-	t_mlx_vars vars;
-	(void) av;
-    
-	 
-	if (ac != 2)
-		 exit_error("Usage: ./cub3d <path/to/map_file.cub>", NULL, NULL);
-	/* Inicializar vars a cero/NULL */
-	ft_memset(&vars, 0, sizeof(t_mlx_vars));
-	if (parser_scene(av, &vars) != 0)
-		printf("Algo falla en el parseo, devolucion a main\n");
-        //return (1);
-    /* cargar texturas, cargar colores, render images */
-	//mlx_init(); //Inicializar la conexión con el servidor gráfico.
-	print_controls();
-	vars.mlx_ptr = mlx_init();
+    t_mlx_vars	vars;
+
+    if (ac != 2)
+        exit_error("Usage: ./cub3d <path/to/map_file.cub>", NULL, NULL);
+    ft_memset(&vars, 0, sizeof(t_mlx_vars));
+    if (parser_scene(av, &vars) != 0)
+        exit_error("Error parsing scene file", NULL, &vars);
+    vars.mlx_ptr = mlx_init();
     if (!vars.mlx_ptr)
         exit_error("MLX init failed", NULL, &vars);
-	else
-		vars.win_ptr = mlx_new_window(vars.mlx_ptr, vars.config.win_width, vars.config.win_height, WIN_TITLE);
+    vars.win_ptr = mlx_new_window(vars.mlx_ptr, vars.config.win_width,
+            vars.config.win_height, WIN_TITLE);
+    if (!vars.win_ptr)
+        exit_error("Window creation failed", NULL, &vars);
+    print_controls();
     mlx_loop(vars.mlx_ptr);
-	/* Limpiar config, y todo los elementos antes de salir del programa*/
-	free(vars.mlx_ptr);
-	return (0);
+    free_config(&vars.config);
+    free(vars.mlx_ptr);
+    return (0);
 }

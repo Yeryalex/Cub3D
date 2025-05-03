@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 10:35:26 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/02 13:00:32 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/03 12:21:11 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,15 +83,15 @@ static void	validate_map_content(char **grid, t_config *config)
         exit_error("Map validation error", "No player found in map", NULL);
 }
 
-void	validate_map(char **grid, t_config *config)
+void	validate_map(t_config *config)
 {
     int	height;
     int	width;
 
-    if (!grid || !config)
-        exit_error("Map validation error", "Invalid map or config", NULL);
+    //if (!config)
+      //  exit_error("Map validation error", "Invalid map or config", NULL);
     height = config->map.height;
     width = config->map.width;
-    validate_map_borders(grid, height, width);
-    validate_map_content(grid, config);
+    validate_map_borders(config->map.grid, height, width);
+    validate_map_content(config->map.grid, config);
 }
