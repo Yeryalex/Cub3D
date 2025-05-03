@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:28:07 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/03 20:02:03 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/03 20:51:01 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	parse_config_line(char **tokens, t_config *c)
 	return (ERROR);
 }
 
-static int handle_line(char *line, t_config *config, int map_started)
+static int handle_line(char *line, t_config *config, int *map_started)
 {
     char **tokens;
     
@@ -47,19 +47,19 @@ static int handle_line(char *line, t_config *config, int map_started)
     printf("Processing line: %s", line);
     if (is_empty_line(line))
     {
-        if (map_started)
+        if (*map_started)
             return (ERROR);
         return (SUCCESS);
     } 
     tokens = ft_split(line, ' '); // Revisar Mejor que split(' ') para manejar múltiples espacios
     if (!tokens)
         exit_error("Memory error", "ft_split failed", NULL);
-    if (map_started == 0 && is_config_identifier(tokens[0]))
+    if (*map_started == 0 && is_config_identifier(tokens[0]))
     {
         if (parse_config_line(tokens, config) == ERROR)
             return (free_split(tokens), ERROR);
     }
-    else if (map_started == 1)
+    else if (*map_started == 1)
     {
         if (is_empty_line(line))
             return (free_split(tokens), ERROR);
@@ -82,7 +82,7 @@ static int process_file_lines(t_config *config, int fd)
     map_line_index = 0;
     while ((line = get_next_line(fd)) != NULL)
     {
-        result = handle_line(line, config, map_started);
+        result = handle_line(line, config, &map_started);
         if (result == ERROR)
         {
             free(line);
