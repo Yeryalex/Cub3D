@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:28:07 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/03 20:51:01 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/04 19:33:32 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,12 @@ static int	parse_config_line(char **tokens, t_config *c)
 static int handle_line(char *line, t_config *config, int *map_started)
 {
     char **tokens;
+    //char *trimmed_line;
     
     if (!line || !config)
         return (ERROR);
     printf("Processing line: %s", line);
+    printf("Linea de mapa started?: %d", *map_started);    
     if (is_empty_line(line))
     {
         if (*map_started)
@@ -54,19 +56,31 @@ static int handle_line(char *line, t_config *config, int *map_started)
     tokens = ft_split(line, ' '); // Revisar Mejor que split(' ') para manejar múltiples espacios
     if (!tokens)
         exit_error("Memory error", "ft_split failed", NULL);
-    if (*map_started == 0 && is_config_identifier(tokens[0]))
+    if (!*map_started && is_config_identifier(tokens[0]))
     {
         if (parse_config_line(tokens, config) == ERROR)
             return (free_split(tokens), ERROR);
     }
+    else if (*map_started == 0 && is_map_line(line))
+    {
+        /*trimmed_line = ft_strtrim(line, " \t");
+        if (!trimmed_line)
+            exit_error("Memory error", "strtrim failed", NULL);
+        if (is_empty_line(trimmed_line))
+        {
+            free(trimmed_line);
+            return (free_split(tokens), ERROR);
+        }
+        free(trimmed_line);*/
+        *map_started = 1;
+        return (free_split(tokens), MAP_LINE);
+    }
     else if (*map_started == 1)
     {
         if (is_empty_line(line))
-            return (free_split(tokens), ERROR);
-        if (is_map_line(tokens[0]))
+            return (free_split(tokens), ERROR);    
+        if (is_map_line(line)) // Verificar la línea completa
             return (free_split(tokens), MAP_LINE);
-        else
-            return (free_split(tokens), ERROR);
     }
     return (SUCCESS);
 }
@@ -99,6 +113,16 @@ static int process_file_lines(t_config *config, int fd)
                 exit_error("Map error", "Invalid map line", NULL);
             }
         }
+        else if (result == SUCCESS)
+        {
+            free(line);
+            continue;
+        }
+        else
+        {
+            free(line);
+            exit_error("Map error", "Invalid line in map", NULL);
+        }
         free(line);
     }
     if (map_started)
@@ -130,6 +154,7 @@ int	parse_scene_file(char *filename, t_config *config)
     printf ("Resolution width: %d\n", config->win_width);
     printf ("Resolution width: %d\n", config->win_height);
     printf ("Resolution ok es: %d\n", config->res_set);
+    printf ("Textura NORTH: %s\n", config->north_tex.path);
     printf ("Ancho del mapa valor max dibujado: %d\n", config->map.width);
     printf ("Alto del mapa num lineas leidas de escenario: %d\n", config->map.height);
     return (SUCCESS);
