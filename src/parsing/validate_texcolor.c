@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:45:24 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/03 09:20:41 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/04 20:14:48 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static int count_tokens(char **tokens)
 {
     int count = 0;
 
+    if (!tokens)
+        return (0);
     while (tokens[count])
         count++;
     return (count);
@@ -24,15 +26,35 @@ static int count_tokens(char **tokens)
 
 int parse_texture(char **tokens, t_config *config)
 {
+    char **target_path;
+    
     if (count_tokens(tokens) != 1)
         return (ERROR);
-    if (!config->north_tex.path)
-    {
-        config->north_tex.path = ft_strdup(tokens[0]);
+    if (access(tokens[0], F_OK) != 0)
+        return (ERROR);
+    target_path = NULL;
+    if (ft_strncmp(tokens[0], "NO", 2) == 0)
+        target_path = &config->north_tex.path;
+    else if (ft_strncmp(tokens[0], "SO", 2) == 0)
+        target_path = &config->south_tex.path;
+    else if (ft_strncmp(tokens[0], "WE", 2) == 0)
+        target_path = &config->west_tex.path;
+    else if (ft_strncmp(tokens[0], "EA", 2) == 0)
+        target_path = &config->east_tex.path;
+    if (!target_path || *target_path != NULL) // Ya configurado o identificador inválido
+        return (ERROR);
+    *target_path = ft_strdup(tokens[0]);
+    if (!*target_path) // Validar si ft_strdup falló
+        return (ERROR);
+    if (ft_strncmp(tokens[0], "NO", 2) == 0)
         config->elements_found |= NORTH;
-        return (SUCCESS);
-    }
-    return (ERROR); 
+    else if (ft_strncmp(tokens[0], "SO", 2) == 0)
+        config->elements_found |= SOUTH;
+    else if (ft_strncmp(tokens[0], "WE", 2) == 0)
+        config->elements_found |= WEST;
+    else if (ft_strncmp(tokens[0], "EA", 2) == 0)
+        config->elements_found |= EAST;
+    return (SUCCESS);
 }
 
 static int is_valid_rgb(char *r_str, char *g_str, char *b_str)
@@ -85,10 +107,18 @@ int parse_color(char **tokens, t_config *config)
         color = &config->ceiling_color;
     else
         return (ERROR);
+    if (color->is_set)
+        return (ERROR);
     color->r = ft_atoi(tokens[1]);
     color->g = ft_atoi(tokens[2]);
     color->b = ft_atoi(tokens[3]);
     color->combined = (color->r << 16) | (color->g << 8) | color->b;
     color->is_set = 1;
+    if (tokens[0][0] == 'F')
+        config->elements_found |= FLOOR;
+    else if (tokens[0][0] == 'C')
+        config->elements_found |= CEILING;
+    else
+        return (ERROR);
     return (SUCCESS);
 }

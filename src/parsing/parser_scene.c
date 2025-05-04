@@ -6,11 +6,12 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:28:07 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/04 19:33:32 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/04 20:18:04 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
+
 
 static int	parse_config_line(char **tokens, t_config *c)
 {
@@ -22,9 +23,9 @@ static int	parse_config_line(char **tokens, t_config *c)
     };
 	int				i;
 
-	i = -1;
 	if (tokens == NULL || tokens[0] == NULL)
     	return (free_split(tokens), ERROR);
+    i = -1;
 	while (parsers[++i].id)
 	{
 		if (ft_strncmp(tokens[0], parsers[i].id, ft_strlen (tokens[0])) == 0)
