@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 09:41:44 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/03 09:17:04 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/05 11:53:45 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	is_empty_line(char *line)
 }
 int	is_config_identifier(char *token)
 {
-    const char	*identifiers[] = {"R", "NO", "SO", "WE", "EA", "F", "C", NULL};
+    const char	*identifiers[] = {"NO", "SO", "WE", "EA", "F", "C", NULL};
     int			i;
 
     if (!token)

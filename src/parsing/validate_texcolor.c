@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:45:24 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/04 20:14:48 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/05 11:32:20 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,24 @@ static int count_tokens(char **tokens)
 
 int parse_texture(char **tokens, t_config *config)
 {
-    char **target_path;
+    char *target_path;
+    
     
     if (count_tokens(tokens) != 1)
         return (ERROR);
     if (access(tokens[0], F_OK) != 0)
         return (ERROR);
-    target_path = NULL;
+    target_path = ft_strdup(tokens[1]);
+    if (!target_path)
+        return (ERROR);
     if (ft_strncmp(tokens[0], "NO", 2) == 0)
-        target_path = &config->north_tex.path;
+        config->north_tex.path = target_path;
     else if (ft_strncmp(tokens[0], "SO", 2) == 0)
-        target_path = &config->south_tex.path;
+        config->south_tex.path = target_path;
     else if (ft_strncmp(tokens[0], "WE", 2) == 0)
-        target_path = &config->west_tex.path;
+        config->west_tex.path = target_path;
     else if (ft_strncmp(tokens[0], "EA", 2) == 0)
-        target_path = &config->east_tex.path;
-    if (!target_path || *target_path != NULL) // Ya configurado o identificador inválido
-        return (ERROR);
-    *target_path = ft_strdup(tokens[0]);
-    if (!*target_path) // Validar si ft_strdup falló
-        return (ERROR);
+        config->east_tex.path = target_path;
     if (ft_strncmp(tokens[0], "NO", 2) == 0)
         config->elements_found |= NORTH;
     else if (ft_strncmp(tokens[0], "SO", 2) == 0)

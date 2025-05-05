@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/03 11:48:56 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/05 11:50:10 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,13 +114,6 @@ typedef struct s_config
 	t_player    player;
 	int         elements_found; // Bitmask o contador para elementos obligatorios
 } t_config;
-
-typedef struct s_parser
-{
-    char    *id;          // Identificador (ej: "NO", "SO"...)
-    int     (*func)(char **, t_config *); // Puntero funcion parsing
-} t_parser;
-
 
 typedef struct s_mlx_vars
 {

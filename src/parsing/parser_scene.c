@@ -6,95 +6,95 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:28:07 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/04 20:18:04 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/05 13:04:13 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
 
 
-static int	parse_config_line(char **tokens, t_config *c)
+static int	parse_config_line(char **tokens, t_config *config)
 {
-	const t_parser parsers[] = {
-        {"NO", parse_texture}, {"SO", parse_texture},
-        {"WE", parse_texture}, {"EA", parse_texture},
-        {"F", parse_color},    {"C", parse_color},
-        {NULL, NULL},
-    };
-	int				i;
-
 	if (tokens == NULL || tokens[0] == NULL)
     	return (free_split(tokens), ERROR);
-    i = -1;
-	while (parsers[++i].id)
-	{
-		if (ft_strncmp(tokens[0], parsers[i].id, ft_strlen (tokens[0])) == 0)
-		{
-			parsers[i].func(tokens, c);
-			free_split(tokens);
-			return (SUCCESS);
-		}
-	}
-	free_split(tokens);
-	return (ERROR);
+    if (ft_strncmp(tokens[0], "NO", 2) || ft_strncmp(tokens[0], "SO", 2)\
+     || ft_strncmp(tokens[0], "WE", 2) || ft_strncmp(tokens[0], "EA", 2))
+    {
+        if (parse_texture(tokens, config))
+            return (SUCCESS);
+        else
+            return (free_split(tokens), ERROR);
+    }
+    else if (ft_strncmp(tokens[0], "F", 1) || ft_strncmp(tokens[0], "C", 2))
+    {
+        if (parse_color(tokens, config))
+            return (SUCCESS);
+        else
+            return (free_split(tokens), ERROR);
+    }
+    return (SUCCESS);
 }
 
 static int handle_line(char *line, t_config *config, int *map_started)
 {
     char **tokens;
-    //char *trimmed_line;
+    char *trimmed_line;
     
     if (!line || !config)
         return (ERROR);
+
     printf("Processing line: %s", line);
-    printf("Linea de mapa started?: %d", *map_started);    
+    printf("Linea de mapa started?: %d \n", *map_started);    
     if (is_empty_line(line))
     {
         if (*map_started)
             return (ERROR);
         return (SUCCESS);
-    } 
-    tokens = ft_split(line, ' '); // Revisar Mejor que split(' ') para manejar múltiples espacios
+    }
+    trimmed_line = ft_strtrim(line, "\n");
+    if (!trimmed_line)
+            exit_error("Memory error", "strtrim failed", NULL);
+    tokens = ft_split(trimmed_line, ' ');
     if (!tokens)
         exit_error("Memory error", "ft_split failed", NULL);
-    if (!*map_started && is_config_identifier(tokens[0]))
+    printf ("token 00 is %s\n", tokens[0]);
+    printf ("token 1 is %s\n", tokens[1]);
+    if (*map_started && is_config_identifier(tokens[0]))
     {
         if (parse_config_line(tokens, config) == ERROR)
-            return (free_split(tokens), ERROR);
+            return (ERROR);
     }
-    else if (*map_started == 0 && is_map_line(line))
+    else if (*map_started || is_map_line(trimmed_line))
     {
-        /*trimmed_line = ft_strtrim(line, " \t");
-        if (!trimmed_line)
-            exit_error("Memory error", "strtrim failed", NULL);
-        if (is_empty_line(trimmed_line))
-        {
-            free(trimmed_line);
-            return (free_split(tokens), ERROR);
-        }
-        free(trimmed_line);*/
         *map_started = 1;
-        return (free_split(tokens), MAP_LINE);
+        return (free_split(tokens), free(trimmed_line), MAP_LINE);
     }
-    else if (*map_started == 1)
+    if (*map_started)
     {
         if (is_empty_line(line))
-            return (free_split(tokens), ERROR);    
-        if (is_map_line(line)) // Verificar la línea completa
-            return (free_split(tokens), MAP_LINE);
+            return (ERROR);    
+        if (is_map_line(trimmed_line)) // Verificar la línea completa
+        {
+            *map_started = 1;
+            return (free_split(tokens), free(trimmed_line), MAP_LINE);
+        }
+        else
+            return (ERROR);
     }
+    if (*map_started)
+        exit_error("Map error", "No map found in scene file", NULL);
     return (SUCCESS);
 }
 
 static int process_file_lines(t_config *config, int fd)
 {
     char    *line;
-    int     map_started;
     int     map_line_index;
     int     result;
+    int     map_started;
 
-    map_started = 0;
     map_line_index = 0;
+    map_started = 0;
     while ((line = get_next_line(fd)) != NULL)
     {
         result = handle_line(line, config, &map_started);
@@ -105,7 +105,6 @@ static int process_file_lines(t_config *config, int fd)
         }
         else if (result == MAP_LINE)
         {
-            map_started = 1;
             map_line_index = map_line_index + 1; // Incrementar el indice del mapa
             printf ("sumando lineas de escenario ahora es: %d\n", map_line_index);
             if (!store_map_line(config, line, map_line_index))
@@ -126,8 +125,6 @@ static int process_file_lines(t_config *config, int fd)
         }
         free(line);
     }
-    if (map_started)
-        exit_error("Map error", "No map found in scene file", NULL);
     return (map_line_index);
 }
 
