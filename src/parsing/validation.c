@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 09:50:19 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/03 08:55:41 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/06 09:27:09 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@ void	validate_scene_elements(t_config *config)
 {
     if (!config)
         exit_error("Validation error", "Config is NULL", NULL);
+    /* [IMPRIMO LAS CONFIGURACIONES QUE HAN LLEGADO HASTA AQUI]*/
+    printf ("Textura NORTH: %s\n", config->north_tex.path);
+    printf ("Textura South: %s\n", config->south_tex.path);
+    printf ("Textura EAST: %s\n", config->east_tex.path);
+    printf ("Textura WEST: %s\n", config->west_tex.path);
     if (!config->res_set)
         exit_error("Validation error", "Resolution not set", NULL);
     if (!config->north_tex.path || !config->south_tex.path

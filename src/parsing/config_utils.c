@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 09:16:17 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/03 10:04:13 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/06 12:16:30 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ void init_config(t_config *config)
     config->win_width = RES_WINWIDHT;
     config->win_height = RES_WINHEIGHT;
     config->res_set = 1;
-    //config->map.grid = malloc(sizeof(char *) * MAX_MAP_HEIGHT + 1); // Asignar memoria para el grid
-    //if (!config->map.grid)
-    //   exit_error("Memory error", "Failed to allocate memory for map grid", NULL);
+    config->map.grid = malloc(sizeof(char *) * MAX_MAP_HEIGHT + 1); // Asignar memoria para el grid
+    if (!config->map.grid)
+    exit_error("Memory error", "Failed to allocate memory for map grid", NULL);
     config->map.width = 0;
     config->map.height = 0;
 }
@@ -66,7 +66,7 @@ void	free_config(t_config *config)
 		i = 0;
         while (config->map.grid[i])
 		{
-            free(config->map.grid[i]);
+            free(&config->map.grid[i]);
 			i++;
 		}
 		free(config->map.grid);

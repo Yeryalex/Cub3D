@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:45:24 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/05 11:32:20 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/06 11:56:20 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 /* Función para contar elementos en un array de strings asi guardo los valores*/
 static int count_tokens(char **tokens)
 {
-    int count = 0;
+    int count;
 
+    count = 0;
     if (!tokens)
         return (0);
     while (tokens[count])
@@ -29,11 +30,12 @@ int parse_texture(char **tokens, t_config *config)
     char *target_path;
     
     
-    if (count_tokens(tokens) != 1)
+    if (count_tokens(tokens) == 1)
         return (ERROR);
-    if (access(tokens[0], F_OK) != 0)
+    if (access(tokens[1], F_OK) != 0)
         return (ERROR);
     target_path = ft_strdup(tokens[1]);
+    printf (" Target path textures: %s \n", target_path);
     if (!target_path)
         return (ERROR);
     if (ft_strncmp(tokens[0], "NO", 2) == 0)
@@ -95,21 +97,24 @@ static int is_valid_rgb(char *r_str, char *g_str, char *b_str)
 int parse_color(char **tokens, t_config *config)
 {
     t_color *color;
+    char    **trimmed_color;
 
-    if (count_tokens(tokens) != 4 || !is_valid_rgb(tokens[1], tokens[2], tokens[3]))
+    if (!tokens || !*tokens)
         return (ERROR);
-
-    if (tokens[0][0] == 'F')
+    trimmed_color = ft_split(tokens[1], ',');
+    if (!trimmed_color || count_tokens(trimmed_color) != 3 || !is_valid_rgb(trimmed_color[0], trimmed_color[1], trimmed_color[2]))
+        return (ERROR);
+    if (!ft_strncmp(tokens[0], "F", 1))
         color = &config->floor_color;
-    else if (tokens[0][0] == 'C')
+    else if (!ft_strncmp(tokens[0], "C", 1))
         color = &config->ceiling_color;
     else
         return (ERROR);
     if (color->is_set)
         return (ERROR);
-    color->r = ft_atoi(tokens[1]);
-    color->g = ft_atoi(tokens[2]);
-    color->b = ft_atoi(tokens[3]);
+    color->r = ft_atoi(trimmed_color[0]);
+    color->g = ft_atoi(trimmed_color[1]);
+    color->b = ft_atoi(trimmed_color[2]);
     color->combined = (color->r << 16) | (color->g << 8) | color->b;
     color->is_set = 1;
     if (tokens[0][0] == 'F')
