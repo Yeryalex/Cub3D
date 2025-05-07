@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 10:35:26 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/07 20:34:14 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/07 20:54:49 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	validate_map_borders(char **grid, int height, int width)
     }
     return (0);
 }
-
+/*
 static int	validate_map_content(char **grid, t_config *config)
 {
     int	i;
@@ -93,7 +93,66 @@ static int	validate_map_content(char **grid, t_config *config)
     if (!config->player.found)
         exit_error("Map validation error", "No player found in map", NULL);
     return (0);
+}*/
+static int is_open_space(char **grid, int i, int j)
+{
+    char c = grid[i][j];
+    return (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W');
 }
+
+static void validate_enclosure(char **grid, int i, int j)
+{
+    if (!grid[i - 1] || !grid[i + 1] ||
+        !grid[i][j - 1] || !grid[i][j + 1] ||
+        grid[i - 1][j] == ' ' ||
+        grid[i + 1][j] == ' ' ||
+        grid[i][j - 1] == ' ' ||
+        grid[i][j + 1] == ' ')
+    {
+        exit_error("Map validation error", "Open space detected around walkable tile", NULL);
+    }
+}
+
+static int validate_map_content(char **grid, t_config *config)
+{
+    int i = 0;
+
+    if (!grid || !config || !config->map.grid)
+        return (1);
+    while (grid[i])
+    {
+        int j = 0;
+        if (!grid[i][j])
+            exit_error("Map validation error", "Empty line in map", NULL);
+        while (grid[i][j] == ' ')
+            j++;
+        while (grid[i][j])
+        {
+            if (!is_valid_map_char(grid[i][j]))
+                exit_error("Map validation error", "Invalid character in map", NULL);
+            if (grid[i][j] == 'N' || grid[i][j] == 'S' || grid[i][j] == 'E' || grid[i][j] == 'W')
+            {
+                if (config->player.found)
+                    exit_error("Map validation error", "Multiple players found", NULL);
+                config->player.found = 1;
+                config->player.start_direction = grid[i][j];
+                config->player.pos_x = j + 0.5;
+                config->player.pos_y = i + 0.5;
+            }
+            if (i > 0 && grid[i + 1] && j > 0 && grid[i][j + 1])
+            {
+                if (is_open_space(grid, i, j))
+                    validate_enclosure(grid, i, j);
+            }
+            j++;
+        }
+        i++;
+    }
+    if (!config->player.found)
+        exit_error("Map validation error", "No player found in map", NULL);
+    return (0);
+}
+
 
 void	validate_map(t_config *config)
 {
