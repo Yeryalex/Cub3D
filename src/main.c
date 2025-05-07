@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:48:56 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/03 09:09:25 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/07 20:42:34 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ static void	print_controls(void)
 	printf(CYAN "\tD" RESET ": strafe right\n");
 	printf(CYAN "\t<" RESET ": rotate left\t");
 	printf(CYAN "\t>" RESET ": rotate right\n");
+	printf(CYAN "\t FREE GAME, yrodrig & rbuitrag 2025\n");
 	printf("\n");
 }
 

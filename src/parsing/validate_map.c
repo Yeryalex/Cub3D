@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 10:35:26 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/06 13:29:27 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/07 20:34:14 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,15 @@ static int	validate_map_content(char **grid, t_config *config)
 
     i = 0;
     printf ("Valindando content map \n");
-    if (!grid || !*grid)
+    if (!grid || !config)
         return (1);
     while (grid[i])
     {
         j = 0;
+        if (!grid[i][j])
+            exit_error("Map validation error", "Empty line in map", NULL);
+        while (grid[i][j] == ' ')
+            j++;
         while (grid[i][j])
         {
             printf ("Pintando el tablero %d %d: %d", i, j, grid[i][j]);
@@ -95,13 +99,13 @@ void	validate_map(t_config *config)
 {
     int	height;
     int	width;
-
-    if (!config)
+    
+    if (!config || !config->map.grid)
         exit_error("Map validation error", "Invalid map or config", NULL);
     height = config->map.height;
     width = config->map.width;
-    if (!validate_map_borders(config->map.grid, height, width))
-        exit_error("Map validation error", "Error general map", NULL);
-    if (!validate_map_content(config->map.grid, config))
+    if (validate_map_borders(config->map.grid, height, width))
+        exit_error("Map validation error", "Error general borders map", NULL);
+    if (validate_map_content(config->map.grid, config))
         exit_error("Map validation error", "Content error general map", NULL);
 }
