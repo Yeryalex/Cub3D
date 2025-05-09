@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/09 08:49:15 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/09 09:15:34 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@
 # define FLOOR 0x10
 # define CEILING 0x20
 # define MAX_MAP_HEIGHT 200
-# define RES_WINHEIGHT 1200
-# define RES_WINWIDHT 1920
+# define RES_WINHEIGHT 720
+# define RES_WINWIDHT 960
 
 #ifndef O_DIRECTORY
 # define O_DIRECTORY 00200000
@@ -145,6 +145,10 @@ void	validate_scene_elements(t_config *config);
 void	process_map_data(t_config *config);
 void	transfer_config_to_vars(t_config *config, t_mlx_vars *vars);
 void	validate_map(t_config *config);
+
+/* LOADING */
+int		load_textures(t_mlx_vars *vars);
+void	draw_background(t_mlx_vars *vars);				
 
 /* UTILS*/
 void	exit_error(char *message, char *details, t_mlx_vars *vars);

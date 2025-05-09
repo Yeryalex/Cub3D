@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:48:56 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/09 08:50:57 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/09 09:16:01 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ int	main(int ac, char **av)
 	if (init_window_and_image(&vars) != 0)
 		exit_error("Failed to initialize window and image", NULL, &vars);
 	print_controls();
+    load_textures(&vars);
+	draw_background(&vars);
 	mlx_loop(vars.mlx_ptr);
 	free_config(&vars.config);
 	free(vars.mlx_ptr);
