@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:48:56 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/09 09:16:01 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/09 12:23:43 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,22 +73,20 @@ static void	print_controls(void)
 int	main(int ac, char **av)
 {
 	t_mlx_vars	vars;
-	t_config	tmp_config;
-
+	
 	if (ac != 2)
 		exit_error("Usage: ./cub3d <path/to/map_file.cub>", NULL, NULL);
 	ft_memset(&vars, 0, sizeof(t_mlx_vars));
-	ft_memset(&tmp_config, 0, sizeof(t_config));
-	init_config(&tmp_config);
 	if (parser_scene(av, &vars) != 0)
 		exit_error("Error parsing scene file", NULL, &vars);
-	transfer_config_to_vars(&tmp_config, &vars);
 	if (init_window_and_image(&vars) != 0)
 		exit_error("Failed to initialize window and image", NULL, &vars);
 	print_controls();
     load_textures(&vars);
 	draw_background(&vars);
 	mlx_loop(vars.mlx_ptr);
+	//renderizar colores, texturas
+	//raycasting
 	free_config(&vars.config);
 	free(vars.mlx_ptr);
 	return (0);

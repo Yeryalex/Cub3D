@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 10:35:26 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/07 20:54:49 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/09 11:45:58 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,46 +54,6 @@ static int	validate_map_borders(char **grid, int height, int width)
     }
     return (0);
 }
-/*
-static int	validate_map_content(char **grid, t_config *config)
-{
-    int	i;
-    int	j;
-
-    i = 0;
-    printf ("Valindando content map \n");
-    if (!grid || !config)
-        return (1);
-    while (grid[i])
-    {
-        j = 0;
-        if (!grid[i][j])
-            exit_error("Map validation error", "Empty line in map", NULL);
-        while (grid[i][j] == ' ')
-            j++;
-        while (grid[i][j])
-        {
-            printf ("Pintando el tablero %d %d: %d", i, j, grid[i][j]);
-            if (!is_valid_map_char(grid[i][j]))
-                exit_error("Map validation error", "Invalid character in map", NULL);
-            if (grid[i][j] == 'N' || grid[i][j] == 'S'
-                || grid[i][j] == 'E' || grid[i][j] == 'W')
-            {
-                if (config->player.found)
-                    exit_error("Map validation error", "Multiple players found", NULL);
-                config->player.found = 1;
-                config->player.start_direction = grid[i][j];
-                config->player.pos_x = j + 0.5;
-                config->player.pos_y = i + 0.5;
-            }
-            j++;
-        }
-        i++;
-    }
-    if (!config->player.found)
-        exit_error("Map validation error", "No player found in map", NULL);
-    return (0);
-}*/
 static int is_open_space(char **grid, int i, int j)
 {
     char c = grid[i][j];

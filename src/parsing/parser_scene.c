@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:28:07 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/09 08:51:21 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/09 12:16:49 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,11 @@ static int handle_line(char *line, t_config *config, int *map_started)
     char *trimmed_line;
     
     if (!line || !config)
+    {
+        if (!line)
+            return (SUCCESS);
         return (ERROR);
-
+    }
     printf("Processing line: %s", line);
     printf("Linea de mapa started?: %d \n", *map_started);    
     if (is_empty_line(line))
@@ -70,7 +73,7 @@ static int handle_line(char *line, t_config *config, int *map_started)
     {
         if (is_empty_line(line))
             return (ERROR);    
-        if (is_map_line(trimmed_line)) // Verificar la línea completa
+        if (is_map_line(trimmed_line))
         {
             *map_started = 1;
             return (free_split(tokens), free(trimmed_line), MAP_LINE);
@@ -165,5 +168,6 @@ int	parser_scene(char **av, t_mlx_vars *vars)
     validate_map(&config);
     printf ("Lo hemos validado elementos, procesamos mapa para config\n");
     validate_scene_elements(&config);
+    transfer_config_to_vars(&config, vars);
 	return (0);
 }

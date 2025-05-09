@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 09:16:17 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/09 08:50:03 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/09 12:10:02 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,11 @@ void	transfer_config_to_vars(t_config *config, t_mlx_vars *vars)
 	if (!config || !vars)
 		return ;
 	ft_bzero(&vars->config, sizeof(t_config));
+	/* [IMPRIMO LAS CONFIGURACIONES QUE HAN LLEGADO HASTA AQUI]*/
+    printf ("Textura NORTH en transfer: %s\n", config->north_tex.path);
+    printf ("Textura South en transfer: %s\n", config->south_tex.path);
+    printf ("Textura EAST en transfer: %s\n", config->east_tex.path);
+    printf ("Textura WEST en transfer: %s\n", config->west_tex.path);
 	vars->config.win_width = config->win_width;
 	vars->config.win_height = config->win_height;
 	vars->config.res_set = config->res_set;
@@ -37,6 +42,9 @@ void	transfer_config_to_vars(t_config *config, t_mlx_vars *vars)
 	vars->config.south_tex.path = ft_strdup(config->south_tex.path);
 	vars->config.east_tex.path = ft_strdup(config->east_tex.path);
 	vars->config.west_tex.path = ft_strdup(config->west_tex.path);
+	if (!vars->config.north_tex.path || !vars->config.south_tex.path
+		|| !vars->config.east_tex.path || !vars->config.west_tex.path)
+		exit_error("Memory allocation error", "transfer_config_to_vars", vars);
 	vars->config.floor_color = config->floor_color;
 	vars->config.ceiling_color = config->ceiling_color;
 	vars->config.map.width = config->map.width;
@@ -57,9 +65,7 @@ void	transfer_config_to_vars(t_config *config, t_mlx_vars *vars)
 		}
 		vars->config.map.grid[i] = NULL;
 	}
-	if (!vars->config.north_tex.path || !vars->config.south_tex.path
-		|| !vars->config.east_tex.path || !vars->config.west_tex.path)
-		exit_error("Memory allocation error", "transfer_config_to_vars", vars);
+	
 }
 
 void	free_config(t_config *config)
