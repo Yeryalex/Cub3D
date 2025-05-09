@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:28:07 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/06 13:01:20 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/09 08:51:21 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,5 @@ int	parser_scene(char **av, t_mlx_vars *vars)
     validate_map(&config);
     printf ("Lo hemos validado elementos, procesamos mapa para config\n");
     validate_scene_elements(&config);
-	transfer_config_to_vars(&config, vars);
-    return (0);
+	return (0);
 }

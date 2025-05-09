@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/06 12:41:35 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/09 08:49:15 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ typedef struct s_mlx_vars
 
 /* INIT*/
 void	init_config(t_config *config);
+int		init_window_and_image(t_mlx_vars *vars);
 
 /* PARSING*/
 int		parser_scene(char **av, t_mlx_vars *vars);

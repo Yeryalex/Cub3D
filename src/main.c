@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:48:56 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/08 14:06:20 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/09 08:50:57 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,23 +72,22 @@ static void	print_controls(void)
 
 int	main(int ac, char **av)
 {
-    t_mlx_vars	vars;
+	t_mlx_vars	vars;
+	t_config	tmp_config;
 
-    if (ac != 2)
-        exit_error("Usage: ./cub3d <path/to/map_file.cub>", NULL, NULL);
-    ft_memset(&vars, 0, sizeof(t_mlx_vars));
-    if (parser_scene(av, &vars) != 0)
-        exit_error("Error parsing scene file", NULL, &vars);
-    vars.mlx_ptr = mlx_init();
-    if (!vars.mlx_ptr)
-        exit_error("MLX init failed", NULL, &vars);
-    vars.win_ptr = mlx_new_window(vars.mlx_ptr, vars.config.win_width,
-            vars.config.win_height, WIN_TITLE);
-    if (!vars.win_ptr)
-        exit_error("Window creation failed", NULL, &vars);
-    print_controls();
-    mlx_loop(vars.mlx_ptr);
-    free_config(&vars.config);
-    free(vars.mlx_ptr);
-    return (0);
+	if (ac != 2)
+		exit_error("Usage: ./cub3d <path/to/map_file.cub>", NULL, NULL);
+	ft_memset(&vars, 0, sizeof(t_mlx_vars));
+	ft_memset(&tmp_config, 0, sizeof(t_config));
+	init_config(&tmp_config);
+	if (parser_scene(av, &vars) != 0)
+		exit_error("Error parsing scene file", NULL, &vars);
+	transfer_config_to_vars(&tmp_config, &vars);
+	if (init_window_and_image(&vars) != 0)
+		exit_error("Failed to initialize window and image", NULL, &vars);
+	print_controls();
+	mlx_loop(vars.mlx_ptr);
+	free_config(&vars.config);
+	free(vars.mlx_ptr);
+	return (0);
 }
