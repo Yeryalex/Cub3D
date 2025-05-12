@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:28:07 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/09 12:16:49 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/12 14:06:36 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,21 @@ static int handle_line(char *line, t_config *config, int *map_started)
     }
     trimmed_line = ft_strtrim(line, "\n");
     if (!trimmed_line)
-            exit_error("Memory error", "strtrim failed", NULL);
-    tokens = ft_split(trimmed_line, ' ');
+    {
+        free(trimmed_line);
+        exit_error("Memory error", "strtrim failed", NULL);
+    }
+        tokens = ft_split(trimmed_line, ' ');
     if (!tokens)
+    {
+        free(trimmed_line);
         exit_error("Memory error", "ft_split failed", NULL);
+    }
     if (!*map_started && is_config_identifier(tokens[0]))
     {
         printf ("Llega a config line \n");
         if (!parse_config_line(tokens, config))
-            return (ERROR);
+            return (free_split(tokens), free(trimmed_line), ERROR);
     }
     else if (!*map_started && is_map_line(trimmed_line))
     {
@@ -72,7 +78,7 @@ static int handle_line(char *line, t_config *config, int *map_started)
     if (*map_started)
     {
         if (is_empty_line(line))
-            return (ERROR);    
+            return (free_split(tokens), free(trimmed_line), ERROR);    
         if (is_map_line(trimmed_line))
         {
             *map_started = 1;
@@ -81,8 +87,12 @@ static int handle_line(char *line, t_config *config, int *map_started)
         
     }
     if (*map_started)
+    {
+        free_split(tokens);
+        free(trimmed_line);    
         exit_error("Map error", "No map found in scene file", NULL);
-    return (SUCCESS);
+    }
+    return (free_split(tokens), free(trimmed_line), SUCCESS);
 }
 
 static int process_file_lines(t_config *config, int fd)

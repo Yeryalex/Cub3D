@@ -35,13 +35,19 @@ char	*ft_strtrim(const char *s1, const char *set)
 	if (!s1 || !set)
 		return (NULL);
 	start = 0;
+	len = 0;
+	end = 0;
 	while (s1[start] != '\0' && ft_search_c(s1[start], set))
 		start++;
 	end = ft_strlen(s1);
 	while (end > start && ft_search_c(s1[end - 1], set))
 		end--;
-	len = end - start;
-	return (ft_substr(s1, start, len));
+	if (end > start)
+		len = end - start;
+	if (ft_substr(s1, start, len) != NULL)
+		return (ft_substr(s1, start, len));
+	else 
+		return (NULL);
 }
 /*
 int	main(void)
