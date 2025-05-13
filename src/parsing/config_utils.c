@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 09:16:17 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/13 11:15:27 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/13 11:38:44 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ int	init_window_and_image(t_mlx_vars *vars)
 		exit_error("Image buffer creation failed", NULL, vars);
 		return (-1);
 	}
+	load_textures(vars);
 	vars->addr = mlx_get_data_addr(vars->img_ptr,
 			&vars->bits_per_pixel, &vars->line_length, &vars->endian);
 	if (!vars->addr)
@@ -137,5 +138,6 @@ int	init_window_and_image(t_mlx_vars *vars)
 		exit_error("Image buffer address failed", NULL, vars);
 		return (-1);
 	}
+	draw_background(vars);
 	return (0);
 }

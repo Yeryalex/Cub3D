@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:48:56 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/09 12:23:43 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/13 11:42:17 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,9 @@ int	main(int ac, char **av)
 	ft_memset(&vars, 0, sizeof(t_mlx_vars));
 	if (parser_scene(av, &vars) != 0)
 		exit_error("Error parsing scene file", NULL, &vars);
-	if (init_window_and_image(&vars) != 0)
-		exit_error("Failed to initialize window and image", NULL, &vars);
 	print_controls();
-    load_textures(&vars);
-	draw_background(&vars);
+    if (init_window_and_image(&vars) != 0)
+		exit_error("Failed to initialize window and image", NULL, &vars);
 	mlx_loop(vars.mlx_ptr);
 	//renderizar colores, texturas
 	//raycasting
