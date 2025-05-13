@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 10:35:26 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/12 12:09:39 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/13 10:43:09 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,54 +73,45 @@ static void validate_enclosure(char **grid, int i, int j)
     }
 }
 
-static int validate_map_content(char **grid, t_config *config)
+static int	validate_map_content(char **grid, t_config *config)
 {
-    int i;
-    int j;
-    
-    
+    int	i;
+    int	j;
+
     if (!grid || !config || !config->map.grid)
         return (1);
     i = 0;
-    if (grid[i] != NULL)
+    while (grid[i])
     {
-        while (grid[i])
+        j = 0;
+        while (grid[i][j] && grid[i][j] == ' ')
+            j++;
+        if (grid[i][j] == '\0')
+            exit_error("Map validation error", "Empty line in map", NULL);
+        while (grid[i][j])
         {
-            j = 0;
-        //if (!grid[i][j])
-          //  exit_error("Map validation error", "Empty line in map", NULL);
-            if (config->map.height > i && grid[i][j] != '\0')
+            if (!is_valid_map_char(grid[i][j]))
+                exit_error("Map validation error", "Invalid character in map", NULL);
+            if (grid[i][j] == 'N' || grid[i][j] == 'S'
+                || grid[i][j] == 'E' || grid[i][j] == 'W')
             {
-               // while (grid[i][j] == ' ')
-                 //   j++;
-                while (grid[i][j])
-                {
-                    if (!is_valid_map_char(grid[i][j]))
-                        exit_error("Map validation error", "Invalid character in map", NULL);
-                    if (grid[i][j] == 'N' || grid[i][j] == 'S' || grid[i][j] == 'E' || grid[i][j] == 'W')
-                    {
-                        if (config->player.found)
-                            exit_error("Map validation error", "Multiple players found", NULL);
-                        config->player.found = 1;
-                        config->player.start_direction = grid[i][j];
-                        config->player.pos_x = j + 0.5;
-                        config->player.pos_y = i + 0.5;
-                    }
-                    if (i > 0 && grid[i + 1] && j > 0 && grid[i][j + 1])
-                    {
-                        if (is_open_space(grid, i, j))
-                            validate_enclosure(grid, i, j);
-                    }
-                    j++;
-                }
+                if (config->player.found)
+                    exit_error("Map validation error", "Multiple players found", NULL);
+                config->player.found = 1;
+                config->player.start_direction = grid[i][j];
+                config->player.pos_x = j + 0.5;
+                config->player.pos_y = i + 0.5;
             }
-            else
-                exit_error("Map validation error", "Empty line in map", NULL);
-            i++;
+            if (is_open_space(grid, i, j))
+            {
+                if (i == 0 || !grid[i + 1] || j == 0 || grid[i][j + 1] == '\0')
+                    exit_error("Map validation error", "Open space at border", NULL);
+                validate_enclosure(grid, i, j);
+            }
+            j++;
         }
+        i++;
     }
-    else
-        exit_error("Map validation error", "Fail load map", NULL);
     if (!config->player.found)
         exit_error("Map validation error", "No player found in map", NULL);
     return (0);

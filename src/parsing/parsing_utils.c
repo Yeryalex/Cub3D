@@ -6,13 +6,13 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:25:02 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/06 13:03:37 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/13 10:34:06 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
 
-int store_map_line(t_config *config, char *line, int index)
+/*int store_map_line(t_config *config, char *line, int index)
 {
     int     line_length;
     char    *line_trimmed;
@@ -28,6 +28,29 @@ int store_map_line(t_config *config, char *line, int index)
     config->map.grid[index] = ft_strdup(line_trimmed);
     if (!config->map.grid[index])
         exit_error("Memory error", "Failed to allocate memory for map line", NULL);
+    return (1);
+}*/
+int	store_map_line(t_config *config, char *line, int index)
+{
+    int		line_length;
+    char	*line_trimmed;
+
+    if (!config || !line || !config->map.grid)
+        return (0);
+    line_trimmed = ft_strtrim(line, "\n");
+    if (!line_trimmed)
+        exit_error("Memory error", "strtrim failed", NULL);
+    line_length = ft_strlen(line_trimmed);
+    printf("map line para almacenar %s\n", line_trimmed);
+    if (line_length > config->map.width)
+        config->map.width = line_length;
+    config->map.grid[index] = ft_strdup(line_trimmed);
+    if (!config->map.grid[index])
+    {
+        free(line_trimmed);
+        exit_error("Memory error", "Failed to allocate memory for map line", NULL);
+    }
+    free(line_trimmed);
     return (1);
 }
 
