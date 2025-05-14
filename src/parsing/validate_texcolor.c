@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:45:24 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/14 15:21:59 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/14 18:27:58 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ int parse_color(char **tokens, t_config *config)
     color->r = ft_atoi(trimmed_color[0]);
     color->g = ft_atoi(trimmed_color[1]);
     color->b = ft_atoi(trimmed_color[2]);
+    ft_free_array(trimmed_color);
     color->combined = (color->r << 16) | (color->g << 8) | color->b;
     color->is_set = 1;
     if (tokens[0][0] == 'F')
