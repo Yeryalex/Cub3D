@@ -10,46 +10,71 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-include "../../inc/cub3d.h"
+#include "../../inc/cub3d.h"
 
-static void mouse_move(int x, int y, t_mlx_vars *vars)
+static int mouse_move(int x, int y, t_mlx_vars *vars)
 {
+    if (!vars)
+        return (1);
     if (x < 0 || x > vars->config.win_width || y < 0
         || y > vars->config.win_height)
-        return ;
+        return (1);
     if (x < vars->config.win_width / 2)
-        vars->player.angle -= 0.05;
+        vars->config.player.plane_x -= 0.05;
     else if (x > vars->config.win_width / 2)
-        vars->player.angle += 0.05;
-    mlx_mouse_move(vars->win_ptr, vars->config.win_width / 2,
-        vars->config.win_height / 2);
+        vars->config.player.plane_y += 0.05;
+    mlx_mouse_move(&vars, vars->win_ptr, (vars->config.win_width / 2),
+        (vars->config.win_height / 2));
+    return (0);
 }
 
 int	action_mouse(int x, int y, t_mlx_vars *vars)
 {
+    if (!vars)
+        return (0);
     if (x < 0 || x > vars->config.win_width || y < 0
         || y > vars->config.win_height)
         return (0);
-    return (mouse_move(x, y, vars));
+    else
+        return (mouse_move(x, y, vars));
 }
+
 int	action_key(int keycode, t_mlx_vars *vars)
 {
-    if (keycode == XK_ESC)
-    {
-        mlx_destroy_window(vars->mlx_ptr, vars->win_ptr);
-        exit(0);
-    }
-    else if (keycode == KEY_W)
-        move_player(vars, MOVE_FORWARD);
-    else if (keycode == KEY_S)
-        move_player(vars, MOVE_BACKWARD);
-    else if (keycode == KEY_A)
-        move_player(vars, STRAFE_LEFT);
-    else if (keycode == KEY_D)
-        move_player(vars, STRAFE_RIGHT);
-    else if (keycode == KEY_LEFT)
-        rotate_player(vars, ROTATE_LEFT);
-    else if (keycode == KEY_RIGHT)
-        rotate_player(vars, ROTATE_RIGHT);
-    return (0);
+    if (!vars || !keycode)
+        exit_error("Failed to initialize window or keys controls", NULL, vars);
+    if (keycode == XK_Escape)
+        quit_cub3d(vars);
+	else if (keycode == XK_Left)
+		vars->config.player.plane_x -= 1;
+	else if (keycode == XK_Right)
+        vars->config.player.plane_x += 1;
+	else if (keycode == XK_w || XK_Up)
+        vars->config.player.pos_y = 1;
+	else if (keycode == XK_s || XK_Down)
+        vars->config.player.pos_x = -1;
+	else if (keycode == XK_s)
+        vars->config.player.pos_y = -1;
+	else if (keycode == XK_d)
+        vars->config.player.pos_x = 1;
+	return (0);
+}
+
+int	key_release(int key, t_mlx_vars *vars)
+{
+	if (key == XK_Escape)
+		quit_cub3d(vars);
+	if (key == XK_w && vars->config.player.pos_y == 1)
+        vars->config.player.pos_y = 0;
+	if (key == XK_s && vars->config.player.pos_y == -1)
+        vars->config.player.pos_y = 0;
+	if (key == XK_a && vars->config.player.pos_x == -1)
+        vars->config.player.pos_x += 1;
+	if (key == XK_d && vars->config.player.pos_x == 1)
+        vars->config.player.pos_x -= 1;
+	if (key == XK_Left && vars->config.player.plane_x <= 1)
+        vars->config.player.plane_x = 0;
+	if (key == XK_Right && vars->config.player.plane_x >= -1)
+        vars->config.player.plane_x = 0;
+	return (0);
 }

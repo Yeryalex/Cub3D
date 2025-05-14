@@ -19,8 +19,7 @@ static char	*malloc_error(size_t len_malloc)
 	s_malloc = malloc(sizeof(char) * len_malloc);
 	if (!s_malloc)
 		return (NULL);
-	else
-		return (s_malloc);
+	return (s_malloc);
 }
 
 char	*ft_substr(const char *s, unsigned int start, size_t len)

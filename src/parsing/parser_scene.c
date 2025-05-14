@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:28:07 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/13 10:24:55 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/14 16:23:49 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,15 @@ static int	handle_line(char *line, t_config *config, int *map_started)
     }
     trimmed_line = ft_strtrim(line, "\n");
     if (!trimmed_line)
+    {
+        free(line);
         exit_error("Memory error", "strtrim failed", NULL);
+    }
     tokens = ft_split(trimmed_line, ' ');
     if (!tokens)
     {
         free(trimmed_line);
+        free(line);
         exit_error("Memory error", "ft_split failed", NULL);
     }
     if (!*map_started && is_config_identifier(tokens[0]))

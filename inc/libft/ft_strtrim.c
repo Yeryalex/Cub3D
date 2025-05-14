@@ -12,9 +12,9 @@
 
 #include "libft.h"
 
-static	int	ft_search_c(char c, const char *set)
+static int	is_set(char c, char const *set)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	while (set[i])
@@ -26,28 +26,24 @@ static	int	ft_search_c(char c, const char *set)
 	return (0);
 }
 
-char	*ft_strtrim(const char *s1, const char *set)
+char	*ft_strtrim(char const *s1, char const *set)
 {
-	size_t		start;
-	size_t		len;
-	size_t		end;
+	size_t	start;
+	size_t	end;
 
-	if (!s1 || !set)
-		return (NULL);
+	if (!s1)
+		return (ft_strdup(""));
+	if (!set)
+		return (ft_strdup(s1));
 	start = 0;
-	len = 0;
-	end = 0;
-	while (s1[start] != '\0' && ft_search_c(s1[start], set))
-		start++;
 	end = ft_strlen(s1);
-	while (end > start && ft_search_c(s1[end - 1], set))
+	while (is_set(s1[start], set))
+		start++;
+	if (start == end)
+		return (ft_strdup(""));
+	while (is_set(s1[end - 1], set))
 		end--;
-	if (end > start)
-		len = end - start;
-	if (ft_substr(s1, start, len) != NULL)
-		return (ft_substr(s1, start, len));
-	else 
-		return (NULL);
+	return (ft_substr(s1, start, end - start));
 }
 /*
 int	main(void)

@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:48:56 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/13 12:43:17 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/14 15:44:20 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,10 @@ int	main(int ac, char **av)
 	if (parser_scene(av, &vars) != 0)
 		exit_error("Error parsing scene file", NULL, &vars);
 	print_controls();
-    if (init_window_and_image(&vars) != 0)
+    if (init_window_and_image(&vars))
 		exit_error("Failed to initialize window and image", NULL, &vars);
-	mlx_hook(vars->mlx_window, 6, (1L << 6), action_mouse, vars);
-	mlx_hook(vars->mlx_window, 2, (1L << 0), action_key, vars);
-	mlx_hook(vars->mlx_window, 17, (1L << 5), action_close_esc, vars);
+	else if (!listen_mlx_input(&vars))
+		exit_error("Failed loading controls keys", NULL, &vars);
 	mlx_loop(vars.mlx_ptr);
 	//renderizar colores, texturas
 	//raycasting

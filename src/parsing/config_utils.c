@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 09:16:17 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/13 11:38:44 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/14 15:43:17 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,6 @@ void	transfer_config_to_vars(t_config *config, t_mlx_vars *vars)
 	if (!config || !vars)
 		return ;
 	ft_bzero(&vars->config, sizeof(t_config));
-	/* [IMPRIMO LAS CONFIGURACIONES QUE HAN LLEGADO HASTA AQUI]*/
-    printf ("Textura NORTH en transfer: %s\n", config->north_tex.path);
-    printf ("Textura South en transfer: %s\n", config->south_tex.path);
-    printf ("Textura EAST en transfer: %s\n", config->east_tex.path);
-    printf ("Textura WEST en transfer: %s\n", config->west_tex.path);
 	vars->config.win_width = config->win_width;
 	vars->config.win_height = config->win_height;
 	vars->config.res_set = config->res_set;
@@ -130,7 +125,6 @@ int	init_window_and_image(t_mlx_vars *vars)
 		exit_error("Image buffer creation failed", NULL, vars);
 		return (-1);
 	}
-	load_textures(vars);
 	vars->addr = mlx_get_data_addr(vars->img_ptr,
 			&vars->bits_per_pixel, &vars->line_length, &vars->endian);
 	if (!vars->addr)
@@ -139,5 +133,6 @@ int	init_window_and_image(t_mlx_vars *vars)
 		return (-1);
 	}
 	draw_background(vars);
+	load_textures(vars);
 	return (0);
 }

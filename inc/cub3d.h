@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/09 09:15:34 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/14 16:43:14 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "../inc/minilibx/mlx.h"
 # include <stdio.h>
 # include <stdlib.h>
+# include <string.h>
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -25,6 +26,8 @@
 # include <string.h>
 # include <fcntl.h>
 # include <errno.h>
+# include <X11/keysym.h>
+# include <X11/X.h>
 
     /* --- Constantes --- */
 # define WIN_TITLE "Cub3D por Yery & rBuitrag 42 BCN"
@@ -37,11 +40,11 @@
 # define SOUTH 0x02
 # define WEST  0x04
 # define EAST  0x08
-# define FLOOR 0x10
-# define CEILING 0x20
+# define FLOOR 0x12
+# define CEILING 0x25
 # define MAX_MAP_HEIGHT 200
-# define RES_WINHEIGHT 720
-# define RES_WINWIDHT 960
+# define RES_WINHEIGHT 860
+# define RES_WINWIDHT 1024
 
 #ifndef O_DIRECTORY
 # define O_DIRECTORY 00200000
@@ -91,9 +94,9 @@ typedef struct s_player
 {
 	double  pos_x;
 	double  pos_y;
-	double  dir_x; // Vector de dirección
+	double  dir_x; // Vector de direccion
 	double  dir_y;
-	double  plane_x; // Plano de la cámara (perpendicular a dir)
+	double  plane_x; // Plano de la cámara (perpendicular a dir) ROTATE tmb raton
 	double  plane_y;
 	char    start_direction; // 'N', 'S', 'E', 'W'
 	int     found; // Flag para asegurar que solo hay un jugador
@@ -103,7 +106,7 @@ typedef struct s_config
 {
 	int         win_width;
 	int         win_height;
-	int         res_set; // Flag para saber si la resolución se parseo
+	int         res_set; // Flag para saber si la resolucion se parseo
 	t_texture   north_tex;
 	t_texture   south_tex;
 	t_texture   west_tex;
@@ -120,11 +123,11 @@ typedef struct s_mlx_vars
 	void        *mlx_ptr;
 	void        *win_ptr;
 	void        *img_ptr; // Buffer de imagen para dibujar
-	char        *addr;    // Dirección del buffer
+	char        *addr;    // Direccion del buffer
 	int         bits_per_pixel;
 	int         line_length;
 	int         endian;
-	t_config    config; // Contiene toda la configuración parseada
+	t_config    config; // Contiene toda la configuracion parseada
 } t_mlx_vars;
 
 /* INIT*/
@@ -148,7 +151,12 @@ void	validate_map(t_config *config);
 
 /* LOADING */
 int		load_textures(t_mlx_vars *vars);
-void	draw_background(t_mlx_vars *vars);				
+void	draw_background(t_mlx_vars *vars);
+
+/* KEYS MLX WINDOWS*/
+int	action_key(int keycode, t_mlx_vars *vars);
+int	action_mouse(int x, int y, t_mlx_vars *vars);
+int	key_release(int key, t_mlx_vars *vars);
 
 /* UTILS*/
 void	exit_error(char *message, char *details, t_mlx_vars *vars);
@@ -156,6 +164,11 @@ void	free_config(t_config *config);
 int		is_config_identifier(char *token);
 int		is_empty_line(char *line);
 void	free_split(char **tokens);
+
+/* MLX UTILS WINDOW*/
+int		quit_cub3d(t_mlx_vars *vars);
+void	clean_exit(t_mlx_vars *vars, int code);
+int		listen_mlx_input(t_mlx_vars *vars);
 
 
 

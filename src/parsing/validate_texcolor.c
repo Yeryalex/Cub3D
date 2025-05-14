@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:45:24 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/06 11:56:20 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/14 15:21:59 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ static int is_valid_rgb(char *r_str, char *g_str, char *b_str)
     int b;
     int i;
 
+    if (!r_str || !g_str || !b_str)
+        return (1);
     i = 0;
     while(r_str[i])
     {
@@ -78,6 +80,7 @@ static int is_valid_rgb(char *r_str, char *g_str, char *b_str)
             return (0);
         i++;
     }
+    i = 0;
     while (b_str[i])
     {
         if (!ft_isdigit(b_str[i]))

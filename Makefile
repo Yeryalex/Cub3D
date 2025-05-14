@@ -6,7 +6,7 @@
 #    By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/10 12:06:04 by rbuitrag          #+#    #+#              #
-#    Updated: 2025/05/13 10:36:46 by rbuitrag         ###   ########.fr        #
+#    Updated: 2025/05/14 17:25:32 by rbuitrag         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,8 @@ CFILES =	main.c \
 			parsing/validate_texcolor.c \
 			parsing/validate_map.c \
 			loading/loadmap.c \
+			mlx_setup/hooks.c \
+			mlx_setup/windows.c \
 			
 		
 GREEN = "\033[92m"
@@ -61,7 +63,9 @@ fclean: clean
 
 re: fclean all
 
+v: all
+	valgrind --leak-check=full --track-origins=yes -q ./cub3d maps/library.cub
 va: all
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -q -s ./cub3d maps/library.cub
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=suppresionsX11 -q ./cub3d maps/library.cub
 
 .PHONY: all clean fclean re library
