@@ -6,7 +6,7 @@
 #    By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/10 12:06:04 by rbuitrag          #+#    #+#              #
-#    Updated: 2025/05/14 17:25:32 by rbuitrag         ###   ########.fr        #
+#    Updated: 2025/05/14 18:30:57 by rbuitrag         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,7 @@ fclean: clean
 re: fclean all
 
 v: all
-	valgrind --leak-check=full --track-origins=yes -q ./cub3d maps/library.cub
+	valgrind --leak-check=full --track-origins=yes -s ./cub3d maps/library.cub
 va: all
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=suppresionsX11 -q ./cub3d maps/library.cub
 
