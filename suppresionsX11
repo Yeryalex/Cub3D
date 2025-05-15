@@ -1,0 +1,12 @@
+{ 
+    leak libX11
+	Memcheck:Leak
+    ...
+    fun:libX11
+}
+{
+    leak add_history
+    Memcheck:Leak
+    ...
+    fun:add_history
+}
