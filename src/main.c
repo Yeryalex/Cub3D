@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:48:56 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/14 15:44:20 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/15 10:41:02 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ int	main(int ac, char **av)
 		exit_error("Failed to initialize window and image", NULL, &vars);
 	else if (!listen_mlx_input(&vars))
 		exit_error("Failed loading controls keys", NULL, &vars);
+	draw_textures_preview(&vars);
 	mlx_loop(vars.mlx_ptr);
-	//renderizar colores, texturas
 	//raycasting
 	free_config(&vars.config);
 	free(vars.mlx_ptr);

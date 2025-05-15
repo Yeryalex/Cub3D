@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:16:02 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/14 18:19:16 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/15 10:02:59 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void clean_exit(t_mlx_vars *vars, int code)
 int	quit_cub3d(t_mlx_vars *vars)
 {
 	if (vars)
-		//exit(0);
 		clean_exit(vars, 0);
 	return (ERROR);
 }
@@ -43,5 +42,7 @@ int listen_mlx_input(t_mlx_vars *vars)
 	mlx_hook(vars->win_ptr, KeyPress, KeyPressMask, action_key, vars);
 	mlx_hook(vars->win_ptr, KeyRelease, KeyReleaseMask, key_release, vars);
 	mlx_hook(vars->win_ptr, 6, (1L << 6), action_mouse, vars);
+	mlx_hook(vars->win_ptr, MotionNotify, PointerMotionMask, mouse_move, vars);
+	//mlx_hook(vars->win_ptr, 17, 0, quit_cub3d, vars); Para probar en otros SO, en Win sin esto no me funciona bien
 	return (SUCCESS);
 }

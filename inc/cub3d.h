@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/14 16:43:14 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/15 10:40:22 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # include <X11/X.h>
 
     /* --- Constantes --- */
-# define WIN_TITLE "Cub3D por Yery & rBuitrag 42 BCN"
+# define WIN_TITLE "Cub3D por yrodrigu & rbuitrag en 42 BCN 2025"
 # define MOVE_SPEED 0.1
 # define COLLISION_MARGIN 0.1 // Evita quedarse pegado, revisar unidad
 # define SUCCESS 1
@@ -152,11 +152,13 @@ void	validate_map(t_config *config);
 /* LOADING */
 int		load_textures(t_mlx_vars *vars);
 void	draw_background(t_mlx_vars *vars);
+void	draw_textures_preview(t_mlx_vars *vars);
 
 /* KEYS MLX WINDOWS*/
 int	action_key(int keycode, t_mlx_vars *vars);
 int	action_mouse(int x, int y, t_mlx_vars *vars);
 int	key_release(int key, t_mlx_vars *vars);
+int	mouse_move(int x, int y, t_mlx_vars *vars);
 
 /* UTILS*/
 void	exit_error(char *message, char *details, t_mlx_vars *vars);
