@@ -12,29 +12,29 @@
 
 #include "../../inc/cub3d.h"
 
-/* FUNCION PRUEBA PARA VER FUNCIONAMIENTO DE VER TEXTURAS CORRECTAS*/
+/* FUNCION PRUEBA PARA VER FUNCIONAMIENTO DE VER TEXTURAS CORRECTAS EN LA VENTANA*/
 void	draw_textures_preview(t_mlx_vars *vars)
 {
     // Dibuja la textura norte arriba a la izquierda
     if (vars->config.north_tex.img_ptr)
         mlx_put_image_to_window(vars->mlx_ptr, vars->win_ptr,
-            vars->config.north_tex.img_ptr, 10, 10);
+            vars->config.north_tex.img_ptr, 40, 40);
 	// Dibuja la textura sur abajo a la izquierda
     if (vars->config.south_tex.img_ptr)
         mlx_put_image_to_window(vars->mlx_ptr, vars->win_ptr,
-            vars->config.south_tex.img_ptr, 10,
-            vars->config.win_height - vars->config.south_tex.height - 10);
+            vars->config.south_tex.img_ptr, 40,
+            vars->config.win_height - vars->config.south_tex.height - 40);
 	// Dibuja la textura este arriba a la derecha
     if (vars->config.east_tex.img_ptr)
         mlx_put_image_to_window(vars->mlx_ptr, vars->win_ptr,
             vars->config.east_tex.img_ptr,
-            vars->config.win_width - vars->config.east_tex.width - 10, 10);
+            vars->config.win_width - vars->config.east_tex.width - 40, 40);
 	// Dibuja la textura oeste abajo a la derecha
     if (vars->config.west_tex.img_ptr)
         mlx_put_image_to_window(vars->mlx_ptr, vars->win_ptr,
             vars->config.west_tex.img_ptr,
-            vars->config.win_width - vars->config.west_tex.width - 10,
-            vars->config.win_height - vars->config.west_tex.height - 10);
+            vars->config.win_width - vars->config.west_tex.width - 40,
+            vars->config.win_height - vars->config.west_tex.height - 40);
 }
 
 int	load_textures(t_mlx_vars *vars)
