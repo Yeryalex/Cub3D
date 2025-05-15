@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 10:35:26 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/13 10:43:09 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:30:18 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	validate_map_borders(char **grid, int height, int width)
     {
         if (grid[i][0] != '1' && grid[i][0] != ' ')
         //if (grid[i][0] != '1')
-            exit_error("Map validation error", "Map is not closed on the left", NULL);
+            exit_error("Map validation error ", "Map is not closed on the left", NULL);
         if (grid[i][width - 1] != '1' && grid[i][width - 1] != ' ')
         //if (grid[i][width - 1] != '1')
             exit_error("Map validation error", "Map is not closed on the right", NULL);

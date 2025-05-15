@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 09:16:17 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/14 15:43:17 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:34:35 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void init_config(t_config *config)
     config->res_set = 1;
     config->map.grid = ft_calloc(MAX_MAP_HEIGHT + 1, sizeof(char *));
     if (!config->map.grid)
-    	exit_error("Memory error", "Failed to allocate memory for map grid", NULL);
+    	exit_error("Memory error ", "Failed to allocate memory for map grid", NULL);
     config->map.width = 0;
     config->map.height = 0;
 }

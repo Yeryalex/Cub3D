@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:48:56 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/15 13:58:05 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:14:47 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 void	exit_error(char *message, char *details, t_mlx_vars *vars)
 {
-	char	*details_copy;
+	//char	*details_copy;
 	printf("Error\n");
 	if (message)
-		printf("%s ", message);
+		printf("%s", message);
 	if (details)
 	{
-		details_copy = ft_strdup(details);
-		if (!details_copy)
-			printf("Memory error strdup failed\n");
-		printf ("%s ", details);
-		free(details_copy);
+		//details_copy = ft_strdup(details);
+		//if (!details_copy)
+		//	printf("Memory error strdup failed\n");
+		printf ("%s", details);
+		//free(details_copy);
 	}
 	if (vars && vars->mlx_ptr)
     {
@@ -75,7 +75,7 @@ int	main(int ac, char **av)
 	t_mlx_vars	vars;
 	
 	if (ac != 2)
-		exit_error("Usage: ./cub3d <path/to/map_file.cub>", NULL, NULL);
+		exit_error("Usage: ./cub3d <path/to/map_file.cub>\n", NULL, NULL);
 	ft_memset(&vars, 0, sizeof(t_mlx_vars));
 	if (parser_scene(av, &vars) != 0)
 		exit_error("Error parsing scene file", NULL, &vars);
