@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:28:07 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/14 16:23:49 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:15:36 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,12 +157,12 @@ int	parse_scene_file(char *filename, t_config *config)
 	if (!ft_strnstr(filename, ".cub", ft_strlen(filename)) || 
         ft_strlen(filename) < 5) 
         //ft_strncmp(filename, ".cub", ft_strlen(filename) != 0))
-        exit_error("File error ", "Invalid file extension. Expected .cub", NULL);
+        exit_error("File error ", "Invalid file extension. Expected .cub\n", NULL);
 	dir_fd = open(filename, O_DIRECTORY);
 	if (dir_fd >= 0)
 	{
 		close(dir_fd);
-		exit_error("File error: ", "Provided path is a directory, not a file", NULL);
+		exit_error("File error: ", "Provided path is a directory, not a file\n", NULL);
 	}
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
