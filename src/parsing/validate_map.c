@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 10:35:26 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/15 15:30:18 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/16 11:26:30 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,13 @@ static int	is_valid_map_char(char c)
 static int	validate_map_borders(char **grid, int height, int width)
 {
     int i;
-  
+
     i = 0;
-    printf ("Anncho del mapa es:, %d\n", width);
-    printf ("Alto del mapa: %d\n", height);
     if (!grid || height == 0 || width == 0)
         return (1);
     while (grid[0][i])
     {
         if (grid[0][i] != '1' && grid[0][i] != ' ')
-        //if (grid[0][i] != '1')
             exit_error("Map validation error", "Map is not closed at the top", NULL);
         i++;
     }
@@ -37,30 +34,28 @@ static int	validate_map_borders(char **grid, int height, int width)
     while (grid[height - 1][i])
     {
         if (grid[height - 1][i] != '1' && grid[height - 1][i] != ' ')
-        //if (grid[height - 1][i] != '1')
             exit_error("Map validation error", "Map is not closed at the bottom", NULL);
         i++;
     }
-    i = 0;
+    /*i = 0; Esto antes comprobaba los laterales, y claro debo seguir la silueta, revisar
     while (i < height)
     {
         if (grid[i][0] != '1' && grid[i][0] != ' ')
-        //if (grid[i][0] != '1')
             exit_error("Map validation error ", "Map is not closed on the left", NULL);
         if (grid[i][width - 1] != '1' && grid[i][width - 1] != ' ')
-        //if (grid[i][width - 1] != '1')
             exit_error("Map validation error", "Map is not closed on the right", NULL);
         i++;
-    }
+    }*/
     return (0);
 }
-static int is_open_space(char **grid, int i, int j)
+
+static int	is_open_space(char **grid, int i, int j)
 {
     char c = grid[i][j];
     return (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W');
 }
 
-static void validate_enclosure(char **grid, int i, int j)
+static void	validate_enclosure(char **grid, int i, int j)
 {
     if (!grid[i - 1] || !grid[i + 1] ||
         !grid[i][j - 1] || !grid[i][j + 1] ||
@@ -117,12 +112,11 @@ static int	validate_map_content(char **grid, t_config *config)
     return (0);
 }
 
-
 void	validate_map(t_config *config)
 {
     int	height;
     int	width;
-    
+
     if (!config || !config->map.grid)
         exit_error("Map validation error", "Invalid map or config", NULL);
     height = config->map.height;
@@ -131,4 +125,5 @@ void	validate_map(t_config *config)
         exit_error("Map validation error", "Error general borders map", NULL);
     if (validate_map_content(config->map.grid, config))
         exit_error("Map validation error", "Content error general map", NULL);
+    validate_map_closed(config->map.grid, height, width);
 }

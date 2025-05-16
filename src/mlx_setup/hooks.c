@@ -40,11 +40,11 @@ int	action_mouse(int x, int y, t_mlx_vars *vars)
 
 int	action_key(int keycode, t_mlx_vars *vars)
 {
-    if (!vars || !keycode)
-        exit_error("Failed to initialize window or keys controls", NULL, vars);
-    if (keycode == XK_Escape)
-        quit_cub3d(vars);
-	else if (keycode == XK_Left)
+        if (!vars || !keycode)
+                exit_error("Failed to initialize window or keys controls", NULL, vars);
+        if (keycode == XK_Escape)
+                quit_cub3d(vars);
+        else if (keycode == XK_Left)
 		vars->config.player.plane_x -= 1;
 	else if (keycode == XK_Right)
         vars->config.player.plane_x += 1;

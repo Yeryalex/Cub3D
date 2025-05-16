@@ -6,7 +6,7 @@
 #    By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/10 12:06:04 by rbuitrag          #+#    #+#              #
-#    Updated: 2025/05/15 12:54:53 by rbuitrag         ###   ########.fr        #
+#    Updated: 2025/05/16 12:24:50 by rbuitrag         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ CFILES =	main.c \
 			parsing/validation.c \
 			parsing/validate_texcolor.c \
 			parsing/validate_map.c \
+			parsing/validate_maps_utils.c \
 			loading/loadmap.c \
 			mlx_setup/hooks.c \
 			mlx_setup/windows.c \

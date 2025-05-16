@@ -3,8 +3,8 @@ SO textures/wolfenstein/purple_stone.xpm
 WE textures/wolfenstein/red_brick.xpm
 EA textures/wolfenstein/wood.xpm
 
-F 220,100,0
-C 225,30,0
+F 22,138,3
+C 15,173,237
 
         1111111111111111111111111
         1000000000110000000000001

@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/15 10:40:22 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/16 11:52:51 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ void	validate_scene_elements(t_config *config);
 void	process_map_data(t_config *config);
 void	transfer_config_to_vars(t_config *config, t_mlx_vars *vars);
 void	validate_map(t_config *config);
+void	validate_map_closed(char **grid, int height, int width);
 
 /* LOADING */
 int		load_textures(t_mlx_vars *vars);
@@ -155,10 +156,10 @@ void	draw_background(t_mlx_vars *vars);
 void	draw_textures_preview(t_mlx_vars *vars);
 
 /* KEYS MLX WINDOWS*/
-int	action_key(int keycode, t_mlx_vars *vars);
-int	action_mouse(int x, int y, t_mlx_vars *vars);
-int	key_release(int key, t_mlx_vars *vars);
-int	mouse_move(int x, int y, t_mlx_vars *vars);
+int		action_key(int keycode, t_mlx_vars *vars);
+int		action_mouse(int x, int y, t_mlx_vars *vars);
+int		key_release(int key, t_mlx_vars *vars);
+int		mouse_move(int x, int y, t_mlx_vars *vars);
 
 /* UTILS*/
 void	exit_error(char *message, char *details, t_mlx_vars *vars);
@@ -166,6 +167,7 @@ void	free_config(t_config *config);
 int		is_config_identifier(char *token);
 int		is_empty_line(char *line);
 void	free_split(char **tokens);
+void	free_textures(t_mlx_vars *vars);
 
 /* MLX UTILS WINDOW*/
 int		quit_cub3d(t_mlx_vars *vars);
