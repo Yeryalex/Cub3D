@@ -84,7 +84,9 @@ int	main(int ac, char **av)
 		exit_error("Failed to initialize window and image", NULL, &vars);
 	else if (!listen_mlx_input(&vars))
 		exit_error("Failed loading controls keys", NULL, &vars);
-	draw_textures_preview(&vars);
+	//draw_textures_preview(&vars);
+	draw_square(RES_WINWIDHT / 2, RES_WINHEIGHT / 2, 10, 0x00ff00, &vars);
+
 	mlx_loop(vars.mlx_ptr);
 	//raycasting
 	free_config(&vars.config);

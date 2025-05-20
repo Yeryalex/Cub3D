@@ -153,6 +153,8 @@ void	validate_map(t_config *config);
 int		load_textures(t_mlx_vars *vars);
 void	draw_background(t_mlx_vars *vars);
 void	draw_textures_preview(t_mlx_vars *vars);
+void	draw_square(int x, int y, int size, int color, t_mlx_vars *game);
+void	put_pixel(int x, int y, int color, t_mlx_vars *game);
 
 /* KEYS MLX WINDOWS*/
 int	action_key(int keycode, t_mlx_vars *vars);

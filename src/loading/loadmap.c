@@ -85,3 +85,27 @@ void	draw_background(t_mlx_vars *vars)
 	}
 	mlx_put_image_to_window(vars->mlx_ptr, vars->win_ptr, vars->img_ptr, 0, 0);
 }
+
+
+void put_pixel(int x, int y, int color, t_mlx_vars *game)
+{
+    if(x >= RES_WINWIDHT || y >= RES_WINHEIGHT || x < 0 || y < 0)
+        return;
+    
+    int index = y * game->line_length + x * game->bits_per_pixel / 8;
+    game->addr[index] = color & 0xFF;
+    game->addr[index + 1] = (color >> 8) & 0xFF;
+    game->addr[index + 2] = (color >> 16) & 0xFF;
+}
+
+void draw_square(int x, int y, int size, int color, t_mlx_vars *game)
+{
+    for(int i = 0; i < size; i++)
+        put_pixel(x + i, y, color, game);
+    for(int i = 0; i < size; i++)
+        put_pixel(x, y + i, color, game);
+    for(int i = 0; i < size; i++)
+        put_pixel(x + size, y + i, color, game);
+    for(int i = 0; i < size; i++)
+        put_pixel(x + i, y + size, color, game);
+}

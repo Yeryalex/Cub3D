@@ -132,7 +132,9 @@ int	init_window_and_image(t_mlx_vars *vars)
 		exit_error("Image buffer address failed", NULL, vars);
 		return (-1);
 	}
-	draw_background(vars);
-	load_textures(vars);
+	mlx_put_image_to_window(vars->mlx_ptr, vars->win_ptr, vars->img_ptr, 0, 0);
+	//draw_square(RES_WINWIDHT / 2, RES_WINHEIGHT / 2, 10, 0x00ff00, vars);
+	//draw_background(vars);
+	//load_textures(vars);
 	return (0);
 }
