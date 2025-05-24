@@ -19,16 +19,8 @@ MLX_A = inc/minilibx/libmlx_Linux.a
 CFLAGS = -Wall -Werror -Wextra  -g #-fsanitize=address -fsanitize=leak
 
 CFILES =	main.c \
-			parsing/config_utils.c \
-			parsing/parser_scene.c \
-			parsing/parsing_utils.c \
-			parsing/parsing_utils2.c \
-			parsing/validation.c \
-			parsing/validate_texcolor.c \
-			parsing/validate_map.c \
-			loading/loadmap.c \
-			mlx_setup/hooks.c \
-			mlx_setup/windows.c \
+			./player/player.c \
+
 			
 		
 GREEN = "\033[92m"

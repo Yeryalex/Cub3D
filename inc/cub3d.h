@@ -19,6 +19,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <fcntl.h>
+# include <stdbool.h>
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <unistd.h>
@@ -43,8 +44,10 @@
 # define FLOOR 0x12
 # define CEILING 0x25
 # define MAX_MAP_HEIGHT 200
-# define RES_WINHEIGHT 860
-# define RES_WINWIDHT 1024
+# define HEIGHT 860
+# define WIDTH 1024
+# define PI 3.14159265359
+# define PLANES 0
 
 #ifndef O_DIRECTORY
 # define O_DIRECTORY 00200000
@@ -94,12 +97,19 @@ typedef struct s_player
 {
 	double  pos_x;
 	double  pos_y;
-	double  dir_x; // Vector de direccion
-	double  dir_y;
-	double  plane_x; // Plano de la cámara (perpendicular a dir) ROTATE tmb raton
-	double  plane_y;
-	char    start_direction; // 'N', 'S', 'E', 'W'
-	int     found; // Flag para asegurar que solo hay un jugador
+	double	angle;
+//	double  dir_x; // Vector de direccion
+//	double  dir_y;
+//	double  plane_x; // Plano de la cámara (perpendicular a dir) ROTATE tmb raton
+//	double  plane_y;
+//	char    start_direction; // 'N', 'S', 'E', 'W'
+//	int     found; // Flag para asegurar que solo hay un jugador
+	bool	key_up;
+	bool	key_down;
+	bool	key_right;
+	bool	key_left;
+	bool	left_rotate;
+	bool	right_rotate;
 } t_player;
 
 typedef struct s_config
@@ -127,7 +137,9 @@ typedef struct s_mlx_vars
 	int         bits_per_pixel;
 	int         line_length;
 	int         endian;
-	t_config    config; // Contiene toda la configuracion parseada
+	char		**map;
+	t_player	player;
+	//t_config    config; // Contiene toda la configuracion parseada
 } t_mlx_vars;
 
 /* INIT*/
@@ -166,14 +178,17 @@ void	free_config(t_config *config);
 int		is_config_identifier(char *token);
 int		is_empty_line(char *line);
 void	free_split(char **tokens);
+void	ft_destroy_and_free(t_mlx_vars *vars);
 
 /* MLX UTILS WINDOW*/
 int		quit_cub3d(t_mlx_vars *vars);
 void	clean_exit(t_mlx_vars *vars, int code);
 int		listen_mlx_input(t_mlx_vars *vars);
 
-
-
-
+/*PLAYER AND RAYCASTING*/
+void	ft_init_player(t_player *player);
+int		ft_key_press(int key_code, t_mlx_vars *vars);
+int		ft_key_release(int key_code, t_mlx_vars *vars);
+void	ft_move_player(t_player *player, t_mlx_vars *vars);
 
 #endif

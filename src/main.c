@@ -12,82 +12,181 @@
 
 #include "../inc/cub3d.h"
 
-void	exit_error(char *message, char *details, t_mlx_vars *vars)
+void put_pixel(int x, int y, int color, t_mlx_vars *game)
 {
-	//char	*details_copy;
-	printf("Error\n");
-	if (message)
-		printf("%s", message);
-	if (details)
-	{
-		//details_copy = ft_strdup(details);
-		//if (!details_copy)
-		//	printf("Memory error strdup failed\n");
-		printf ("%s", details);
-		//free(details_copy);
-	}
-	if (vars && vars->mlx_ptr)
-    {
-        if (vars->config.north_tex.img_ptr)
-            mlx_destroy_image(vars->mlx_ptr, vars->config.north_tex.img_ptr);
-        if (vars->config.south_tex.img_ptr)
-            mlx_destroy_image(vars->mlx_ptr, vars->config.south_tex.img_ptr);
-        if (vars->config.east_tex.img_ptr)
-            mlx_destroy_image(vars->mlx_ptr, vars->config.east_tex.img_ptr);
-        if (vars->config.west_tex.img_ptr)
-            mlx_destroy_image(vars->mlx_ptr, vars->config.west_tex.img_ptr);
-        if (vars->win_ptr)
-            mlx_destroy_window(vars->mlx_ptr, vars->win_ptr);
-        mlx_destroy_display(vars->mlx_ptr);
-        free(vars->mlx_ptr);
-        vars->mlx_ptr = NULL;
-    }
-	if (vars)
-		free_config(&vars->config);
-    exit (EXIT_FAILURE);
-}
-static void	print_controls(void)
-{
-	printf(RED "\n");
-	printf("░█▀▀░█░█░█▀▄░▀▀█░█▀▄░░░█▀▀░█▀█░█▀█░▀█▀░█▀▄░█▀█░█░░░█▀▀\n");
-	printf("░█░░░█░█░█▀▄░░▀▄░█░█░░░█░░░█░█░█░█░░█░░█▀▄░█░█░█░░░▀▀█\n");
-	printf("░▀▀▀░▀▀▀░▀▀░░▀▀░░▀▀░░░░▀▀▀░▀▀▀░▀░▀░░▀░░▀░▀░▀▀▀░▀▀▀░▀▀▀\n");
-	printf(RESET "\n");
-	printf(CYAN "\tW" RESET ": move forward\t");
-	printf(CYAN "\tS" RESET ": move backward\n");
-	printf(CYAN "\tA" RESET ": strafe left\t");
-	printf(CYAN "\tD" RESET ": strafe right\n");
-	printf(CYAN "\t<" RESET ": rotate left\t");
-	printf(CYAN "\t>" RESET ": rotate right\n");
-	printf(CYAN "\t FREE GAME NOW, yrodrigu & rbuitrag 2025\n");
-	printf(GREEN "\n");
-    printf(" _  _  ____    ____                    _ \n");                   
-    printf(" | || ||___ \\  | __ )  __ _ _ __ ___ ___| | ___  _ __   __ _ \n"); 
-    printf(" | || |_ __) |   |  _ \\ / _` | '__/ __/ _ | |/ _ \\| '_ \\ / _`| \n");
-    printf(" |__   _/ __/  | |_) | (_| | | | (_|  __| | (_) | | | | (_| | \n");
-    printf("   |_||_____|  |____/ \\__,_|_|  \\___\\___|_|\\___/|_| |_|\\__,_| \n");
-    printf(RESET "\n");
-    printf("\n");
+    if(x >= WIDTH || y >= HEIGHT || x < 0 || y < 0)
+        return;
+    
+    int index = y * game->line_length + x * game->bits_per_pixel / 8;
+    game->addr[index] = color & 0xFF;
+    game->addr[index + 1] = (color >> 8) & 0xFF;
+    game->addr[index + 2] = (color >> 16) & 0xFF;
 }
 
-int	main(int ac, char **av)
+void draw_square(int x, int y, int size, int color, t_mlx_vars *game)
 {
-	t_mlx_vars	vars;
+    for(int i = 0; i < size; i++)
+        put_pixel(x + i, y, color, game);
+    for(int i = 0; i < size; i++)
+        put_pixel(x, y + i, color, game);
+    for(int i = 0; i < size; i++)
+        put_pixel(x + size, y + i, color, game);
+    for(int i = 0; i < size; i++)
+        put_pixel(x + i, y + size, color, game);
+}
+
+double distance(double x, double y){
+    return sqrt(x * x + y * y);
+}
+
+double fixed_dist(double x1, double y1, double x2, double y2, t_mlx_vars *vars)
+{
+    double delta_x = x2 - x1;
+    double delta_y = y2 - y1;
+    double angle = atan2(delta_y, delta_x) - vars->player.angle;
+    double fix_dist = distance(delta_x, delta_y) * cos(angle);
+    return fix_dist;
+}
+
+void	ft_free_array(char **map)
+{
+	int i = 0;
+	while (map[i])
+	{
+		free(map[i]);
+		i++;
+	}
+	free(map);
+}
+
+void	ft_destroy_and_free(t_mlx_vars *vars)
+{
+		mlx_destroy_window(vars->mlx_ptr, vars->win_ptr);
+		mlx_destroy_image(vars->mlx_ptr, vars->img_ptr);
+		mlx_destroy_display(vars->mlx_ptr);
+		free(vars->mlx_ptr);
+		exit(0);
+}
+
+char **get_map(void)
+{
+    char **map = malloc(sizeof(char *) * 11);
+    map[0] = "111111111111111";
+    map[1] = "100000000000001";
+    map[2] = "100000000000001";
+    map[3] = "100000100000001";
+    map[4] = "100000000000001";
+    map[5] = "100000010000001";
+    map[6] = "100001000000001";
+    map[7] = "100000000000001";
+    map[8] = "100000000000001";
+    map[9] = "111111111111111";
+    map[10] = NULL;
+    return (map);
+}
+
+void	draw_map(t_mlx_vars *vars)
+{
+	char **map;
+
+	map = vars->map;
+	for (int y = 0; map[y]; y++)
+		for (int x = 0; map[y][x]; x++)
+			if (map[y][x] == '1')
+				draw_square(x * 64, y * 64, 64, 0xFFAAFF, vars);
+}
+
+bool ft_make_contact(float px, float py, t_mlx_vars *vars)
+{
+    int x = px / 64;
+    int y = py / 64;
+    if(vars->map[y][x] == '1')
+        return true;
+    return false;
+}
+
+void	ft_init_windows(t_mlx_vars *vars)
+{
+	ft_init_player(&vars->player);
+	vars->map = get_map();
+	vars->mlx_ptr = mlx_init();
+	vars->win_ptr = mlx_new_window(vars->mlx_ptr, WIDTH, HEIGHT, WIN_TITLE);
+	vars->img_ptr = mlx_new_image(vars->mlx_ptr, WIDTH, HEIGHT);
+	vars->addr = mlx_get_data_addr(vars->img_ptr, &vars->bits_per_pixel, &vars->line_length, &vars->endian);
+	mlx_put_image_to_window(vars->mlx_ptr, vars->win_ptr, vars->img_ptr, 0, 0);
+}
+
+void clear_image(t_mlx_vars *vars)
+{
+    for(int y = 0; y < HEIGHT; y++)
+        for(int x = 0; x < WIDTH; x++)
+            put_pixel(x, y, 0, vars);
+}
+
+void	draw_line(t_player *player, t_mlx_vars *vars, double start_x, int i)
+{
+	double	ray_x = player->pos_x;
+	double	ray_y = player->pos_y;
+	double	cos_angle = cos(start_x);
+	double  sin_angle = sin(start_x);
+
+	while (!ft_make_contact(ray_x, ray_y, vars))
+	{
+		if (PLANES)
+			put_pixel(ray_x, ray_y, 0xFF0000, vars);
+		ray_x += cos_angle;
+		ray_y += sin_angle;
+	}
+	if (!PLANES)
+	{
+		double dist = fixed_dist(player->pos_x, player->pos_y, ray_x, ray_y, vars);
+		double height = (64 / dist) * (WIDTH / 2);
+		double start_y = (HEIGHT - height) / 2;
+		int end = start_y + height;
+		while (start_y < end)
+		{
+			put_pixel(i, start_y, 255, vars);
+			start_y++;
+		}
+	}
+}
+
+
+int	drawing_loop(t_mlx_vars *vars)
+{
+	t_player *player;
+
+	player = &vars->player;
+	ft_move_player(player, vars);
+	clear_image(vars);
+	if (PLANES)
+	{
+		draw_square(player->pos_x, player->pos_y, 10, 0x00FF00, vars);
+		draw_map(vars);
+	}
+	double	fraction = PI / 3 / WIDTH;
+	double	start_x = player->angle - PI / 6;
+	int i = 0;
+	while (i < WIDTH)
+	{
+		draw_line(player, vars, start_x, i);
+		start_x += fraction;
+		i++;
+	}
+	mlx_put_image_to_window(vars->mlx_ptr, vars->win_ptr, vars->img_ptr, 0, 0);
+	return (0);
+}
+
+int	main(int argc, char **argv)
+{
+	t_mlx_vars vars;
+
+	(void)argc, (void)argv;
 	
-	if (ac != 2)
-		exit_error("Usage: ./cub3d <path/to/map_file.cub>\n", NULL, NULL);
-	ft_memset(&vars, 0, sizeof(t_mlx_vars));
-	if (parser_scene(av, &vars) != 0)
-		exit_error("Error parsing scene file", NULL, &vars);
-	print_controls();
-    if (init_window_and_image(&vars))
-		exit_error("Failed to initialize window and image", NULL, &vars);
-	else if (!listen_mlx_input(&vars))
-		exit_error("Failed loading controls keys", NULL, &vars);
-	draw_textures_preview(&vars);
+	ft_init_windows(&vars);
+	mlx_hook(vars.win_ptr, KeyPress, KeyPressMask, ft_key_press, &vars);
+	mlx_hook(vars.win_ptr, KeyRelease, KeyReleaseMask, ft_key_release, &vars);
+	mlx_loop_hook(vars.mlx_ptr, drawing_loop, &vars);
 	mlx_loop(vars.mlx_ptr);
-	//raycasting
-	free_config(&vars.config);
-	free(vars.mlx_ptr);
 	return (0);
 }
