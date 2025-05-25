@@ -182,10 +182,13 @@ int	main(int argc, char **argv)
 	t_mlx_vars vars;
 
 	(void)argc, (void)argv;
-	
+	if (argc != 2)
+		exit_error("Usage: ./cub3d <path/to/map_file.cub>\n", NULL, NULL);
 	ft_init_windows(&vars);
+	print_controls();
 	mlx_hook(vars.win_ptr, KeyPress, KeyPressMask, ft_key_press, &vars);
 	mlx_hook(vars.win_ptr, KeyRelease, KeyReleaseMask, ft_key_release, &vars);
+	mlx_hook(vars.win_ptr, DestroyNotify, 0, ft_x_close, &vars);
 	mlx_loop_hook(vars.mlx_ptr, drawing_loop, &vars);
 	mlx_loop(vars.mlx_ptr);
 	return (0);

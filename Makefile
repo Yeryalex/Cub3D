@@ -19,8 +19,8 @@ MLX_A = inc/minilibx/libmlx_Linux.a
 CFLAGS = -Wall -Werror -Wextra  -g #-fsanitize=address -fsanitize=leak
 
 CFILES =	main.c \
-			./player/player.c \
-
+			player/player.c \
+			utils/utils.c \
 			
 		
 GREEN = "\033[92m"

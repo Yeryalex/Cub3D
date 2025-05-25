@@ -124,7 +124,7 @@ typedef struct s_config
 	t_color     floor_color;
 	t_color     ceiling_color;
 	t_map       map;
-	t_player    player;
+	//t_player    player;
 	int         elements_found; // Bitmask o contador para elementos obligatorios
 } t_config;
 
@@ -139,7 +139,7 @@ typedef struct s_mlx_vars
 	int         endian;
 	char		**map;
 	t_player	player;
-	//t_config    config; // Contiene toda la configuracion parseada
+	t_config    config; // Contiene toda la configuracion parseada
 } t_mlx_vars;
 
 /* INIT*/
@@ -173,6 +173,7 @@ int	key_release(int key, t_mlx_vars *vars);
 int	mouse_move(int x, int y, t_mlx_vars *vars);
 
 /* UTILS*/
+void	print_controls(void);
 void	exit_error(char *message, char *details, t_mlx_vars *vars);
 void	free_config(t_config *config);
 int		is_config_identifier(char *token);
@@ -184,6 +185,7 @@ void	ft_destroy_and_free(t_mlx_vars *vars);
 int		quit_cub3d(t_mlx_vars *vars);
 void	clean_exit(t_mlx_vars *vars, int code);
 int		listen_mlx_input(t_mlx_vars *vars);
+int		ft_x_close(t_mlx_vars *vars);
 
 /*PLAYER AND RAYCASTING*/
 void	ft_init_player(t_player *player);

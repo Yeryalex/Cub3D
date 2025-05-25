@@ -146,3 +146,9 @@ void ft_move_player(t_player *player, t_mlx_vars *vars)
             player->pos_y = next_y;
     }
 }
+
+int ft_x_close(t_mlx_vars *vars)
+{
+    ft_destroy_and_free(vars);
+    return (0);
+}
