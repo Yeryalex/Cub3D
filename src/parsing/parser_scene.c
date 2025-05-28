@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:28:07 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/15 15:15:36 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:28:51 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,7 @@ int	parser_scene(char **av, t_mlx_vars *vars)
 	t_config	config;
 
     init_config(&config);
+   
     if (parse_scene_file(av[1], &config) == ERROR)
 		exit_error("Scene parsing failed", av[1], vars);
     printf ("Validado lo pasamos a la estructura config\n");
@@ -190,5 +191,6 @@ int	parser_scene(char **av, t_mlx_vars *vars)
     printf ("Lo hemos validado elementos, procesamos mapa para config\n");
     validate_scene_elements(&config);
     transfer_config_to_vars(&config, vars);
+   // printf("\nBELOW test---\n%c\n", vars->config.player.start_direction);
 	return (0);
 }

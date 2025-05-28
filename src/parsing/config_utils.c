@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 09:16:17 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/15 15:34:35 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:37:50 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,9 @@ void	transfer_config_to_vars(t_config *config, t_mlx_vars *vars)
 	vars->config.ceiling_color = config->ceiling_color;
 	vars->config.map.width = config->map.width;
 	vars->config.map.height = config->map.height;
+	vars->config.player.start_direction = config->player.start_direction;
+	vars->config.player.pos_x = config->player.pos_x;
+
 	vars->config.map.grid = NULL;
 	if (config->map.grid)
 	{

@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 10:35:26 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/16 12:58:03 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:35:49 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static int	validate_map_content(char **grid, t_config *config)
                 if (config->player.found)
                     exit_error("Map validation error", "Multiple players found", NULL);
                 config->player.found = 1;
-                config->player.start_direction = grid[i][j];
+                config->player.start_direction = grid[i][j];  
                 config->player.pos_x = j + 0.5;
                 config->player.pos_y = i + 0.5;
             }

@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:16:02 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/16 12:23:19 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:38:00 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	quit_cub3d(t_mlx_vars *vars)
 int listen_mlx_input(t_mlx_vars *vars)
 {
 	mlx_hook(vars->win_ptr, ClientMessage, NoEventMask, quit_cub3d, vars);
-	mlx_hook(vars->win_ptr, KeyPress, KeyPressMask, action_key, vars);
+	//mlx_hook(vars->win_ptr, KeyPress, KeyPressMask, action_key, vars);
 	mlx_hook(vars->win_ptr, KeyRelease, KeyReleaseMask, key_release, vars);
 	mlx_hook(vars->win_ptr, 6, (1L << 6), action_mouse, vars);
 	mlx_hook(vars->win_ptr, MotionNotify, PointerMotionMask, mouse_move, vars);

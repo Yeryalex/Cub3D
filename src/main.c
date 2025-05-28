@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:48:56 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/16 12:57:13 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:51:12 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,25 @@ int	main(int ac, char **av)
 	
 	if (ac != 2)
 		exit_error("Usage: ./cub3d <path/to/map_file.cub>\n", NULL, NULL);
-	ft_memset(&vars, 0, sizeof(t_mlx_vars));
+	//ft_memset(&vars, 0, sizeof(t_mlx_vars));
 	if (parser_scene(av, &vars) != 0)
 		exit_error("Error parsing scene file", NULL, &vars);
+    
+
 	print_controls();
     if (init_window_and_image(&vars))
 		exit_error("Failed to initialize window and image", NULL, &vars);
 	else if (!listen_mlx_input(&vars))
 		exit_error("Failed loading controls keys", NULL, &vars);
 	draw_textures_preview(&vars);
+   
+    for (int i = 0; i < vars.config.map.height; i++)
+    {
+        for (int j = 0; j < vars.config.map.width; j++)
+            printf("%c", vars.config.map.grid[i][j]);        
+        printf("\n");
+   }
+    
 	mlx_loop(vars.mlx_ptr);
 	//raycasting
 	free_config(&vars.config);
