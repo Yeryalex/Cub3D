@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 10:28:15 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/31 12:35:48 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/31 13:48:24 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void put_pixel(int x, int y, int color, t_mlx_vars *game)
         return;
     
     int index = y * game->line_length + x * game->bits_per_pixel / 8;
+	if (!color || !index)
+		return ;
     game->addr[index] = color & 0xFF;
     game->addr[index + 1] = (color >> 8) & 0xFF;
     game->addr[index + 2] = (color >> 16) & 0xFF;
@@ -71,10 +73,17 @@ void	draw_map(t_mlx_vars *vars)
 
 bool ft_make_contact(float px, float py, t_mlx_vars *vars)
 {
-    int x = px / 64;
-    int y = py / 64;
-    if(vars->config.map.grid[y][x] == '1')
+    int x = px / 64; // 2.11 px
+    int y = py / 64; // 2.01 px
+	printf ("%d pos x map\n", x);
+	printf ("%d pos y map\n", y);
+	printf ("%f float px map\n", px);
+	printf ("%f float py map\n", py);
+	printf ("%c Elemento grid es:\n", vars->config.map.grid[x][y]);	
+    if(vars->config.map.grid[x][y] == '1')
         return true;
+	else 
+		return (false);
     return false;
 }
 
@@ -85,13 +94,18 @@ void clear_image(t_mlx_vars *vars)
             put_pixel(x, y, 0, vars);
 }
 
-void	draw_line(t_player *player, t_mlx_vars *vars, double start_x, int i)
+//void	draw_line(t_player *player, t_mlx_vars *vars, double start_x, int i)
+void	draw_line(t_mlx_vars *vars, double start_x, int i)
 {
-	double	ray_x = player->pos_x;
-	double	ray_y = player->pos_y;
+	double	ray_x = vars->config.player.pos_x;
+	double	ray_y = vars->config.player.pos_y;
 	double	cos_angle = cos(start_x);
 	double  sin_angle = sin(start_x);
-
+	float	a = vars->config.player.pos_x;
+	printf ("%f doble pos Config x map\n", a);
+	printf ("%f doble pos Config y map\n", vars->config.player.pos_y);
+	printf ("%f doble pos x map\n", ray_x);
+	printf ("%f doble pos y map\n", ray_y);
 	while (!ft_make_contact(ray_x, ray_y, vars))
 	{
 		if (PLANES)
@@ -101,7 +115,7 @@ void	draw_line(t_player *player, t_mlx_vars *vars, double start_x, int i)
 	}
 	if (!PLANES)
 	{
-		double dist = fixed_dist(player->pos_x, player->pos_y, ray_x, ray_y, vars);
+		double dist = fixed_dist(vars->config.player.pos_x, vars->config.player.pos_y, ray_x, ray_y, vars);
 		double height = (64 / dist) * (RES_WINWIDHT/ 2);
 		double start_y = (RES_WINHEIGHT - height) / 2;
 		int end = start_y + height;
@@ -123,15 +137,16 @@ int	drawing_loop(t_mlx_vars *vars)
 	clear_image(vars);
 	if (PLANES)
 	{
-		draw_square(player->pos_x, player->pos_y, 10, 0x00FF00, vars);
+		draw_square(vars->config.player.pos_x, vars->config.player.pos_y, 10, 0x00FF00, vars);
 		draw_map(vars);
 	}
 	double	fraction = PI / 3 / RES_WINWIDHT;
-	double	start_x = player->angle - PI / 6;
+	double	start_x = vars->config.player.angle - PI / 6;
 	int i = 0;
 	while (i < RES_WINWIDHT)
 	{
-		draw_line(player, vars, start_x, i);
+		//draw_line(player, vars, start_x, i);
+		draw_line(vars, start_x, i);
 		start_x += fraction;
 		i++;
 	}
