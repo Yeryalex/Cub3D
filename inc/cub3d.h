@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/16 11:52:51 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/31 12:28:16 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <unistd.h>
 # include <math.h>
 # include <string.h>
+# include <stdbool.h>
 # include <fcntl.h>
 # include <errno.h>
 # include <X11/keysym.h>
@@ -45,6 +46,8 @@
 # define MAX_MAP_HEIGHT 200
 # define RES_WINHEIGHT 860
 # define RES_WINWIDHT 1024
+# define PI 3.14159265359
+# define PLANES 0
 
 #ifndef O_DIRECTORY
 # define O_DIRECTORY 00200000
@@ -94,12 +97,19 @@ typedef struct s_player
 {
 	double  pos_x;
 	double  pos_y;
-	double  dir_x; // Vector de direccion
-	double  dir_y;
-	double  plane_x; // Plano de la cámara (perpendicular a dir) ROTATE tmb raton
-	double  plane_y;
+	double	angle;
+//	double  dir_x; // Vector de direccion
+//	double  dir_y;
+//	double  plane_x; // Plano de la cámara (perpendicular a dir) ROTATE tmb raton
+//	double  plane_y;
 	char    start_direction; // 'N', 'S', 'E', 'W'
 	int     found; // Flag para asegurar que solo hay un jugador
+	bool	key_up;
+	bool	key_down;
+	bool	key_right;
+	bool	key_left;
+	bool	left_rotate;
+	bool	right_rotate;
 } t_player;
 
 typedef struct s_config
@@ -173,6 +183,25 @@ void	free_textures(t_mlx_vars *vars);
 int		quit_cub3d(t_mlx_vars *vars);
 void	clean_exit(t_mlx_vars *vars, int code);
 int		listen_mlx_input(t_mlx_vars *vars);
+int		ft_x_close(t_mlx_vars *vars);
+
+/* DRAWING MAP*/
+int		drawing_loop(t_mlx_vars *vars);
+void	draw_line(t_player *player, t_mlx_vars *vars, double start_x, int i);
+void 	clear_image(t_mlx_vars *vars);
+bool	ft_make_contact(float px, float py, t_mlx_vars *vars);
+void	draw_map(t_mlx_vars *vars);
+void	ft_destroy_and_free(t_mlx_vars *vars);
+double	distance(double x, double y);
+void	draw_square(int x, int y, int size, int color, t_mlx_vars *game);
+void 	put_pixel(int x, int y, int color, t_mlx_vars *game);
+
+
+/*PLAYER AND RAYCASTING*/
+void	ft_init_player(t_player *player);
+int		ft_key_press(int key_code, t_mlx_vars *vars);
+int		ft_key_release(int key_code, t_mlx_vars *vars);
+void	ft_move_player(t_player *player, t_mlx_vars *vars);
 
 
 

@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 09:16:17 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/28 18:37:50 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/31 12:44:26 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	transfer_config_to_vars(t_config *config, t_mlx_vars *vars)
 	vars->config.map.height = config->map.height;
 	vars->config.player.start_direction = config->player.start_direction;
 	vars->config.player.pos_x = config->player.pos_x;
+	vars->config.player.pos_y = config->player.pos_y;
 
 	vars->config.map.grid = NULL;
 	if (config->map.grid)
@@ -106,6 +107,7 @@ void	free_config(t_config *config)
 }
 int	init_window_and_image(t_mlx_vars *vars)
 {
+	ft_init_player(&vars->config.player);
 	if (!vars)
 		return (-1);
 	vars->mlx_ptr = mlx_init();
@@ -135,7 +137,8 @@ int	init_window_and_image(t_mlx_vars *vars)
 		exit_error("Image buffer address failed", NULL, vars);
 		return (-1);
 	}
-	draw_background(vars);
-	load_textures(vars);
+	//draw_background(vars);
+	//load_textures(vars);
+	
 	return (0);
 }

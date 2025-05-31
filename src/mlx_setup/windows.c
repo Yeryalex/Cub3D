@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:16:02 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/28 18:38:00 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/31 12:10:55 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,9 @@ int	quit_cub3d(t_mlx_vars *vars)
 
 int listen_mlx_input(t_mlx_vars *vars)
 {
-	mlx_hook(vars->win_ptr, ClientMessage, NoEventMask, quit_cub3d, vars);
-	//mlx_hook(vars->win_ptr, KeyPress, KeyPressMask, action_key, vars);
-	mlx_hook(vars->win_ptr, KeyRelease, KeyReleaseMask, key_release, vars);
-	mlx_hook(vars->win_ptr, 6, (1L << 6), action_mouse, vars);
-	mlx_hook(vars->win_ptr, MotionNotify, PointerMotionMask, mouse_move, vars);
-	//mlx_hook(vars->win_ptr, 17, 0, quit_cub3d, vars); Para probar en otros SO, en Win sin esto no me funciona bien
+	mlx_hook(vars->win_ptr, KeyPress, KeyPressMask, ft_key_press, &vars);
+	mlx_hook(vars->win_ptr, KeyRelease, KeyReleaseMask, ft_key_release, &vars);
+	mlx_hook(vars->win_ptr, DestroyNotify, 0, ft_x_close, &vars);
+	mlx_loop_hook(vars->mlx_ptr, drawing_loop, &vars);
 	return (SUCCESS);
 }

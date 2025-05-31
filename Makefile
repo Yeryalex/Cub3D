@@ -6,7 +6,7 @@
 #    By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/10 12:06:04 by rbuitrag          #+#    #+#              #
-#    Updated: 2025/05/16 12:24:50 by rbuitrag         ###   ########.fr        #
+#    Updated: 2025/05/31 10:40:25 by rbuitrag         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,8 +28,10 @@ CFILES =	main.c \
 			parsing/validate_map.c \
 			parsing/validate_maps_utils.c \
 			loading/loadmap.c \
+			loading/drawing_map.c \
 			mlx_setup/hooks.c \
 			mlx_setup/windows.c \
+			player/player.c \
 			
 		
 GREEN = "\033[92m"
