@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/31 13:30:56 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/31 13:54:03 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,7 @@ int		ft_x_close(t_mlx_vars *vars);
 int		drawing_loop(t_mlx_vars *vars);
 void	draw_line(t_mlx_vars *vars, double start_x, int i);
 void 	clear_image(t_mlx_vars *vars);
-bool	ft_make_contact(float px, float py, t_mlx_vars *vars);
+bool	ft_make_contact(double px, double py, t_mlx_vars *vars);
 void	draw_map(t_mlx_vars *vars);
 void	ft_destroy_and_free(t_mlx_vars *vars);
 double	distance(double x, double y);

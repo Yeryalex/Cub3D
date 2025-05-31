@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 10:28:15 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/31 13:48:24 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/05/31 13:54:27 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,14 @@ void	draw_map(t_mlx_vars *vars)
 				draw_square(x * 64, y * 64, 64, 0xFFAAFF, vars);
 }
 
-bool ft_make_contact(float px, float py, t_mlx_vars *vars)
+bool ft_make_contact(double px, double py, t_mlx_vars *vars)
 {
     int x = px / 64; // 2.11 px
     int y = py / 64; // 2.01 px
 	printf ("%d pos x map\n", x);
 	printf ("%d pos y map\n", y);
-	printf ("%f float px map\n", px);
-	printf ("%f float py map\n", py);
+	printf ("%e float px map\n", px);
+	printf ("%e float py map\n", py);
 	printf ("%c Elemento grid es:\n", vars->config.map.grid[x][y]);	
     if(vars->config.map.grid[x][y] == '1')
         return true;
@@ -101,11 +101,11 @@ void	draw_line(t_mlx_vars *vars, double start_x, int i)
 	double	ray_y = vars->config.player.pos_y;
 	double	cos_angle = cos(start_x);
 	double  sin_angle = sin(start_x);
-	float	a = vars->config.player.pos_x;
-	printf ("%f doble pos Config x map\n", a);
-	printf ("%f doble pos Config y map\n", vars->config.player.pos_y);
-	printf ("%f doble pos x map\n", ray_x);
-	printf ("%f doble pos y map\n", ray_y);
+	double	a = vars->config.player.pos_x;
+	printf ("%e doble pos Config x map\n", a);
+	printf ("%e doble pos Config y map\n", vars->config.player.pos_y);
+	printf ("%e doble pos x map\n", ray_x);
+	printf ("%e doble pos y map\n", ray_y);
 	while (!ft_make_contact(ray_x, ray_y, vars))
 	{
 		if (PLANES)
