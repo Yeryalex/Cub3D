@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 10:28:15 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/01 12:42:02 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/01 12:52:32 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,13 @@
 
 void put_pixel(int x, int y, int color, t_mlx_vars *game)
 {
+	int index;
+
+	index = 0;
     if(x >= RES_WINWIDHT || y >= RES_WINHEIGHT || x < 0 || y < 0)
         return;
     
-    int index = y * game->line_length + x * game->bits_per_pixel / 8;
+    index = y * game->line_length + x * game->bits_per_pixel / 8;
 	if (!color || !index)
 		return ;
     game->addr[index] = color & 0xFF;
