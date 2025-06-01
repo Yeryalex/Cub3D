@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 10:12:16 by yrodrigu          #+#    #+#             */
-/*   Updated: 2025/05/31 12:40:51 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/01 12:26:12 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 void    ft_init_player(t_player *player)
 {
-    player->pos_x = RES_WINWIDHT/ 2;
-    player->pos_y = RES_WINHEIGHT / 2;
     player->angle = PI / 2;
     player->key_up = false;
     player->key_down = false;

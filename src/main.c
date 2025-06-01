@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:48:56 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/31 12:07:53 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/01 11:34:56 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,17 @@ int	main(int ac, char **av)
 	if (parser_scene(av, &vars) != 0)
 		exit_error("Error parsing scene file", NULL, &vars);
 	print_controls();
+    for (int i = 0; i < vars.config.map.height; i++)	
+	{
+    	if (!vars.config.map.grid[i])
+        	continue;
+    	for (int j = 0; vars.config.map.grid[i][j]; j++)
+    	{
+        	//if (vars.config.map.grid[i][j] == '1' || vars.config.map.grid[i][j] == '0')
+            	printf("%c", vars.config.map.grid[i][j]);
+    	}
+    printf("\n");	
+	}
     if (init_window_and_image(&vars))
 		exit_error("Failed to initialize window and image", NULL, &vars);
 	listen_mlx_input(&vars);
