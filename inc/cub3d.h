@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/01 12:51:28 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/03 18:50:15 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@
 # define RES_WINWIDHT 1024
 # define PI 3.14159265359
 # define PLANES 1
-
 #ifndef O_DIRECTORY
 # define O_DIRECTORY 00200000
 #endif

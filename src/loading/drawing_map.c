@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 10:28:15 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/01 12:52:32 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/03 18:50:31 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,18 +105,14 @@ bool ft_make_contact(double px, double py, t_mlx_vars *vars)
     if (px < 0 || py < 0)
         return false;
     int x = px / 64; // 2.11 px
-    int y = py / 64; // 2.01 px
-	printf ("%d pos x map\n", x);
-	printf ("%d pos y map\n", y);
-	printf ("%e float px map\n", px);
-	printf ("%e float py map\n", py);
-	// PRIMERO: comprueba que y está en rango y grid[y] no es NULL
-    if (y < 0 || y >= vars->config.map.height || !grid[y])
-        return false;
-    // SEGUNDO: comprueba que x está en rango de la fila
-    if (x < 0 || x >= (int)ft_strlen(grid[y]))
-        return false;
-    if (grid[y][x] == '1')
+    int y = py / 64; // 2.01 px	
+//	printf("\nthis is X %i\n\n", x);
+//	printf("\nthis is X %i\n\n", y);    
+//	if (y < 0 || !vars->config.map.grid[y])
+//		return true;
+//	if (x < 0 || (int)(ft_strlen(vars->config.map.grid[y])))
+//		return true;
+	if (vars->config.map.grid[x][y] == '1')
         return true;
     return false;
 }
@@ -127,19 +123,14 @@ void clear_image(t_mlx_vars *vars)
         for(int x = 0; x < RES_WINWIDHT; x++)
             put_pixel(x, y, 0, vars);
 }
-/*
-//void	draw_line(t_player *player, t_mlx_vars *vars, double start_x, int i)
+
+
 void	draw_line(t_mlx_vars *vars, double start_x, int i)
 {
 	double	ray_x = vars->config.player.pos_x;
 	double	ray_y = vars->config.player.pos_y;
 	double	cos_angle = cos(start_x);
 	double  sin_angle = sin(start_x);
-	double	a = vars->config.player.pos_x;
-	printf ("%e doble pos Config x map\n", a);
-	printf ("%e doble pos Config y map\n", vars->config.player.pos_y);
-	printf ("%e doble pos x map\n", ray_x);
-	printf ("%e doble pos y map\n", ray_y);
 	while (!ft_make_contact(ray_x, ray_y, vars))
 	{
 		if (PLANES)
