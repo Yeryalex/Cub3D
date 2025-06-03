@@ -69,27 +69,33 @@ static void	print_controls(void)
     printf("\n");
 }
 
+void print_grid(char **grid, int height, int width)
+{
+    for (int y = 0; y < height; y++)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            printf("%c", grid[y][x]);
+        }
+        printf("\n");
+    }
+}
+
 int	main(int ac, char **av)
 {
 	t_mlx_vars	vars;
 	
 	if (ac != 2)
 		exit_error("Usage: ./cub3d <path/to/map_file.cub>\n", NULL, NULL);
-	//ft_memset(&vars, 0, sizeof(t_mlx_vars));
+	ft_memset(&vars, 0, sizeof(t_mlx_vars));
 	if (parser_scene(av, &vars) != 0)
 		exit_error("Error parsing scene file", NULL, &vars);
 	print_controls();
+    print_grid(vars.config.map.grid, vars.config.map.height, vars.config.map.width);
     if (init_window_and_image(&vars))
 		exit_error("Failed to initialize window and image", NULL, &vars);
 	listen_mlx_input(&vars);
-//		exit_error("Failed loading controls keys", NULL, &vars);
-//	draw_textures_preview(&vars);
-   
-
-    
 	mlx_loop(vars.mlx_ptr);
-//	free_config(&vars.config);
-	//vars.mlx_ptr = NULL;
-	//free(vars.mlx_ptr);
+
 	return (0);
 }

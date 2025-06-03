@@ -105,9 +105,28 @@ void	free_config(t_config *config)
         config->map.grid = NULL;
     }
 }
+
+char **get_map(void)
+{
+    char **map = malloc(sizeof(char *) * 11);
+    map[0] = "111111111111111";
+    map[1] = "100000000000001";
+    map[2] = "100000000000001";
+    map[3] = "100000100000001";
+    map[4] = "100000000000001";
+    map[5] = "100000010000001";
+    map[6] = "100001000000001";
+    map[7] = "100000000000001";
+    map[8] = "100000000000001";
+    map[9] = "111111111111111";
+    map[10] = NULL;
+    return (map);
+}
+
 int	init_window_and_image(t_mlx_vars *vars)
 {
 	ft_init_player(&vars->config.player);
+	//vars->config.map.grid = get_map();
 	if (!vars)
 		return (-1);
 	vars->mlx_ptr = mlx_init();
@@ -137,6 +156,7 @@ int	init_window_and_image(t_mlx_vars *vars)
 		exit_error("Image buffer address failed", NULL, vars);
 		return (-1);
 	}
+	mlx_put_image_to_window(vars->mlx_ptr, vars->win_ptr, vars->img_ptr, 0, 0);
 	//draw_background(vars);
 	//load_textures(vars);
 	

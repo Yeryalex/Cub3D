@@ -14,8 +14,8 @@
 
 void    ft_init_player(t_player *player)
 {
-    player->pos_x = RES_WINWIDHT/ 2;
-    player->pos_y = RES_WINHEIGHT / 2;
+    player->pos_x = player->pos_x * 64;
+    player->pos_y = player->pos_y * 64;
     player->angle = PI / 2;
     player->key_up = false;
     player->key_down = false;
