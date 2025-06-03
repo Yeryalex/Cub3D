@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 10:28:15 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/03 18:50:31 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/03 19:17:23 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,12 @@ bool ft_make_contact(double px, double py, t_mlx_vars *vars)
 	grid = vars->config.map.grid;
 	for (int i = 0; i < vars->config.map.height; i++)	
 	{
-    	if (vars->config.map.grid[i])
+    	if (grid[i])
         	continue;
-    	for (int j = 0; vars->config.map.grid[i][j]; j++)
+    	for (int j = 0; grid[i][j]; j++)
     	{
-        	if (vars->config.map.grid[i][j] == '1' || vars->config.map.grid[i][j] == '0')
-            	printf("%c", vars->config.map.grid[i][j]);
+        	if (grid[i][j] == '1' || grid[i][j] == '0')
+            	printf("%c", grid[i][j]);
     	}
     printf("\n");	
 	}
@@ -112,7 +112,7 @@ bool ft_make_contact(double px, double py, t_mlx_vars *vars)
 //		return true;
 //	if (x < 0 || (int)(ft_strlen(vars->config.map.grid[y])))
 //		return true;
-	if (vars->config.map.grid[x][y] == '1')
+	if (grid[x][y] == '1')
         return true;
     return false;
 }
@@ -124,13 +124,13 @@ void clear_image(t_mlx_vars *vars)
             put_pixel(x, y, 0, vars);
 }
 
-
 void	draw_line(t_mlx_vars *vars, double start_x, int i)
 {
 	double	ray_x = vars->config.player.pos_x;
 	double	ray_y = vars->config.player.pos_y;
 	double	cos_angle = cos(start_x);
 	double  sin_angle = sin(start_x);
+
 	while (!ft_make_contact(ray_x, ray_y, vars))
 	{
 		if (PLANES)
@@ -141,8 +141,8 @@ void	draw_line(t_mlx_vars *vars, double start_x, int i)
 	if (!PLANES)
 	{
 		double dist = fixed_dist(vars->config.player.pos_x, vars->config.player.pos_y, ray_x, ray_y, vars);
-		double height = (64 / dist) * (RES_WINWIDHT/ 2);
-		double start_y = (RES_WINHEIGHT - height) / 2;
+		double height = (64 / dist) * (RES_WINWIDHT / 2);
+        double start_y = (RES_WINHEIGHT - height) / 2;
 		int end = start_y + height;
 		while (start_y < end)
 		{
@@ -150,8 +150,9 @@ void	draw_line(t_mlx_vars *vars, double start_x, int i)
 			start_y++;
 		}
 	}
-}*/
-void	draw_line(t_mlx_vars *vars, double start_x, int i)
+}
+
+/*void	draw_line(t_mlx_vars *vars, double start_x, int i)
 {
     double	ray_x = vars->config.player.pos_x;
     double	ray_y = vars->config.player.pos_y;
@@ -192,13 +193,14 @@ void	draw_line(t_mlx_vars *vars, double start_x, int i)
             start_y++;
         }
     }
-}
+}*/
 
 int	drawing_loop(t_mlx_vars *vars)
 {
 	/*t_player *player;
 
 	player = &vars->config.player;*/
+	int	i;
 	ft_move_player(&vars->config.player, vars);
 	clear_image(vars);
 	if (PLANES)
@@ -208,7 +210,7 @@ int	drawing_loop(t_mlx_vars *vars)
 	}
 	double	fraction = PI / 3 / RES_WINWIDHT;
 	double	start_x = vars->config.player.angle - PI / 6;
-	int i = 0;
+	i = 0;
 	while (i < RES_WINWIDHT)
 	{
 		//draw_line(player, vars, start_x, i);
@@ -217,5 +219,5 @@ int	drawing_loop(t_mlx_vars *vars)
 		i++;
 	}
 	mlx_put_image_to_window(vars->mlx_ptr, vars->win_ptr, vars->img_ptr, 0, 0);
-	return (0);
+	return (0);	
 }
