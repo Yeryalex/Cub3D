@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 10:28:15 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/31 13:54:27 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/03 19:17:23 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 
 void put_pixel(int x, int y, int color, t_mlx_vars *game)
 {
-    if(x >= RES_WINWIDHT|| y >= RES_WINHEIGHT || x < 0 || y < 0)
+	int index;
+
+	index = 0;
+    if(x >= RES_WINWIDHT || y >= RES_WINHEIGHT || x < 0 || y < 0)
         return;
     
     int index = y * game->line_length + x * game->bits_per_pixel / 8;
@@ -71,6 +74,34 @@ void	draw_map(t_mlx_vars *vars)
 
 bool ft_make_contact(double px, double py, t_mlx_vars *vars)
 {
+	char **grid;
+
+	grid = vars->config.map.grid;
+	for (int i = 0; i < vars->config.map.height; i++)	
+	{
+    	if (grid[i])
+        	continue;
+    	for (int j = 0; grid[i][j]; j++)
+    	{
+        	if (grid[i][j] == '1' || grid[i][j] == '0')
+            	printf("%c", grid[i][j]);
+    	}
+    printf("\n");	
+	}
+	/* comprobacion de jugador en el juego*/
+	printf("Jugador make_contact en: %e, %e\n", vars->config.player.pos_x, vars->config.player.pos_y);
+	if (!isfinite(vars->config.player.pos_x) || !isfinite(vars->config.player.pos_y)
+    || vars->config.player.pos_x < 0 || vars->config.player.pos_y < 0
+    || vars->config.player.pos_x > RES_WINWIDHT
+    || vars->config.player.pos_y > RES_WINHEIGHT)
+	{
+    	fprintf(stderr, "Error: posición de jugador inválida\n");
+    	exit(1);
+	}
+	if (!isfinite(px) || !isfinite(py))
+        return false;
+    if (px < 0 || py < 0)
+        return false;
     int x = px / 64; // 2.11 px
     int y = py / 64; // 2.01 px	
 //	printf("\nthis is X %i\n\n", x);
@@ -91,13 +122,13 @@ void clear_image(t_mlx_vars *vars)
             put_pixel(x, y, 0, vars);
 }
 
-
 void	draw_line(t_mlx_vars *vars, double start_x, int i)
 {
 	double	ray_x = vars->config.player.pos_x;
 	double	ray_y = vars->config.player.pos_y;
 	double	cos_angle = cos(start_x);
 	double  sin_angle = sin(start_x);
+
 	while (!ft_make_contact(ray_x, ray_y, vars))
 	{
 		if (PLANES)
@@ -108,8 +139,8 @@ void	draw_line(t_mlx_vars *vars, double start_x, int i)
 	if (!PLANES)
 	{
 		double dist = fixed_dist(vars->config.player.pos_x, vars->config.player.pos_y, ray_x, ray_y, vars);
-		double height = (64 / dist) * (RES_WINWIDHT/ 2);
-		double start_y = (RES_WINHEIGHT - height) / 2;
+		double height = (64 / dist) * (RES_WINWIDHT / 2);
+        double start_y = (RES_WINHEIGHT - height) / 2;
 		int end = start_y + height;
 		while (start_y < end)
 		{
@@ -119,13 +150,56 @@ void	draw_line(t_mlx_vars *vars, double start_x, int i)
 	}
 }
 
+/*void	draw_line(t_mlx_vars *vars, double start_x, int i)
+{
+    double	ray_x = vars->config.player.pos_x;
+    double	ray_y = vars->config.player.pos_y;
+    double	cos_angle = cos(start_x);
+    double	sin_angle = sin(start_x);
+    int		max_steps = 2000;
+    int		steps = 0;
+    int		map_x, map_y;
+
+	printf ("%e Draw line ray_x\n", ray_x);
+	printf ("%e Draw line ray_y\n", ray_y);
+    while (!ft_make_contact(ray_x, ray_y, vars))
+    {
+        map_x = (int)(ray_x / 64);
+        map_y = (int)(ray_y / 64);
+        // Primero, comprueba que map_y está en rango y grid[map_y] no es NULL
+        if (map_y < 0 || map_y >= vars->config.map.height || !vars->config.map.grid[map_y])
+            break;
+        // Segundo, comprueba que map_x está en rango de la fila
+        if (map_x < 0 || map_x >= (int)ft_strlen(vars->config.map.grid[map_y]))
+            break;
+        if (steps++ > max_steps)
+            break;
+        if (PLANES)
+            put_pixel(ray_x, ray_y, 0xFF0000, vars);
+        ray_x += cos_angle;
+        ray_y += sin_angle;
+    }
+    if (!PLANES)
+    {
+        double dist = fixed_dist(vars->config.player.pos_x, vars->config.player.pos_y, ray_x, ray_y, vars);
+        double height = (64 / dist) * (RES_WINWIDHT / 2);
+        double start_y = (RES_WINHEIGHT - height) / 2;
+        int end = start_y + height;
+        while (start_y < end)
+        {
+            put_pixel(i, start_y, 255, vars);
+            start_y++;
+        }
+    }
+}*/
 
 int	drawing_loop(t_mlx_vars *vars)
 {
-	t_player *player;
+	/*t_player *player;
 
-	player = &vars->config.player;
-	ft_move_player(player, vars);
+	player = &vars->config.player;*/
+	int	i;
+	ft_move_player(&vars->config.player, vars);
 	clear_image(vars);
 	if (PLANES)
 	{
@@ -134,7 +208,7 @@ int	drawing_loop(t_mlx_vars *vars)
 	}
 	double	fraction = PI / 3 / RES_WINWIDHT;
 	double	start_x = vars->config.player.angle - PI / 6;
-	int i = 0;
+	i = 0;
 	while (i < RES_WINWIDHT)
 	{
 		//draw_line(player, vars, start_x, i);
@@ -143,5 +217,5 @@ int	drawing_loop(t_mlx_vars *vars)
 		i++;
 	}
 	mlx_put_image_to_window(vars->mlx_ptr, vars->win_ptr, vars->img_ptr, 0, 0);
-	return (0);
+	return (0);	
 }

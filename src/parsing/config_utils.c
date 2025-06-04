@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 09:16:17 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/31 12:44:26 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/04 07:06:20 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ void	transfer_config_to_vars(t_config *config, t_mlx_vars *vars)
 	vars->config.map.width = config->map.width;
 	vars->config.map.height = config->map.height;
 	vars->config.player.start_direction = config->player.start_direction;
-	vars->config.player.pos_x = config->player.pos_x;
-	vars->config.player.pos_y = config->player.pos_y;
+	vars->config.player.pos_x = config->player.pos_x * 64 + 32;;
+	vars->config.player.pos_y = config->player.pos_y * 64 + 32;;
 
 	vars->config.map.grid = NULL;
 	if (config->map.grid)
@@ -156,9 +156,8 @@ int	init_window_and_image(t_mlx_vars *vars)
 		exit_error("Image buffer address failed", NULL, vars);
 		return (-1);
 	}
-	mlx_put_image_to_window(vars->mlx_ptr, vars->win_ptr, vars->img_ptr, 0, 0);
 	//draw_background(vars);
 	//load_textures(vars);
-	
+	mlx_put_image_to_window(vars->mlx_ptr, vars->win_ptr, vars->img_ptr, 0, 0);
 	return (0);
 }
