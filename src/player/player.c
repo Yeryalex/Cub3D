@@ -16,7 +16,14 @@ void    ft_init_player(t_player *player)
 {
     player->pos_x = player->pos_x * 64;
     player->pos_y = player->pos_y * 64;
-    player->angle = PI / 2;
+    if (player->start_direction == 'S')
+        player->angle = PI / 2;
+    if (player->start_direction == 'W')
+        player->angle = PI;
+    if (player->start_direction == 'N')
+        player->angle = (3 * PI) / 2;
+    if (player->start_direction == 'E')
+        player->angle = 2 * PI;
     player->key_up = false;
     player->key_down = false;
     player->key_right = false;
