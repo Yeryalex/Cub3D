@@ -70,7 +70,7 @@ int ft_key_release(int key_code, t_mlx_vars *vars)
 
 int is_wall_at(double x, double y, t_mlx_vars *vars)
 {
-    double radius = 3.0;
+    double radius = 5.0;
     int tile_x, tile_y;
 
     tile_x = (int)((x + radius) / 64);
@@ -96,18 +96,6 @@ int is_wall_at(double x, double y, t_mlx_vars *vars)
     return 0;
 }
 
-/*
-int is_wall_at(double x, double y, t_mlx_vars *vars)
-{
-    int map_x = (int)(x / 64);  // 64 is usually 64
-    int map_y = (int)(y / 64);
-
-    if (vars->map[map_y][map_x] == '1')  // or whatever you use for walls
-        return 1;
-    return 0;
-}
-
-*/
 void ft_move_player(t_player *player, t_mlx_vars *vars)
 {
     int     speed = 1;

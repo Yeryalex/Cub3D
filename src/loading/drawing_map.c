@@ -71,25 +71,34 @@ void	draw_map(t_mlx_vars *vars)
 
 bool ft_make_contact(double px, double py, t_mlx_vars *vars)
 {
-    int x = px / 64; // 2.11 px
-    int y = py / 64; // 2.01 px	
-//	printf("\nthis is X %i\n\n", x);
-//	printf("\nthis is X %i\n\n", y);    
-//	if (y < 0 || !vars->config.map.grid[y])
-//		return true;
-//	if (x < 0 || (int)(ft_strlen(vars->config.map.grid[y])))
-//		return true;
+    int x = px / 64;
+    int y = py / 64;
 	if (vars->config.map.grid[y][x] == '1')
         return true;
     return false;
 }
 
-void clear_image(t_mlx_vars *vars)
+void	clear_image(t_mlx_vars *vars)
 {
-    for(int y = 0; y < RES_WINHEIGHT; y++)
-        for(int x = 0; x < RES_WINWIDHT; x++)
-            put_pixel(x, y, 0, vars);
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < RES_WINHEIGHT)
+	{
+		x = 0;
+		while (x < RES_WINWIDHT)
+		{
+			if (y < RES_WINHEIGHT / 2)
+				put_pixel(x, y, 0x87CEEB, vars);
+			else
+				put_pixel(x, y, 0x5F8A0F, vars); 
+			x++;
+		}
+		y++;
+	}
 }
+
 
 
 void	draw_line(t_mlx_vars *vars, double start_x, int i)
@@ -98,6 +107,7 @@ void	draw_line(t_mlx_vars *vars, double start_x, int i)
 	double	ray_y = vars->config.player.pos_y;
 	double	cos_angle = cos(start_x);
 	double  sin_angle = sin(start_x);
+
 	while (!ft_make_contact(ray_x, ray_y, vars))
 	{
 		if (PLANES)
@@ -113,7 +123,7 @@ void	draw_line(t_mlx_vars *vars, double start_x, int i)
 		int end = start_y + height;
 		while (start_y < end)
 		{
-			put_pixel(i, start_y, 255, vars);
+			put_pixel(i, start_y, 0x59614A, vars);
 			start_y++;
 		}
 	}
