@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 09:16:17 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/03 18:51:06 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/04 07:06:20 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,10 +156,8 @@ int	init_window_and_image(t_mlx_vars *vars)
 		exit_error("Image buffer address failed", NULL, vars);
 		return (-1);
 	}
-	mlx_put_image_to_window(vars->mlx_ptr, vars->win_ptr, vars->img_ptr, 0, 0);
 	//draw_background(vars);
 	//load_textures(vars);
-	ft_init_player(&vars->config.player);
 	mlx_put_image_to_window(vars->mlx_ptr, vars->win_ptr, vars->img_ptr, 0, 0);
 	return (0);
 }
