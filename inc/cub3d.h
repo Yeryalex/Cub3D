@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/03 19:17:06 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/04 11:32:50 by yrodrigu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@
 # define RES_WINHEIGHT 860
 # define RES_WINWIDHT 1024
 # define PI 3.14159265359
-# define PLANES 0
+# define PLANES 1
 #ifndef O_DIRECTORY
 # define O_DIRECTORY 00200000
 #endif
@@ -181,7 +181,7 @@ void	free_textures(t_mlx_vars *vars);
 /* MLX UTILS WINDOW*/
 int		quit_cub3d(t_mlx_vars *vars);
 void	clean_exit(t_mlx_vars *vars, int code);
-void		listen_mlx_input(t_mlx_vars *vars);
+int		listen_mlx_input(t_mlx_vars *vars);
 int		ft_x_close(t_mlx_vars *vars);
 
 /* DRAWING MAP*/
