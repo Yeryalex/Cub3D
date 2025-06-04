@@ -6,7 +6,7 @@
 #    By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/10 12:06:04 by rbuitrag          #+#    #+#              #
-#    Updated: 2025/05/15 12:54:53 by rbuitrag         ###   ########.fr        #
+#    Updated: 2025/05/31 10:40:25 by rbuitrag         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,19 @@ MLX_A = inc/minilibx/libmlx_Linux.a
 CFLAGS = -Wall -Werror -Wextra  -g #-fsanitize=address -fsanitize=leak
 
 CFILES =	main.c \
+			parsing/config_utils.c \
+			parsing/parser_scene.c \
+			parsing/parsing_utils.c \
+			parsing/parsing_utils2.c \
+			parsing/validation.c \
+			parsing/validate_texcolor.c \
+			parsing/validate_map.c \
+			parsing/validate_maps_utils.c \
+			loading/loadmap.c \
+			loading/drawing_map.c \
+			mlx_setup/hooks.c \
+			mlx_setup/windows.c \
 			player/player.c \
-			utils/utils.c \
 			
 		
 GREEN = "\033[92m"

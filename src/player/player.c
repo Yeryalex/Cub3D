@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   player.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/31 10:12:16 by yrodrigu          #+#    #+#             */
+/*   Updated: 2025/05/31 12:40:51 by rbuitrag         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/cub3d.h"
 
 void    ft_init_player(t_player *player)
 {
-    player->pos_x = WIDTH / 2;
-    player->pos_y = HEIGHT / 2;
+    player->pos_x = player->pos_x * 64;
+    player->pos_y = player->pos_y * 64;
     player->angle = PI / 2;
     player->key_up = false;
     player->key_down = false;
@@ -18,34 +30,34 @@ int ft_key_press(int key_code, t_mlx_vars *vars)
     if (key_code == XK_Escape)
         ft_destroy_and_free(vars);
     if (key_code == XK_w)
-        vars->player.key_up = true;
+        vars->config.player.key_up = true;
     if (key_code == XK_s)
-        vars->player.key_down = true;
+        vars->config.player.key_down = true;
     if (key_code == XK_d)
-        vars->player.key_right = true;
+        vars->config.player.key_right = true;
     if (key_code == XK_a)
-        vars->player.key_left = true;
+        vars->config.player.key_left = true;
     if (key_code == XK_Left)
-        vars->player.left_rotate = true;
+        vars->config.player.left_rotate = true;
     if (key_code == XK_Right)
-        vars->player.right_rotate = true;
+        vars->config.player.right_rotate = true;
     return (0);
 }
 
 int ft_key_release(int key_code, t_mlx_vars *vars)
 {
     if (key_code == XK_w)
-        vars->player.key_up = false;
+        vars->config.player.key_up = false;
     if (key_code == XK_s)
-        vars->player.key_down = false;
+        vars->config.player.key_down = false;
     if (key_code == XK_d)
-        vars->player.key_right = false;
+        vars->config.player.key_right = false;
     if (key_code == XK_a)
-        vars->player.key_left = false;
+        vars->config.player.key_left = false;
     if (key_code == XK_Left)
-        vars->player.left_rotate = false;
+        vars->config.player.left_rotate = false;
     if (key_code == XK_Right)
-        vars->player.right_rotate = false;
+        vars->config.player.right_rotate = false;
     return (0);
 }
 
@@ -56,22 +68,22 @@ int is_wall_at(double x, double y, t_mlx_vars *vars)
 
     tile_x = (int)((x + radius) / 64);
     tile_y = (int)((y + radius) / 64);
-    if (vars->map[tile_y][tile_x] == '1')
+    if (vars->config.map.grid[tile_y][tile_x] == '1')
         return 1;
 
     tile_x = (int)((x - radius) / 64);
     tile_y = (int)((y + radius) / 64);
-    if (vars->map[tile_y][tile_x] == '1')
+    if (vars->config.map.grid[tile_y][tile_x] == '1')
         return 1;
 
     tile_x = (int)((x + radius) / 64);
     tile_y = (int)((y - radius) / 64);
-    if (vars->map[tile_y][tile_x] == '1')
+    if (vars->config.map.grid[tile_y][tile_x] == '1')
         return 1;
 
     tile_x = (int)((x - radius) / 64);
     tile_y = (int)((y - radius) / 64);
-    if (vars->map[tile_y][tile_x] == '1')
+    if (vars->config.map.grid[tile_y][tile_x] == '1')
         return 1;
 
     return 0;

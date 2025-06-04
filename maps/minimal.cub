@@ -1,0 +1,12 @@
+F 22,138,3
+C 15,173,237
+
+NO textures/wolfenstein/grey_stone.xpm
+SO textures/wolfenstein/purple_stone.xpm
+WE textures/wolfenstein/red_brick.xpm
+EA textures/wolfenstein/wood.xpm
+
+111111
+101001
+100S01
+111111
