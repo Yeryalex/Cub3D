@@ -47,7 +47,7 @@
 # define RES_WINHEIGHT 860
 # define RES_WINWIDHT 1024
 # define PI 3.14159265359
-# define PLANES 1
+# define PLANES 0
 #ifndef O_DIRECTORY
 # define O_DIRECTORY 00200000
 #endif

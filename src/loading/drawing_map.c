@@ -18,8 +18,6 @@ void put_pixel(int x, int y, int color, t_mlx_vars *game)
         return;
     
     int index = y * game->line_length + x * game->bits_per_pixel / 8;
-	if (!color || !index)
-		return ;
     game->addr[index] = color & 0xFF;
     game->addr[index + 1] = (color >> 8) & 0xFF;
     game->addr[index + 2] = (color >> 16) & 0xFF;
@@ -81,7 +79,7 @@ bool ft_make_contact(double px, double py, t_mlx_vars *vars)
 //		return true;
 //	if (x < 0 || (int)(ft_strlen(vars->config.map.grid[y])))
 //		return true;
-	if (vars->config.map.grid[x][y] == '1')
+	if (vars->config.map.grid[y][x] == '1')
         return true;
     return false;
 }
