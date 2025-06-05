@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:45:24 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/14 18:27:58 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:36:11 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int parse_texture(char **tokens, t_config *config)
     if (access(tokens[1], F_OK) != 0)
         return (ERROR);
     target_path = ft_strdup(tokens[1]);
-    printf (" Target path textures: %s \n", target_path);
     if (!target_path)
         return (ERROR);
     if (ft_strncmp(tokens[0], "NO", 2) == 0)

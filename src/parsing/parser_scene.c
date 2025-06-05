@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:28:07 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/28 18:28:51 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:34:33 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ static int	parse_config_line(char **tokens, t_config *config)
 {
 	if (tokens == NULL || tokens[0] == NULL)
     	return (free_split(tokens), ERROR);
-    printf ("token 00 is %s\n", tokens[0]);
-    printf ("token 1 is %s\n", tokens[1]);
     if (!ft_strncmp(tokens[0], "NO", 2) || !ft_strncmp(tokens[0], "SO", 2)\
      || !ft_strncmp(tokens[0], "WE", 2) || !ft_strncmp(tokens[0], "EA", 2))
     {
@@ -126,7 +124,6 @@ static int process_file_lines(t_config *config, int fd)
         else if (result == MAP_LINE)
         {
             
-            printf ("sumando lineas de escenario ahora es: %d\n", map_line_index);
             if (!store_map_line(config, line, map_line_index))
             {
                 free(line);
@@ -156,8 +153,7 @@ int	parse_scene_file(char *filename, t_config *config)
 	
 	if (!ft_strnstr(filename, ".cub", ft_strlen(filename)) || 
         ft_strlen(filename) < 5) 
-        //ft_strncmp(filename, ".cub", ft_strlen(filename) != 0))
-        exit_error("File error ", "Invalid file extension. Expected .cub\n", NULL);
+            exit_error("File error ", "Invalid file extension. Expected .cub\n", NULL);
 	dir_fd = open(filename, O_DIRECTORY);
 	if (dir_fd >= 0)
 	{
@@ -169,13 +165,6 @@ int	parse_scene_file(char *filename, t_config *config)
 		exit_error("File open error: ", filename, NULL);
     config->map.height = process_file_lines(config, fd);
 	close(fd);
-    printf ("LLegamos a antes de validar los elementos del mapa->config\n");
-    printf ("Resolution width: %d\n", config->win_width);
-    printf ("Resolution width: %d\n", config->win_height);
-    printf ("Resolution ok es: %d\n", config->res_set);
-    printf ("Textura NORTH: %s\n", config->north_tex.path);
-    printf ("Ancho del mapa valor max dibujado: %d\n", config->map.width);
-    printf ("Alto del mapa num lineas leidas de escenario: %d\n", config->map.height);
     return (SUCCESS);
 }
 int	parser_scene(char **av, t_mlx_vars *vars)
@@ -186,11 +175,8 @@ int	parser_scene(char **av, t_mlx_vars *vars)
    
     if (parse_scene_file(av[1], &config) == ERROR)
 		exit_error("Scene parsing failed", av[1], vars);
-    printf ("Validado lo pasamos a la estructura config\n");
     validate_map(&config);
-    printf ("Lo hemos validado elementos, procesamos mapa para config\n");
     validate_scene_elements(&config);
     transfer_config_to_vars(&config, vars);
-   // printf("\nBELOW test---\n%c\n", vars->config.player.start_direction);
-	return (0);
+   	return (0);
 }
