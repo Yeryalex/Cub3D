@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/05 18:19:20 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:48:18 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,6 @@ typedef struct s_player
 	double  pos_x;
 	double  pos_y;
 	double	angle;
-//	double  dir_x; // Vector de direccion
-//	double  dir_y;
-//	double  plane_x; // Plano de la cámara (perpendicular a dir) ROTATE tmb raton
-//	double  plane_y;
 	char    start_direction; // 'N', 'S', 'E', 'W'
 	int     found; // Flag para asegurar que solo hay un jugador
 	bool	key_up;

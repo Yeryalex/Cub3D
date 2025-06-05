@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 10:28:15 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/31 13:54:27 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:54:07 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,9 @@ void	clear_image(t_mlx_vars *vars)
 		while (x < RES_WINWIDHT)
 		{
 			if (y < RES_WINHEIGHT / 2)
-				put_pixel(x, y, 0x87CEEB, vars);
+				put_pixel(x, y, vars->config.ceiling_color.combined, vars);
 			else
-				put_pixel(x, y, 0x5F8A0F, vars); 
+				put_pixel(x, y, vars->config.floor_color.combined, vars); 
 			x++;
 		}
 		y++;
@@ -111,7 +111,7 @@ void	draw_line(t_mlx_vars *vars, double start_x, int i)
 	while (!ft_make_contact(ray_x, ray_y, vars))
 	{
 		if (PLANES)
-			put_pixel(ray_x, ray_y, 0xFF0000, vars);
+			put_pixel(ray_x, ray_y, vars->config.floor_color.combined, vars);
 		ray_x += cos_angle;
 		ray_y += sin_angle;
 	}
@@ -139,7 +139,8 @@ int	drawing_loop(t_mlx_vars *vars)
 	clear_image(vars);
 	if (PLANES)
 	{
-		draw_square(vars->config.player.pos_x, vars->config.player.pos_y, 10, 0x00FF00, vars);
+		//draw_square(vars->config.player.pos_x, vars->config.player.pos_y, 10, 0x00FF00, vars->config.floor_color.combined, vars);
+		draw_square(vars->config.player.pos_x, vars->config.player.pos_y, 10, vars->config.floor_color.combined, vars);
 		draw_map(vars);
 	}
 	double	fraction = PI / 3 / RES_WINWIDHT;
@@ -147,7 +148,6 @@ int	drawing_loop(t_mlx_vars *vars)
 	int i = 0;
 	while (i < RES_WINWIDHT)
 	{
-		//draw_line(player, vars, start_x, i);
 		draw_line(vars, start_x, i);
 		start_x += fraction;
 		i++;
