@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 10:28:15 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/07 14:37:53 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/07 14:11:33 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,30 +25,14 @@ void put_pixel(int x, int y, int color, t_mlx_vars *game)
 
 void draw_square(int x, int y, int size, int color, t_mlx_vars *game)
 {
-    int i = 0;
-    while (i < size)
-    {
+    for(int i = 0; i < size; i++)
         put_pixel(x + i, y, color, game);
-        i++;
-    }
-    i = 0;
-    while (i < size)
-    {
+    for(int i = 0; i < size; i++)
         put_pixel(x, y + i, color, game);
-        i++;
-    }
-    i = 0;
-    while (i < size)
-    {
+    for(int i = 0; i < size; i++)
         put_pixel(x + size, y + i, color, game);
-        i++;
-    }
-    i = 0;
-    while (i < size)
-    {
+    for(int i = 0; i < size; i++)
         put_pixel(x + i, y + size, color, game);
-        i++;
-    }
 }
 
 double distance(double x, double y){
@@ -99,6 +83,22 @@ void	clear_image(t_mlx_vars *vars)
 	int	x;
 	int	y;
 
+	if (PLANES)
+	{
+		y = 0;
+		while (y < RES_WINHEIGHT)
+		{
+			x = 0;
+			while (x < RES_WINWIDHT)
+			{
+					put_pixel(x, y, 0, vars);
+
+				x++;
+			}
+			y++;
+		}
+		return ;
+	}
 	y = 0;
 	while (y < RES_WINHEIGHT)
 	{
@@ -115,101 +115,41 @@ void	clear_image(t_mlx_vars *vars)
 	}
 }
 
-int	get_texture_pixel_color(t_texture *tex, int x, int y)
-{
-    int	offset;
 
-    if (!tex || !tex->addr)
-        return (0);
-    if (x < 0 || x >= tex->width || y < 0 || y >= tex->height)
-        return (0);
-    offset = y * tex->line_length + x * (tex->bits_per_pixel / 8);
-    return (*(int *)(tex->addr + offset));
-}
 
-static t_texture	*select_texture(t_mlx_vars *vars, int side, double ray_dir_x, double ray_dir_y)
-{
-    if (side == 0 && ray_dir_x > 0)
-        return (&vars->config.east_tex);
-    if (side == 0 && ray_dir_x < 0)
-        return (&vars->config.west_tex);
-    if (side == 1 && ray_dir_y > 0)
-        return (&vars->config.south_tex);
-    return (&vars->config.north_tex);
-}
-
-static int	calc_tex_x(t_texture *tex, int side, double wall_x, double ray_dir_x, double ray_dir_y)
-{
-    int	tex_x;
-
-    tex_x = (int)(wall_x * (double)tex->width);
-    if (side == 0 && ray_dir_x > 0)
-        tex_x = tex->width - tex_x - 1;
-    if (side == 1 && ray_dir_y < 0)
-        tex_x = tex->width - tex_x - 1;
-    return (tex_x);
-}
-
-static void	draw_texture_column(t_mlx_vars *vars, t_texture *tex, int i,
-	int draw_start, int draw_end, int line_height, int tex_x)
-{
-int	y;
-int	d;
-int	tex_y;
-int	color;
-
-y = draw_start;
-while (y < draw_end)
-{
-	d = y * 64 - RES_WINHEIGHT * 32 + line_height * 32;
-	tex_y = ((d * tex->height) / line_height) / 64;
-	color = get_texture_pixel_color(tex, tex_x, tex_y);
-	put_pixel(i, y, color, vars);
-	y++;
-}
-}
 void	draw_line(t_mlx_vars *vars, double start_x, int i)
 {
-    double	ray_x = vars->config.player.pos_x;
-    double	ray_y = vars->config.player.pos_y;
-    double	ray_dir_x = cos(start_x);
-    double	ray_dir_y = sin(start_x);
-    int		map_x, map_y, side;
-    double	perp_wall_dist, wall_x;
-    t_texture *tex;
-    int		tex_x;
+	//int color;
+	//t_texture text;
+	double	ray_x = vars->config.player.pos_x;
+	double	ray_y = vars->config.player.pos_y;
+	double	cos_angle = cos(start_x);
+	double  sin_angle = sin(start_x);
+	// calcula angulo y selecciona text dependiendo a donde mira
+	
 
-    side = 0;
-    while (!ft_make_contact(ray_x, ray_y, vars))
-    {
-        map_x = (int)(ray_x / 64);
-        map_y = (int)(ray_y / 64);
-        if (map_y < 0 || map_y >= vars->config.map.height || !vars->config.map.grid[map_y])
-            break;
-        if (map_x < 0 || map_x >= (int)ft_strlen(vars->config.map.grid[map_y]))
-            break;
-        ray_x += ray_dir_x;
-        ray_y += ray_dir_y;
-    }
-    perp_wall_dist = fixed_dist(vars->config.player.pos_x, vars->config.player.pos_y, ray_x, ray_y, vars);
-    tex = select_texture(vars, side, ray_dir_x, ray_dir_y);
-    if (side == 0)
-        wall_x = vars->config.player.pos_y + perp_wall_dist * ray_dir_y;
-    else
-        wall_x = vars->config.player.pos_x + perp_wall_dist * ray_dir_x;
-    wall_x -= floor(wall_x);
-    tex_x = calc_tex_x(tex, side, wall_x, ray_dir_x, ray_dir_y);
-    /*line_height = (int)(RES_WINHEIGHT / (perp_wall_dist));
-    draw_start = -line_height / 2 + RES_WINHEIGHT / 2;
-    if (draw_start < 0)
-        draw_start = 0;
-    draw_end = line_height / 2 + RES_WINHEIGHT / 2;
-    if (draw_end >= RES_WINHEIGHT)
-        draw_end = RES_WINHEIGHT - 1;*/
-    double line_height = (64 / perp_wall_dist) * (RES_WINWIDHT/ 2);
-	double draw_start = (RES_WINHEIGHT - line_height) / 2;
-	int draw_end = draw_start + line_height;
-    draw_texture_column(vars, tex, i, draw_start, draw_end, line_height, tex_x);
+	while (!ft_make_contact(ray_x, ray_y, vars))
+	{
+		if (PLANES)
+			put_pixel(ray_x, ray_y, 0xFF0000, vars);
+		ray_x += cos_angle;
+		ray_y += sin_angle;
+	}
+	if (!PLANES)
+	{
+		double dist = fixed_dist(vars->config.player.pos_x, vars->config.player.pos_y, ray_x, ray_y, vars);
+		double height = (64 / dist) * (RES_WINWIDHT/ 2);
+		double start_y = (RES_WINHEIGHT - height) / 2;
+		int end = start_y + height;
+		//tex = select_texture(vars, side, ray_dir_x, ray_dir_y);
+		while (start_y < end)
+		{
+			//color = get_texture_pixel_color(tex, tex_x, tex_y);
+			//put_pixel(i, start_y, 0x00004A, vars);
+			put_pixel(i, start_y, vars->config.north_tex.bits_per_pixel, vars);
+			start_y++;
+		}
+	}
 }
 
 
@@ -222,6 +162,7 @@ int	drawing_loop(t_mlx_vars *vars)
 	clear_image(vars);
 	if (PLANES)
 	{
+		//draw_square(vars->config.player.pos_x, vars->config.player.pos_y, 10, 0x00FF00, vars->config.floor_color.combined, vars);
 		draw_square(vars->config.player.pos_x, vars->config.player.pos_y, 10, vars->config.floor_color.combined, vars);
 		draw_map(vars);
 	}

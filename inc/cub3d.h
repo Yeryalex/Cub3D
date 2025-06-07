@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/07 12:35:06 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/07 14:41:55 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@
 # define EAST  0x08
 # define FLOOR 0x12
 # define CEILING 0x25
-# define MAX_MAP_HEIGHT 200
-# define RES_WINHEIGHT 1200
-# define RES_WINWIDHT 1920
+# define MAX_MAP_HEIGHT 500
+# define RES_WINHEIGHT 800
+# define RES_WINWIDHT 1200
 # define PI 3.14159265359
 # define PLANES 0
 #ifndef O_DIRECTORY
