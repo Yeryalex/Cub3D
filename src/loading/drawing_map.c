@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 10:28:15 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/07 14:37:53 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/07 15:18:50 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,13 +161,14 @@ int	color;
 y = draw_start;
 while (y < draw_end)
 {
-	d = y * 64 - RES_WINHEIGHT * 32 + line_height * 32;
-	tex_y = ((d * tex->height) / line_height) / 64;
+	d = y * 32 - RES_WINHEIGHT * 16 + line_height * 16;
+	tex_y = ((d * tex->height) / line_height) / 32;
 	color = get_texture_pixel_color(tex, tex_x, tex_y);
 	put_pixel(i, y, color, vars);
 	y++;
 }
 }
+/*
 void	draw_line(t_mlx_vars *vars, double start_x, int i)
 {
     double	ray_x = vars->config.player.pos_x;
@@ -199,16 +200,92 @@ void	draw_line(t_mlx_vars *vars, double start_x, int i)
         wall_x = vars->config.player.pos_x + perp_wall_dist * ray_dir_x;
     wall_x -= floor(wall_x);
     tex_x = calc_tex_x(tex, side, wall_x, ray_dir_x, ray_dir_y);
-    /*line_height = (int)(RES_WINHEIGHT / (perp_wall_dist));
-    draw_start = -line_height / 2 + RES_WINHEIGHT / 2;
-    if (draw_start < 0)
-        draw_start = 0;
-    draw_end = line_height / 2 + RES_WINHEIGHT / 2;
-    if (draw_end >= RES_WINHEIGHT)
-        draw_end = RES_WINHEIGHT - 1;*/
     double line_height = (64 / perp_wall_dist) * (RES_WINWIDHT/ 2);
 	double draw_start = (RES_WINHEIGHT - line_height) / 2;
 	int draw_end = draw_start + line_height;
+    draw_texture_column(vars, tex, i, draw_start, draw_end, line_height, tex_x);
+}*/
+
+void	draw_line(t_mlx_vars *vars, double start_x, int i)
+{
+    double	ray_dir_x = cos(start_x);
+    double	ray_dir_y = sin(start_x);
+    int		map_x = (int)(vars->config.player.pos_x / 64);
+    int		map_y = (int)(vars->config.player.pos_y / 64);
+    double	side_dist_x, side_dist_y;
+    double	delta_dist_x = fabs(1 / ray_dir_x);
+    double	delta_dist_y = fabs(1 / ray_dir_y);
+    int		step_x, step_y;
+    int		hit = 0, side;
+    double	perp_wall_dist, wall_x;
+    t_texture *tex;
+    int		tex_x;
+
+    // Inicialización de step y side_dist
+    if (ray_dir_x < 0)
+    {
+        step_x = -1;
+        side_dist_x = (vars->config.player.pos_x / 64 - map_x) * delta_dist_x;
+    }
+    else
+    {
+        step_x = 1;
+        side_dist_x = (map_x + 1.0 - vars->config.player.pos_x / 64) * delta_dist_x;
+    }
+    if (ray_dir_y < 0)
+    {
+        step_y = -1;
+        side_dist_y = (vars->config.player.pos_y / 64 - map_y) * delta_dist_y;
+    }
+    else
+    {
+        step_y = 1;
+        side_dist_y = (map_y + 1.0 - vars->config.player.pos_y / 64) * delta_dist_y;
+    }
+
+    // DDA
+    while (!hit)
+    {
+        if (side_dist_x < side_dist_y)
+        {
+            side_dist_x += delta_dist_x;
+            map_x += step_x;
+            side = 0;
+        }
+        else
+        {
+            side_dist_y += delta_dist_y;
+            map_y += step_y;
+            side = 1;
+        }
+        if (map_y < 0 || map_y >= vars->config.map.height || !vars->config.map.grid[map_y])
+            break;
+        if (map_x < 0 || map_x >= (int)ft_strlen(vars->config.map.grid[map_y]))
+            break;
+        if (vars->config.map.grid[map_y][map_x] == '1')
+            hit = 1;
+    }
+
+    /* Calcula perpendicular revisada*/
+    if (side == 0)
+        perp_wall_dist = ((map_x - vars->config.player.pos_x / 64) + (1 - step_x) / 2) / ray_dir_x;
+    else
+        perp_wall_dist = ((map_y - vars->config.player.pos_y / 64) + (1 - step_y) / 2) / ray_dir_y;
+    tex = select_texture(vars, side, ray_dir_x, ray_dir_y);
+    if (side == 0)
+        wall_x = vars->config.player.pos_y / 64 + perp_wall_dist * ray_dir_y;
+    else
+        wall_x = vars->config.player.pos_x / 64 + perp_wall_dist * ray_dir_x;
+    wall_x -= floor(wall_x);
+    tex_x = calc_tex_x(tex, side, wall_x, ray_dir_x, ray_dir_y);
+    int line_height = (int)(RES_WINHEIGHT / (perp_wall_dist + 0.0001));
+    int draw_start = -line_height / 2 + RES_WINHEIGHT / 2;
+    if (draw_start < 0)
+        draw_start = 0;
+    int draw_end = line_height / 2 + RES_WINHEIGHT / 2;
+    if (draw_end >= RES_WINHEIGHT)
+        draw_end = RES_WINHEIGHT - 1;
+
     draw_texture_column(vars, tex, i, draw_start, draw_end, line_height, tex_x);
 }
 
