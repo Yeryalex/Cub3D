@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   drawing_map.c                                      :+:      :+:    :+:   */
+/*   drawing_maptester.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 10:28:15 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/05 19:38:14 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/07 13:56:19 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,30 @@ void put_pixel(int x, int y, int color, t_mlx_vars *game)
 
 void draw_square(int x, int y, int size, int color, t_mlx_vars *game)
 {
-    for(int i = 0; i < size; i++)
+    int i = 0;
+    while (i < size)
+    {
         put_pixel(x + i, y, color, game);
-    for(int i = 0; i < size; i++)
+        i++;
+    }
+    i = 0;
+    while (i < size)
+    {
         put_pixel(x, y + i, color, game);
-    for(int i = 0; i < size; i++)
+        i++;
+    }
+    i = 0;
+    while (i < size)
+    {
         put_pixel(x + size, y + i, color, game);
-    for(int i = 0; i < size; i++)
+        i++;
+    }
+    i = 0;
+    while (i < size)
+    {
         put_pixel(x + i, y + size, color, game);
+        i++;
+    }
 }
 
 double distance(double x, double y){
@@ -99,111 +115,97 @@ void	clear_image(t_mlx_vars *vars)
 	}
 }
 
-
-int	get_texture_color(t_texture *tex, int x, int y)
+int	get_texture_pixel_color(t_texture *tex, int x, int y)
 {
     int	offset;
 
-	if (!tex || !tex->addr)
-		return (0x000000); 
-    if (x < 0)
-        x = 0;
-    if (y < 0)
-        y = 0;
-    if (x >= tex->width)
-        x = tex->width - 1;
-    if (y >= tex->height)
-        y = tex->height - 1;
+    if (!tex || !tex->addr)
+        return (0);
+    if (x < 0 || x >= tex->width || y < 0 || y >= tex->height)
+        return (0);
     offset = y * tex->line_length + x * (tex->bits_per_pixel / 8);
     return (*(int *)(tex->addr + offset));
 }
 
-t_texture	*select_wall_texture(t_mlx_vars *vars, int side, double ray_dir_x, double ray_dir_y)
+static t_texture	*select_texture(t_mlx_vars *vars, int side, double ray_dir_x, double ray_dir_y)
 {
-    if (side == 0)
-    {
-        if (ray_dir_x > 0)
-            return (&vars->config.east_tex);
-        else
-            return (&vars->config.west_tex);
-    }
-    else
-    {
-        if (ray_dir_y > 0)
-            return (&vars->config.south_tex);
-        else
-            return (&vars->config.north_tex);
-    }
+    if (side == 0 && ray_dir_x > 0)
+        return (&vars->config.east_tex);
+    if (side == 0 && ray_dir_x < 0)
+        return (&vars->config.west_tex);
+    if (side == 1 && ray_dir_y > 0)
+        return (&vars->config.south_tex);
+    return (&vars->config.north_tex);
 }
 
-void	draw_wall_texture(t_mlx_vars *vars, int x, double start_y, double height, t_texture *tex, double wall_x)
+static int	calc_tex_x(t_texture *tex, int side, double wall_x, double ray_dir_x, double ray_dir_y)
 {
-    int		y;
-    int		tex_x;
-    int		tex_y;
-    double	step;
-    double	tex_pos;
+    int	tex_x;
 
-	if (!tex || !tex->addr)
-        return; 
     tex_x = (int)(wall_x * (double)tex->width);
-    step = 1.0 * tex->height / height;
-    tex_pos = 0.0;
-    y = (int)start_y;
-    while (y < start_y + height && y < RES_WINHEIGHT)
-    {
-        tex_y = (int)tex_pos;
-        put_pixel(x, y, get_texture_color(tex, tex_x, tex_y), vars);
-        tex_pos += step;
-        y++;
-    }
+    if (side == 0 && ray_dir_x > 0)
+        tex_x = tex->width - tex_x - 1;
+    if (side == 1 && ray_dir_y < 0)
+        tex_x = tex->width - tex_x - 1;
+    return (tex_x);
 }
 
-// Sustituye tu draw_line por esta versión:
+static void	draw_texture_column(t_mlx_vars *vars, t_texture *tex, int i,
+	int draw_start, int draw_end, int line_height, int tex_x)
+{
+int	y;
+int	d;
+int	tex_y;
+int	color;
+
+y = draw_start;
+while (y < draw_end)
+{
+	d = y * 256 - RES_WINHEIGHT * 128 + line_height * 128;
+	tex_y = ((d * tex->height) / line_height) / 256;
+	color = get_texture_pixel_color(tex, tex_x, tex_y);
+	put_pixel(i, y, color, vars);
+	y++;
+}
+}
 void	draw_line(t_mlx_vars *vars, double start_x, int i)
 {
     double	ray_x = vars->config.player.pos_x;
     double	ray_y = vars->config.player.pos_y;
-    double	cos_angle = cos(start_x);
-    double  sin_angle = sin(start_x);
-    int side = 0;
-    double	step = 1.0;
-    double	wall_x;
-    double	dist_x, dist_y;
+    double	ray_dir_x = cos(start_x);
+    double	ray_dir_y = sin(start_x);
+    int		steps = 0;
+    int		map_x, map_y, side;
+    double	perp_wall_dist, wall_x;
+    t_texture *tex;
+    int		line_height, draw_start, draw_end, tex_x;
 
-    // DDA simple para encontrar la pared y el lado de impacto
-    while (!ft_make_contact(ray_x, ray_y, vars))
+    side = 0;
+    while (!ft_make_contact(ray_x, ray_y, vars) && steps++ < 2000)
     {
-        dist_x = fabs((floor(ray_x / 64 + 1) * 64 - ray_x) / cos_angle);
-        dist_y = fabs((floor(ray_y / 64 + 1) * 64 - ray_y) / sin_angle);
-        if (dist_x < dist_y)
-        {
-            ray_x += cos_angle * step;
-            side = 0;
-        }
-        else
-        {
-            ray_y += sin_angle * step;
-            side = 1;
-        }
-        ray_x += cos_angle * step;
-        ray_y += sin_angle * step;
+        map_x = (int)(ray_x / 64);
+        map_y = (int)(ray_y / 64);
+        if (map_y < 0 || map_y >= vars->config.map.height || !vars->config.map.grid[map_y])
+            break;
+        if (map_x < 0 || map_x >= (int)ft_strlen(vars->config.map.grid[map_y]))
+            break;
+        ray_x += ray_dir_x;
+        ray_y += ray_dir_y;
     }
-    if (!PLANES)
-    {
-        double dist = fixed_dist(vars->config.player.pos_x, vars->config.player.pos_y, ray_x, ray_y, vars);
-        double height = (64 / dist) * (RES_WINWIDHT / 2);
-        double start_y = (RES_WINHEIGHT - height) / 2;
-
-        // Calcular wall_x (pos de impacto en la pared)
-        if (side == 0)
-            wall_x = fmod(ray_y / 64.0, 1.0);
-        else
-            wall_x = fmod(ray_x / 64.0, 1.0);
-
-        t_texture *tex = select_wall_texture(vars, side, cos_angle, sin_angle);
-        draw_wall_texture(vars, i, start_y, height, tex, wall_x);
-    }
+    perp_wall_dist = distance(vars->config.player.pos_x - ray_x, vars->config.player.pos_y - ray_y);
+    tex = select_texture(vars, side, ray_dir_x, ray_dir_y);
+    if (side == 0)
+        wall_x = vars->config.player.pos_y + perp_wall_dist * ray_dir_y;
+    else
+        wall_x = vars->config.player.pos_x + perp_wall_dist * ray_dir_x;
+    wall_x -= floor(wall_x);
+    tex_x = calc_tex_x(tex, side, wall_x, ray_dir_x, ray_dir_y);
+    line_height = (int)(RES_WINHEIGHT / (perp_wall_dist));
+    draw_start = -line_height / 2 + RES_WINHEIGHT / 2;
+    if (draw_start < 0) draw_start = 0;
+    draw_end = line_height / 2 + RES_WINHEIGHT / 2;
+    if (draw_end >= RES_WINHEIGHT) draw_end = RES_WINHEIGHT - 1;
+    draw_texture_column(vars, tex, i, draw_start, draw_end, line_height, tex_x);
 }
 
 

@@ -39,22 +39,30 @@ void	draw_textures_preview(t_mlx_vars *vars)
 
 int	load_textures(t_mlx_vars *vars)
 {
-	vars->config.north_tex.img_ptr = mlx_xpm_file_to_image(vars->mlx_ptr,
-		vars->config.north_tex.path, &vars->config.north_tex.width, &vars->config.north_tex.height);
-	if (!vars->config.north_tex.img_ptr)
-		exit_error("Texture error", "Failed to load north texture", vars);
-	vars->config.south_tex.img_ptr = mlx_xpm_file_to_image(vars->mlx_ptr,
-		vars->config.south_tex.path, &vars->config.south_tex.width, &vars->config.south_tex.height);
-	if (!vars->config.south_tex.img_ptr)
-		exit_error("Texture error", "Failed to load south texture", vars);
-	vars->config.east_tex.img_ptr = mlx_xpm_file_to_image(vars->mlx_ptr,
-		vars->config.east_tex.path, &vars->config.east_tex.width, &vars->config.east_tex.height);
-	if (!vars->config.east_tex.img_ptr)
-		exit_error("Texture error", "Failed to load east texture", vars);
-	vars->config.west_tex.img_ptr = mlx_xpm_file_to_image(vars->mlx_ptr,
-		vars->config.west_tex.path, &vars->config.west_tex.width, &vars->config.west_tex.height);
-	if (!vars->config.west_tex.img_ptr)
-		exit_error("Texture error", "Failed to load west texture", vars);
+	int i;
+	t_texture *texs[4] = {
+        &vars->config.north_tex,
+        &vars->config.south_tex,
+        &vars->config.east_tex,
+        &vars->config.west_tex
+    };
+    char *paths[4] = {
+        vars->config.north_tex.path,
+        vars->config.south_tex.path,
+        vars->config.east_tex.path,
+        vars->config.west_tex.path
+    };
+	i = 0;
+    while (i < 4)
+    {
+        texs[i]->img_ptr = mlx_xpm_file_to_image(vars->mlx_ptr, paths[i],
+            &texs[i]->width, &texs[i]->height);
+        if (!texs[i]->img_ptr)
+            exit_error("Texture error", "Failed to load texture", vars);
+        texs[i]->addr = mlx_get_data_addr(texs[i]->img_ptr,
+            &texs[i]->bits_per_pixel, &texs[i]->line_length, &texs[i]->endian);
+        i++;
+    }
 	return (SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 10:28:15 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/05 19:53:12 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/07 13:56:39 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,10 +103,14 @@ void	clear_image(t_mlx_vars *vars)
 
 void	draw_line(t_mlx_vars *vars, double start_x, int i)
 {
+	//int color;
+	//t_texture text;
 	double	ray_x = vars->config.player.pos_x;
 	double	ray_y = vars->config.player.pos_y;
 	double	cos_angle = cos(start_x);
 	double  sin_angle = sin(start_x);
+	// calcula angulo y selecciona text dependiendo a donde mira
+	
 
 	while (!ft_make_contact(ray_x, ray_y, vars))
 	{
@@ -121,9 +125,12 @@ void	draw_line(t_mlx_vars *vars, double start_x, int i)
 		double height = (64 / dist) * (RES_WINWIDHT/ 2);
 		double start_y = (RES_WINHEIGHT - height) / 2;
 		int end = start_y + height;
+		//tex = select_texture(vars, side, ray_dir_x, ray_dir_y);
 		while (start_y < end)
 		{
-			put_pixel(i, start_y, 0x59614A, vars);
+			//color = get_texture_pixel_color(tex, tex_x, tex_y);
+			//put_pixel(i, start_y, 0x00004A, vars);
+			put_pixel(i, start_y, vars->config.north_tex.bits_per_pixel, vars);
 			start_y++;
 		}
 	}

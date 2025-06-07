@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 09:16:17 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/31 12:44:26 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/07 13:18:20 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ int	init_window_and_image(t_mlx_vars *vars)
 	if (!vars)
 		return (-1);
 	vars->mlx_ptr = mlx_init();
+	load_textures(vars);
 	if (!vars->mlx_ptr)
 	{
 		exit_error("MLX init failed", NULL, vars);
@@ -158,7 +159,6 @@ int	init_window_and_image(t_mlx_vars *vars)
 	}
 	mlx_put_image_to_window(vars->mlx_ptr, vars->win_ptr, vars->img_ptr, 0, 0);
 	//draw_background(vars);
-	//load_textures(vars);
 	
 	return (0);
 }

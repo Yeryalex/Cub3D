@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/05 18:48:18 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/07 12:35:06 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@
 # define FLOOR 0x12
 # define CEILING 0x25
 # define MAX_MAP_HEIGHT 200
-# define RES_WINHEIGHT 860
-# define RES_WINWIDHT 1024
+# define RES_WINHEIGHT 1200
+# define RES_WINWIDHT 1920
 # define PI 3.14159265359
 # define PLANES 0
 #ifndef O_DIRECTORY
@@ -105,7 +105,24 @@ typedef struct s_player
 	bool	key_left;
 	bool	left_rotate;
 	bool	right_rotate;
+	double  plane_x;
 } t_player;
+
+typedef struct s_ray {
+    double dir_x;
+    double dir_y;
+    int map_x;
+    int map_y;
+    int step_x;
+    int step_y;
+    double side_dist_x;
+    double side_dist_y;
+    double delta_dist_x;
+    double delta_dist_y;
+    double perp_wall_dist;
+    int side;
+    int hit;
+} t_ray;
 
 typedef struct s_config
 {
