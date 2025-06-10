@@ -97,10 +97,10 @@ typedef struct s_player
 	double  pos_x;
 	double  pos_y;
 	double	angle;
-//	double  dir_x; // Vector de direccion
-//	double  dir_y;
-//	double  plane_x; // Plano de la cámara (perpendicular a dir) ROTATE tmb raton
-//	double  plane_y;
+	double  dir_x; // Vector de direccion
+	double  dir_y;
+	double  plane_x; // Plano de la cámara (perpendicular a dir) ROTATE tmb raton
+	double  plane_y;
 	char    start_direction; // 'N', 'S', 'E', 'W'
 	int     found; // Flag para asegurar que solo hay un jugador
 	bool	key_up;
@@ -186,7 +186,7 @@ int		ft_x_close(t_mlx_vars *vars);
 
 /* DRAWING MAP*/
 int		drawing_loop(t_mlx_vars *vars);
-void	draw_line(t_mlx_vars *vars, double start_x, int i);
+void draw_line(t_mlx_vars *vars, int i, double start_x);
 void 	clear_image(t_mlx_vars *vars);
 bool	ft_make_contact(double px, double py, t_mlx_vars *vars);
 void	draw_map(t_mlx_vars *vars);
