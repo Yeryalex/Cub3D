@@ -158,7 +158,7 @@ int	init_window_and_image(t_mlx_vars *vars)
 	}
 	mlx_put_image_to_window(vars->mlx_ptr, vars->win_ptr, vars->img_ptr, 0, 0);
 	//draw_background(vars);
-	//load_textures(vars);
+	load_textures(vars);
 	
 	return (0);
 }

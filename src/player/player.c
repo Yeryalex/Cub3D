@@ -24,6 +24,10 @@ void    ft_init_player(t_player *player)
         player->angle = (3 * PI) / 2;
     if (player->start_direction == 'E')
         player->angle = 2 * PI;
+    player->dir_x = cos(player->angle);
+    player->dir_y = sin(player->angle);
+    player->plane_x = -player->dir_y * 0.66;
+    player->plane_y = player->dir_x * 0.66;
     player->key_up = false;
     player->key_down = false;
     player->key_right = false;
@@ -70,7 +74,7 @@ int ft_key_release(int key_code, t_mlx_vars *vars)
 
 int is_wall_at(double x, double y, t_mlx_vars *vars)
 {
-    double radius = 5.0;
+    double radius = 20.0;
     int tile_x, tile_y;
 
     tile_x = (int)((x + radius) / 64);

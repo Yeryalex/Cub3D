@@ -37,25 +37,31 @@ void	draw_textures_preview(t_mlx_vars *vars)
             vars->config.win_height - vars->config.west_tex.height - 40);
 }
 
+void load_texture(t_texture *tex, void *mlx, char *path)
+{
+    tex->img_ptr = mlx_xpm_file_to_image(mlx, path, &tex->width, &tex->height);
+    if (!tex->img_ptr)
+    {
+        ft_putstr_fd("Error loading texture: ", 2);
+        ft_putstr_fd(path, 2);
+        ft_putstr_fd("\n", 2);
+        exit(1);
+    }
+    tex->addr = mlx_get_data_addr(tex->img_ptr,
+                                  &tex->bits_per_pixel,
+                                  &tex->line_length,
+                                  &tex->endian);
+    tex->path = path;
+}
+
+
 int	load_textures(t_mlx_vars *vars)
 {
-	vars->config.north_tex.img_ptr = mlx_xpm_file_to_image(vars->mlx_ptr,
-		vars->config.north_tex.path, &vars->config.north_tex.width, &vars->config.north_tex.height);
-	if (!vars->config.north_tex.img_ptr)
-		exit_error("Texture error", "Failed to load north texture", vars);
-	vars->config.south_tex.img_ptr = mlx_xpm_file_to_image(vars->mlx_ptr,
-		vars->config.south_tex.path, &vars->config.south_tex.width, &vars->config.south_tex.height);
-	if (!vars->config.south_tex.img_ptr)
-		exit_error("Texture error", "Failed to load south texture", vars);
-	vars->config.east_tex.img_ptr = mlx_xpm_file_to_image(vars->mlx_ptr,
-		vars->config.east_tex.path, &vars->config.east_tex.width, &vars->config.east_tex.height);
-	if (!vars->config.east_tex.img_ptr)
-		exit_error("Texture error", "Failed to load east texture", vars);
-	vars->config.west_tex.img_ptr = mlx_xpm_file_to_image(vars->mlx_ptr,
-		vars->config.west_tex.path, &vars->config.west_tex.width, &vars->config.west_tex.height);
-	if (!vars->config.west_tex.img_ptr)
-		exit_error("Texture error", "Failed to load west texture", vars);
-	return (SUCCESS);
+	load_texture(&vars->config.north_tex, vars->mlx_ptr, vars->config.north_tex.path);
+	load_texture(&vars->config.south_tex, vars->mlx_ptr, vars->config.south_tex.path);
+	load_texture(&vars->config.east_tex, vars->mlx_ptr, vars->config.east_tex.path);
+	load_texture(&vars->config.west_tex, vars->mlx_ptr, vars->config.west_tex.path);
+	return 0;
 }
 
 void	draw_background(t_mlx_vars *vars)
