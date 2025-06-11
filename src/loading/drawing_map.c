@@ -64,7 +64,6 @@ int drawing_loop(t_mlx_vars *vars)
 		draw_square(player->pos_x, player->pos_y, 10, 0x00FF00, vars);
 		draw_map(vars);
 	}
-
 	player->dir_x = cos(player->angle);
 	player->dir_y = sin(player->angle);
 	player->plane_x = -player->dir_y * 0.66;
