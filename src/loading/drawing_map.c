@@ -23,101 +23,6 @@ void put_pixel(int x, int y, int color, t_mlx_vars *game)
     game->addr[index + 2] = (color >> 16) & 0xFF;
 }
 
-void draw_square(int x, int y, int size, int color, t_mlx_vars *game)
-{
-    for(int i = 0; i < size; i++)
-        put_pixel(x + i, y, color, game);
-    for(int i = 0; i < size; i++)
-        put_pixel(x, y + i, color, game);
-    for(int i = 0; i < size; i++)
-        put_pixel(x + size, y + i, color, game);
-    for(int i = 0; i < size; i++)
-        put_pixel(x + i, y + size, color, game);
-}
-
-double distance(double x, double y){
-    return sqrt(x * x + y * y);
-}
-
-double fixed_dist(double x1, double y1, double x2, double y2, t_mlx_vars *vars)
-{
-    double delta_x = x2 - x1;
-    double delta_y = y2 - y1;
-    double angle = atan2(delta_y, delta_x) - vars->config.player.angle;
-    double fix_dist = distance(delta_x, delta_y) * cos(angle);
-    return fix_dist;
-}
-
-
-void	ft_destroy_and_free(t_mlx_vars *vars)
-{
-		mlx_destroy_window(vars->mlx_ptr, vars->win_ptr);
-		mlx_destroy_image(vars->mlx_ptr, vars->img_ptr);
-		mlx_destroy_display(vars->mlx_ptr);
-		free(vars->mlx_ptr);
-		exit(0);
-}
-
-void	draw_map(t_mlx_vars *vars)
-{
-	char **map;
-
-	map = vars->config.map.grid;
-	for (int y = 0; map[y]; y++)
-		for (int x = 0; map[y][x]; x++)
-			if (map[y][x] == '1')
-				draw_square(x * 64, y * 64, 64, 0xFFAAFF, vars);
-}
-
-bool ft_make_contact(double px, double py, t_mlx_vars *vars)
-{
-    int x = px / 64;
-    int y = py / 64;
-	if (vars->config.map.grid[y][x] == '1')
-        return true;
-    return false;
-}
-
-void	clear_image(t_mlx_vars *vars)
-{
-	if (PLANES)
-	{
-		int	x;
-	int	y;
-
-	y = 0;
-	while (y < RES_WINHEIGHT)
-	{
-		x = 0;
-		while (x < RES_WINWIDHT)
-		{
-			if (y < RES_WINHEIGHT / 2)
-				put_pixel(x, y, 0, vars);
-			x++;
-		}
-		y++;
-	}
-		return ;
-	}
-	int	x;
-	int	y;
-
-	y = 0;
-	while (y < RES_WINHEIGHT)
-	{
-		x = 0;
-		while (x < RES_WINWIDHT)
-		{
-			if (y < RES_WINHEIGHT / 2)
-				put_pixel(x, y, 0x87CEEB, vars);
-			else
-				put_pixel(x, y, 0x5F8A0F, vars); 
-			x++;
-		}
-		y++;
-	}
-}
-
 int get_texel_color(t_texture *tex, int x, int y)
 {
 	if (x < 0 || x >= tex->width || y < 0 || y >= tex->height)
@@ -131,29 +36,16 @@ int get_texel_color(t_texture *tex, int x, int y)
 void draw_line(t_mlx_vars *vars, int i, double start_x)
 {
 	t_player *player = &vars->config.player;
-
-	double camera_x = 2 * i / (double)RES_WINWIDHT - 1;
-	double ray_dir_x = player->dir_x + player->plane_x * camera_x;
-	double ray_dir_y = player->dir_y + player->plane_y * camera_x;
-
-	double	ray_x_planes = vars->config.player.pos_x;
-	double	ray_y_planes = vars->config.player.pos_y;
-	double	cos_angle = cos(start_x);
-	double  sin_angle = sin(start_x);
-
+	t_rendering_3d render;
+	
 	if (PLANES)
-	{
-		while (!ft_make_contact(ray_x_planes, ray_y_planes, vars))
-		{
-			
-			put_pixel(ray_x_planes, ray_y_planes, 0xFF0000, vars);
-			ray_x_planes += cos_angle;
-			ray_y_planes += sin_angle;
-		}
-	}
+		ft_render_2d(vars, start_x);
 	else
 	{
-
+		ft_init_3d_vars(&render, player, i);
+	// double camera_x = 2 * i / (double)RES_WINWIDHT - 1;
+	// double ray_dir_x = player->dir_x + player->plane_x * camera_x;
+	// double ray_dir_y = player->dir_y + player->plane_y * camera_x;
 	double ray_x = player->pos_x;
 	double ray_y = player->pos_y;
 
@@ -161,13 +53,13 @@ void draw_line(t_mlx_vars *vars, int i, double start_x)
 	int map_y = (int)(ray_y / 64);
 
 	double side_dist_x, side_dist_y;
-	double delta_dist_x = (ray_dir_x == 0) ? 1e30 : fabs(64 / ray_dir_x);
-	double delta_dist_y = (ray_dir_y == 0) ? 1e30 : fabs(64 / ray_dir_y);
+	double delta_dist_x = (render.ray_dir_x == 0) ? 1e30 : fabs(64 / render.ray_dir_x);
+	double delta_dist_y = (render.ray_dir_y == 0) ? 1e30 : fabs(64 / render.ray_dir_y);
 
 	int step_x, step_y;
 	int side;
 
-	if (ray_dir_x < 0)
+	if (render.ray_dir_x < 0)
 	{
 		step_x = -1;
 		side_dist_x = (ray_x - map_x * 64) * delta_dist_x / 64;
@@ -177,7 +69,7 @@ void draw_line(t_mlx_vars *vars, int i, double start_x)
 		step_x = 1;
 		side_dist_x = ((map_x + 1) * 64 - ray_x) * delta_dist_x / 64;
 	}
-	if (ray_dir_y < 0)
+	if (render.ray_dir_y < 0)
 	{
 		step_y = -1;
 		side_dist_y = (ray_y - map_y * 64) * delta_dist_y / 64;
@@ -208,9 +100,9 @@ void draw_line(t_mlx_vars *vars, int i, double start_x)
 
 	double wall_dist;
 	if (side == 0)
-		wall_dist = (map_x * 64 - ray_x + (step_x == -1 ? 64 : 0)) / ray_dir_x;
+		wall_dist = (map_x * 64 - ray_x + (step_x == -1 ? 64 : 0)) / render.ray_dir_x;
 	else
-		wall_dist = (map_y * 64 - ray_y + (step_y == -1 ? 64 : 0)) / ray_dir_y;
+		wall_dist = (map_y * 64 - ray_y + (step_y == -1 ? 64 : 0)) / render.ray_dir_y;
 	double proj_plane_dist = (RES_WINWIDHT / 2.0) / tan(PI / 6);
 	double wall_height = (64 / wall_dist) * proj_plane_dist;
 	double start_y = (RES_WINHEIGHT - wall_height) / 2;
@@ -221,27 +113,27 @@ void draw_line(t_mlx_vars *vars, int i, double start_x)
 
 	double wall_x;
 	if (side == 0)
-		wall_x = ray_y + wall_dist * ray_dir_y;
+		wall_x = ray_y + wall_dist * render.ray_dir_y;
 	else
-		wall_x = ray_x + wall_dist * ray_dir_x;
+		wall_x = ray_x + wall_dist * render.ray_dir_x;
 	wall_x = fmod(wall_x, 64);
 
-	t_texture *tex;
-	if (side == 0)
-		tex = (ray_dir_x > 0) ? &vars->config.east_tex : &vars->config.west_tex;
-	else
-		tex = (ray_dir_y > 0) ? &vars->config.south_tex: &vars->config.north_tex;
+	// t_texture *tex;
+	// if (side == 0)
+	// 	tex = (ray_dir_x > 0) ? &vars->config.east_tex : &vars->config.west_tex;
+	// else
+	// 	tex = (ray_dir_y > 0) ? &vars->config.south_tex: &vars->config.north_tex;
 
-	int tex_x = (int)(wall_x / 64.0 * tex->width);
-	double tex_step = (double)tex->height / wall_height;
-	double tex_pos = (start_y - (RES_WINHEIGHT - wall_height) / 2) * tex_step;
+	// int tex_x = (int)(wall_x / 64.0 * tex->width);
+	// double tex_step = (double)tex->height / wall_height;
+	// double tex_pos = (start_y - (RES_WINHEIGHT - wall_height) / 2) * tex_step;
 
 	for (int y = (int)start_y; y < (int)end_y; y++)
 	{
-		int tex_y = (int)tex_pos & (tex->height - 1);
-		int color = get_texel_color(tex, tex_x, tex_y);
-		put_pixel(i, y, color, vars);
-		tex_pos += tex_step;
+		// int tex_y = (int)tex_pos & (tex->height - 1);
+		// int color = get_texel_color(tex, tex_x, tex_y);
+		put_pixel(i, y, 0, vars);
+	//	tex_pos += tex_step;
 	}
 	}
 }
