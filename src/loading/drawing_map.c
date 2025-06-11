@@ -228,9 +228,9 @@ void draw_line(t_mlx_vars *vars, int i, double start_x)
 
 	t_texture *tex;
 	if (side == 0)
-		tex = (ray_dir_x > 0) ? &vars->config.west_tex : &vars->config.east_tex;
+		tex = (ray_dir_x > 0) ? &vars->config.east_tex : &vars->config.west_tex;
 	else
-		tex = (ray_dir_y > 0) ? &vars->config.north_tex : &vars->config.south_tex;
+		tex = (ray_dir_y > 0) ? &vars->config.south_tex: &vars->config.north_tex;
 
 	int tex_x = (int)(wall_x / 64.0 * tex->width);
 	double tex_step = (double)tex->height / wall_height;
