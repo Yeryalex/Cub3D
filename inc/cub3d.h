@@ -65,7 +65,17 @@
 
   /* --- Estructuras --- */
 
-
+typedef struct s_texture
+{
+	void    *img_ptr;
+	char    *addr;
+	int     bits_per_pixel;
+	int     line_length;
+	int     endian;
+	int     width;
+	int     height;
+	char    *path; // Guardar la ruta original de texturas
+} t_texture;
 
 typedef struct  s_rendering_2d
 {
@@ -84,8 +94,6 @@ typedef struct s_rendering_3d
 	double ray_y;
 	int map_x;
 	int map_y;
-	double side_dist_x;
-	double side_dist_y;
 	double delta_dist_x;
 	double delta_dist_y;
 
@@ -95,20 +103,20 @@ typedef struct s_rendering_3d
 	double start_y;
 	double end_y;
 	double wall_x;
+
+	double side_dist_x;
+	double	side_dist_y;
+	int step_x, step_y;
+	int side;
+
+	int tex_x;
+	double tex_step;
+	double tex_pos;
+	t_texture *tex;
 }		t_rendering_3d;
 
 
-typedef struct s_texture
-{
-	void    *img_ptr;
-	char    *addr;
-	int     bits_per_pixel;
-	int     line_length;
-	int     endian;
-	int     width;
-	int     height;
-	char    *path; // Guardar la ruta original de texturas
-} t_texture;
+
 
 typedef struct s_color
 {
@@ -223,7 +231,7 @@ int		ft_x_close(t_mlx_vars *vars);
 
 /* DRAWING MAP*/
 int		drawing_loop(t_mlx_vars *vars);
-void draw_line(t_mlx_vars *vars, int i, double start_x);
+void	draw_maze(t_mlx_vars *vars, int i, double start_x);
 void 	put_pixel(int x, int y, int color, t_mlx_vars *game);
 int get_texel_color(t_texture *tex, int x, int y);
 
@@ -234,15 +242,17 @@ bool	ft_make_contact(double px, double py, t_mlx_vars *vars);
 void	ft_destroy_and_free(t_mlx_vars *vars);
 void	ft_render_2d(t_mlx_vars *vars, double start_x);
 void	ft_init_3d_vars(t_rendering_3d *render, t_player *player, int i);
+void	ft_ray_direction(t_rendering_3d *render);
+void	ft_DDA_loop(t_rendering_3d *render, t_mlx_vars *vars);
+void	ft_wall_distance(t_rendering_3d *render);
+void	ft_distance_for_texture(t_rendering_3d *render);
+void	ft_texture_init(t_rendering_3d *render, t_mlx_vars *vars);
+void	ft_print_texture(t_rendering_3d *render, int i, t_mlx_vars *vars);
 
 /*PLAYER AND RAYCASTING*/
 void	ft_init_player(t_player *player);
 int		ft_key_press(int key_code, t_mlx_vars *vars);
 int		ft_key_release(int key_code, t_mlx_vars *vars);
 void	ft_move_player(t_player *player, t_mlx_vars *vars);
-
-
-
-
 
 #endif

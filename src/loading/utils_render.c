@@ -75,3 +75,93 @@ void	ft_init_3d_vars(t_rendering_3d *render, t_player *player, int i)
 	render->start_y = (RES_WINHEIGHT - render->wall_height) / 2;
 	render->end_y = render->start_y + render->wall_height;
 }
+
+void	ft_ray_direction(t_rendering_3d *render)
+{
+	if (render->ray_dir_x < 0)
+	{
+		render->step_x = -1;
+		render->side_dist_x = (render->ray_x - render->map_x * 64) * render->delta_dist_x / 64;
+	}
+	else
+	{
+		render->step_x = 1;
+		render->side_dist_x = ((render->map_x + 1) * 64 - render->ray_x) * render->delta_dist_x / 64;
+	}
+	if (render->ray_dir_y < 0)
+	{
+		render->step_y = -1;
+		render->side_dist_y = (render->ray_y - render->map_y * 64) * render->delta_dist_y / 64;
+	}
+	else
+	{
+		render->step_y = 1;
+		render->side_dist_y = ((render->map_y + 1) * 64 - render->ray_y) * render->delta_dist_y / 64;
+	}
+}
+
+void	ft_DDA_loop(t_rendering_3d *render, t_mlx_vars *vars)
+{
+	while (true)
+	{
+		if (render->side_dist_x < render->side_dist_y)
+		{
+			render->side_dist_x += render->delta_dist_x;
+			render->map_x += render->step_x;
+			render->side = 0;
+		}
+		else
+		{
+			render->side_dist_y += render->delta_dist_y;
+			render->map_y += render->step_y;
+			render->side = 1; 
+		}
+		if (vars->config.map.grid[render->map_y][render->map_x] == '1')
+			break;
+	}
+}
+
+void	ft_wall_distance(t_rendering_3d *render)
+{
+	if (render->side == 0)
+		render->wall_dist = (render->map_x * 64 - render->ray_x + (render->step_x == -1 ? 64 : 0)) / render->ray_dir_x;
+	else
+		render->wall_dist = (render->map_y * 64 - render->ray_y + (render->step_y == -1 ? 64 : 0)) / render->ray_dir_y;
+
+	if (render->start_y < 0)
+		render->start_y = 0;
+	if (render->end_y > RES_WINHEIGHT)
+		render->end_y = RES_WINHEIGHT;
+}
+
+void	ft_distance_for_texture(t_rendering_3d *render)
+{
+	if (render->side == 0)
+		render->wall_x = render->ray_y + render->wall_dist * render->ray_dir_y;
+	else
+		render->wall_x = render->ray_x + render->wall_dist * render->ray_dir_x;
+	render->wall_x = fmod(render->wall_x, 64);
+}
+
+void	ft_texture_init(t_rendering_3d *render, t_mlx_vars *vars)
+{
+	if (render->side == 0)
+		render->tex = (render->ray_dir_x > 0) ? &vars->config.east_tex : &vars->config.west_tex;
+	else
+		render->tex = (render->ray_dir_y > 0) ? &vars->config.south_tex: &vars->config.north_tex;
+
+	render->tex_x = (int)(render->wall_x / 64.0 * render->tex->width);
+	render->tex_step = (double)render->tex->height / render->wall_height;
+	render->tex_pos = (render->start_y - (RES_WINHEIGHT - render->wall_height) / 2) * render->tex_step;
+}
+
+void	ft_print_texture(t_rendering_3d *render, int i, t_mlx_vars *vars)
+{
+	for (int y = (int)render->start_y; y < (int)render->end_y; y++)
+	{
+		int tex_y = (int)render->tex_pos & (render->tex->height - 1);
+		int color = get_texel_color(render->tex, render->tex_x, tex_y);
+		put_pixel(i, y, color, vars);
+		render->tex_pos += render->tex_step;
+	}
+}

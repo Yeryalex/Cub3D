@@ -197,7 +197,7 @@ void ft_move_player(t_player *player, t_mlx_vars *vars)
 */
 void ft_move_player(t_player *player, t_mlx_vars *vars)
 {
-    int speed = 1;
+    double speed = 1.3;
     float angle_speed = 0.03;
     float cos_angle = cos(player->angle);
     float sin_angle = sin(player->angle);
