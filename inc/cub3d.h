@@ -89,6 +89,7 @@ typedef struct s_rendering_3d
 	double delta_dist_x;
 	double delta_dist_y;
 
+	double wall_dist;
 	double proj_plane_dist;
 	double wall_height;
 	double start_y;

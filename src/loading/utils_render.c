@@ -64,11 +64,14 @@ void	ft_init_3d_vars(t_rendering_3d *render, t_player *player, int i)
 	render->camera_x = 2 * i / (double)RES_WINWIDHT - 1;
 	render->ray_dir_x = player->dir_x + player->plane_x * render->camera_x;
 	render->ray_dir_y = player->dir_y + player->plane_y * render->camera_x;
-	// render->ray_x = player->pos_x;
-	// render->ray_y = player->pos_y;
-	// render->map_x = (int)(render->ray_x / 64);
-	// render->map_y = (int)(render->ray_y / 64);
-	// render->delta_dist_x = (render->ray_dir_x == 0) ? 1e30 : fabs(64 / render->ray_dir_x);
-	// render->delta_dist_y = (render->ray_dir_y == 0) ? 1e30 : fabs(64 / render->ray_dir_y);
-	// render->proj_plane_dist = (RES_WINWIDHT / 2.0) / tan(PI / 6);
+	render->ray_x = player->pos_x;
+	render->ray_y = player->pos_y;
+	render->map_x = (int)(render->ray_x / 64);
+	render->map_y = (int)(render->ray_y / 64);
+	render->delta_dist_x = (render->ray_dir_x == 0) ? 1e30 : fabs(64 / render->ray_dir_x);
+	render->delta_dist_y = (render->ray_dir_y == 0) ? 1e30 : fabs(64 / render->ray_dir_y);
+	render->proj_plane_dist = (RES_WINWIDHT / 2.0) / tan(PI / 6);
+	render->wall_height = (64 / render->wall_dist) * render->proj_plane_dist;
+	render->start_y = (RES_WINHEIGHT - render->wall_height) / 2;
+	render->end_y = render->start_y + render->wall_height;
 }
