@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:28:07 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/12 19:24:41 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/12 20:21:38 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ int	parse_config_line(char **tokens, t_config *config)
 {
 	if (tokens == NULL || tokens[0] == NULL)
     	return (free_split(tokens), ERROR);
-    printf ("token 00 is %s\n", tokens[0]);
-    printf ("token 1 is %s\n", tokens[1]);
     if (!ft_strncmp(tokens[0], "NO", 2) || !ft_strncmp(tokens[0], "SO", 2)\
      || !ft_strncmp(tokens[0], "WE", 2) || !ft_strncmp(tokens[0], "EA", 2))
     {
@@ -62,9 +60,7 @@ int parser_scene(char **av, t_mlx_vars *vars)
    
     if (parse_scene_file(av[1], &config) == ERROR)
 		exit_error("Scene parsing failed", av[1], vars);
-    printf ("Validado lo pasamos a la estructura config\n");
     validate_map(&config);
-    printf ("Lo hemos validado elementos, procesamos mapa para config\n");
     validate_scene_elements(&config);
     transfer_config_to_vars(&config, vars);
     return (0);

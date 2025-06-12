@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:25:02 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/12 19:25:20 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/12 20:19:54 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	store_map_line(t_config *config, char *line, int index)
         exit_error("Memory error", "strtrim failed", NULL);
     }
     line_length = ft_strlen(line_trimmed);
-    printf("map line para almacenar %s\n", line_trimmed);
     if (line_length > config->map.width)
         config->map.width = line_length;
     config->map.grid[index] = ft_strdup(line_trimmed);
