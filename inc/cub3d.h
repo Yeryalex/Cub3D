@@ -203,10 +203,10 @@ void	validate_map_closed(char **grid, int height, int width);
 
 /* LOADING */
 int		load_textures(t_mlx_vars *vars);
-void    ft_clear_2D(t_mlx_vars *vars);
-void    ft_clear_3D(t_mlx_vars *vars);
+void    ft_clear_2d(t_mlx_vars *vars);
+void    ft_clear_3d(t_mlx_vars *vars);
 void	draw_map(t_mlx_vars *vars);
-void	draw_square(int x, int y, int size, int color, t_mlx_vars *game);
+void	draw_square(int x, int y, int size, t_mlx_vars *game);
 
 
 /* KEYS MLX WINDOWS*/
@@ -243,11 +243,12 @@ void	ft_destroy_and_free(t_mlx_vars *vars);
 void	ft_render_2d(t_mlx_vars *vars, double start_x);
 void	ft_init_3d_vars(t_rendering_3d *render, t_player *player, int i);
 void	ft_ray_direction(t_rendering_3d *render);
-void	ft_DDA_loop(t_rendering_3d *render, t_mlx_vars *vars);
+void	ft_dda_loop(t_rendering_3d *render, t_mlx_vars *vars);
 void	ft_wall_distance(t_rendering_3d *render);
 void	ft_distance_for_texture(t_rendering_3d *render);
 void	ft_texture_init(t_rendering_3d *render, t_mlx_vars *vars);
 void	ft_print_texture(t_rendering_3d *render, int i, t_mlx_vars *vars);
+void    ft_axis_player(t_player *player);
 
 /*PLAYER AND RAYCASTING*/
 void	ft_init_player(t_player *player);

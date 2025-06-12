@@ -30,6 +30,7 @@ CFILES =	main.c \
 			loading/loadmap.c \
 			loading/drawing_map.c \
 			loading/map_2D.c \
+			loading/map_3D.c \
 			loading/utils_render.c \
 			mlx_setup/hooks.c \
 			mlx_setup/windows.c \
