@@ -35,7 +35,7 @@ void	ft_init_player(t_player *player)
 int	ft_key_press(int key_code, t_mlx_vars *vars)
 {
 	if (key_code == XK_Escape)
-		ft_destroy_and_free(vars);
+		quit_cub3d(vars);
 	if (key_code == XK_w)
 		vars->config.player.key_up = true;
 	if (key_code == XK_s)
@@ -70,6 +70,6 @@ int	ft_key_release(int key_code, t_mlx_vars *vars)
 
 int	ft_x_close(t_mlx_vars *vars)
 {
-	ft_destroy_and_free(vars);
+	quit_cub3d(vars);
 	return (0);
 }

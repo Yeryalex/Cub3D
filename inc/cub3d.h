@@ -239,7 +239,6 @@ int get_texel_color(t_texture *tex, int x, int y);
 
 void 	clear_image(t_mlx_vars *vars);
 bool	ft_make_contact(double px, double py, t_mlx_vars *vars);
-void	ft_destroy_and_free(t_mlx_vars *vars);
 void	ft_render_2d(t_mlx_vars *vars, double start_x);
 void	ft_init_3d_vars(t_rendering_3d *render, t_player *player, int i);
 void	ft_ray_direction(t_rendering_3d *render);

@@ -22,15 +22,6 @@ void	clear_image(t_mlx_vars *vars)
 	ft_clear_3d(vars);
 }
 
-void	ft_destroy_and_free(t_mlx_vars *vars)
-{
-	mlx_destroy_window(vars->mlx_ptr, vars->win_ptr);
-	mlx_destroy_image(vars->mlx_ptr, vars->img_ptr);
-	mlx_destroy_display(vars->mlx_ptr);
-	free(vars->mlx_ptr);
-	exit(0);
-}
-
 bool	ft_make_contact(double px, double py, t_mlx_vars *vars)
 {
 	int	x;
