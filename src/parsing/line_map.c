@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 19:06:30 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/12 19:22:32 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/12 20:35:28 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ static int	handle_config_or_map_start(
 	return (-1);
 }
 
-static int	handle_map_processing(char *line, char *trimmed_line, int *map_started)
+static int	handle_map_processing(char *line,
+		char *trimmed_line, int *map_started)
 {
 	if (*map_started)
 	{
@@ -52,11 +53,7 @@ static int	handle_line(char *line, t_config *config, int *map_started)
 	int		result;
 
 	if (!line || !config)
-    {
-        if (!line)
-            return (SUCCESS);
-        return (ERROR);
-    }
+		return (ERROR);
 	if (is_empty_line(line) && !*map_started)
 		return (SUCCESS);
 	if (is_empty_line(line))
@@ -67,7 +64,8 @@ static int	handle_line(char *line, t_config *config, int *map_started)
 	tokens = ft_split(trimmed_line, ' ');
 	if (!tokens)
 		exit_error("Memory error", "ft_split failed", NULL);
-	result = handle_config_or_map_start(tokens, trimmed_line, config, map_started);
+	result = handle_config_or_map_start(tokens,
+			trimmed_line, config, map_started);
 	if (result != -1)
 		return (free_split(tokens), free(trimmed_line), result);
 	result = handle_map_processing(line, trimmed_line, map_started);
