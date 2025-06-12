@@ -33,7 +33,7 @@
     /* --- Constantes --- */
 # define WIN_TITLE "Cub3D por yrodrigu & rbuitrag en 42 BCN 2025"
 # define MOVE_SPEED 0.1
-# define COLLISION_MARGIN 0.1 // Evita quedarse pegado, revisar unidad
+# define COLLISION_MARGIN 10 // Evita quedarse pegado, revisar unidad
 # define SUCCESS 1
 # define ERROR 0
 # define MAP_LINE 2
@@ -64,6 +64,7 @@
 # define WHITE	"\e[37m"
 
   /* --- Estructuras --- */
+
 typedef struct s_texture
 {
 	void    *img_ptr;
@@ -75,6 +76,47 @@ typedef struct s_texture
 	int     height;
 	char    *path; // Guardar la ruta original de texturas
 } t_texture;
+
+typedef struct  s_rendering_2d
+{
+	double	ray_x_planes;
+	double	ray_y_planes;
+	double	cos_angle;
+	double  sin_angle;
+} t_rendering_2d;
+
+typedef struct s_rendering_3d
+{
+	double camera_x;
+	double ray_dir_x;
+	double ray_dir_y;
+	double ray_x;
+	double ray_y;
+	int map_x;
+	int map_y;
+	double delta_dist_x;
+	double delta_dist_y;
+
+	double wall_dist;
+	double proj_plane_dist;
+	double wall_height;
+	double start_y;
+	double end_y;
+	double wall_x;
+
+	double side_dist_x;
+	double	side_dist_y;
+	int step_x, step_y;
+	int side;
+
+	int tex_x;
+	double tex_step;
+	double tex_pos;
+	t_texture *tex;
+}		t_rendering_3d;
+
+
+
 
 typedef struct s_color
 {
@@ -161,8 +203,11 @@ void	validate_map_closed(char **grid, int height, int width);
 
 /* LOADING */
 int		load_textures(t_mlx_vars *vars);
-void	draw_background(t_mlx_vars *vars);
-void	draw_textures_preview(t_mlx_vars *vars);
+void    ft_clear_2d(t_mlx_vars *vars);
+void    ft_clear_3d(t_mlx_vars *vars);
+void	draw_map(t_mlx_vars *vars);
+void	draw_square(int x, int y, int size, t_mlx_vars *game);
+
 
 /* KEYS MLX WINDOWS*/
 int		action_key(int keycode, t_mlx_vars *vars);
@@ -186,24 +231,29 @@ int		ft_x_close(t_mlx_vars *vars);
 
 /* DRAWING MAP*/
 int		drawing_loop(t_mlx_vars *vars);
-void draw_line(t_mlx_vars *vars, int i, double start_x);
+void	draw_maze(t_mlx_vars *vars, int i, double start_x);
+void 	put_pixel(int x, int y, int color, t_mlx_vars *game);
+int get_texel_color(t_texture *tex, int x, int y);
+
+/*UTILS RENDERING*/
+
 void 	clear_image(t_mlx_vars *vars);
 bool	ft_make_contact(double px, double py, t_mlx_vars *vars);
-void	draw_map(t_mlx_vars *vars);
 void	ft_destroy_and_free(t_mlx_vars *vars);
-double	distance(double x, double y);
-void	draw_square(int x, int y, int size, int color, t_mlx_vars *game);
-void 	put_pixel(int x, int y, int color, t_mlx_vars *game);
-
+void	ft_render_2d(t_mlx_vars *vars, double start_x);
+void	ft_init_3d_vars(t_rendering_3d *render, t_player *player, int i);
+void	ft_ray_direction(t_rendering_3d *render);
+void	ft_dda_loop(t_rendering_3d *render, t_mlx_vars *vars);
+void	ft_wall_distance(t_rendering_3d *render);
+void	ft_distance_for_texture(t_rendering_3d *render);
+void	ft_texture_init(t_rendering_3d *render, t_mlx_vars *vars);
+void	ft_print_texture(t_rendering_3d *render, int i, t_mlx_vars *vars);
+void    ft_axis_player(t_player *player);
 
 /*PLAYER AND RAYCASTING*/
 void	ft_init_player(t_player *player);
 int		ft_key_press(int key_code, t_mlx_vars *vars);
 int		ft_key_release(int key_code, t_mlx_vars *vars);
 void	ft_move_player(t_player *player, t_mlx_vars *vars);
-
-
-
-
 
 #endif
