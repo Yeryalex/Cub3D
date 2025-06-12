@@ -35,6 +35,7 @@ CFILES =	main.c \
 			mlx_setup/hooks.c \
 			mlx_setup/windows.c \
 			player/player.c \
+			player/player_utils.c \
 			
 		
 GREEN = "\033[92m"

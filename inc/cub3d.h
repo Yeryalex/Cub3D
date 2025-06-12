@@ -32,7 +32,7 @@
 
     /* --- Constantes --- */
 # define WIN_TITLE "Cub3D por yrodrigu & rbuitrag en 42 BCN 2025"
-# define MOVE_SPEED 0.1
+# define MOVE_SPEED 1.3
 # define COLLISION_MARGIN 10 // Evita quedarse pegado, revisar unidad
 # define SUCCESS 1
 # define ERROR 0
