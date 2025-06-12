@@ -6,14 +6,13 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:28:07 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/28 18:28:51 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/12 19:24:41 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
 
-
-static int	parse_config_line(char **tokens, t_config *config)
+int	parse_config_line(char **tokens, t_config *config)
 {
 	if (tokens == NULL || tokens[0] == NULL)
     	return (free_split(tokens), ERROR);
@@ -33,122 +32,6 @@ static int	parse_config_line(char **tokens, t_config *config)
     return (SUCCESS);
 }
 
-static int	handle_line(char *line, t_config *config, int *map_started)
-{
-    char	**tokens;
-    char	*trimmed_line;
-
-    if (!line || !config)
-    {
-        if (!line)
-            return (SUCCESS);
-        return (ERROR);
-    }
-    if (is_empty_line(line))
-    {
-        if (*map_started)
-            return (ERROR);
-        return (SUCCESS);
-    }
-    trimmed_line = ft_strtrim(line, "\n");
-    if (!trimmed_line)
-    {
-        free(line);
-        exit_error("Memory error", "strtrim failed", NULL);
-    }
-    tokens = ft_split(trimmed_line, ' ');
-    if (!tokens)
-    {
-        free(trimmed_line);
-        free(line);
-        exit_error("Memory error", "ft_split failed", NULL);
-    }
-    if (!*map_started && is_config_identifier(tokens[0]))
-    {
-        if (!parse_config_line(tokens, config))
-        {
-            free_split(tokens);
-            free(trimmed_line);
-            return (ERROR);
-        }
-        free_split(tokens);
-        free(trimmed_line);
-        return (SUCCESS);
-    }
-    else if (!*map_started && is_map_line(trimmed_line))
-    {
-        *map_started = 1;
-        free_split(tokens);
-        free(trimmed_line);
-        return (MAP_LINE);
-    }
-    if (*map_started)
-    {
-        if (is_empty_line(line))
-        {
-            free_split(tokens);
-            free(trimmed_line);
-            return (ERROR);
-        }
-        if (is_map_line(trimmed_line))
-        {
-            *map_started = 1;
-            free_split(tokens);
-            free(trimmed_line);
-            return (MAP_LINE);
-        }
-        free_split(tokens);
-        free(trimmed_line);
-        exit_error("Map error", "No map found in scene file", NULL);
-    }
-    free_split(tokens);
-    free(trimmed_line);
-    return (SUCCESS);
-}
-
-static int process_file_lines(t_config *config, int fd)
-{
-    char    *line;
-    int     map_line_index;
-    int     result;
-    int     map_started;
-
-    map_line_index = 0;
-    map_started = 0;
-    while ((line = get_next_line(fd)) != NULL)
-    {
-        result = handle_line(line, config, &map_started);
-        if (result == ERROR)
-        {
-            free(line);
-            exit_error("Config error", "Invalid configuration line", NULL);
-        }
-        else if (result == MAP_LINE)
-        {
-            
-            printf ("sumando lineas de escenario ahora es: %d\n", map_line_index);
-            if (!store_map_line(config, line, map_line_index))
-            {
-                free(line);
-                exit_error("Map error", "Invalid map line", NULL);
-            }
-            map_line_index = map_line_index + 1;
-        }
-        else if (result == SUCCESS)
-        {
-            free(line);
-            continue;
-        }
-        else
-        {
-            free(line);
-            exit_error("Map error", "Invalid line in map", NULL);
-        }
-        free(line);
-    }
-    return (map_line_index);
-}
-
 int	parse_scene_file(char *filename, t_config *config)
 {
 	int		fd;
@@ -156,8 +39,7 @@ int	parse_scene_file(char *filename, t_config *config)
 	
 	if (!ft_strnstr(filename, ".cub", ft_strlen(filename)) || 
         ft_strlen(filename) < 5) 
-        //ft_strncmp(filename, ".cub", ft_strlen(filename) != 0))
-        exit_error("File error ", "Invalid file extension. Expected .cub\n", NULL);
+            exit_error("File error ", "Invalid file extension. Expected .cub\n", NULL);
 	dir_fd = open(filename, O_DIRECTORY);
 	if (dir_fd >= 0)
 	{
@@ -169,16 +51,10 @@ int	parse_scene_file(char *filename, t_config *config)
 		exit_error("File open error: ", filename, NULL);
     config->map.height = process_file_lines(config, fd);
 	close(fd);
-    printf ("LLegamos a antes de validar los elementos del mapa->config\n");
-    printf ("Resolution width: %d\n", config->win_width);
-    printf ("Resolution width: %d\n", config->win_height);
-    printf ("Resolution ok es: %d\n", config->res_set);
-    printf ("Textura NORTH: %s\n", config->north_tex.path);
-    printf ("Ancho del mapa valor max dibujado: %d\n", config->map.width);
-    printf ("Alto del mapa num lineas leidas de escenario: %d\n", config->map.height);
     return (SUCCESS);
 }
-int	parser_scene(char **av, t_mlx_vars *vars)
+
+int parser_scene(char **av, t_mlx_vars *vars)
 {
 	t_config	config;
 
@@ -191,6 +67,5 @@ int	parser_scene(char **av, t_mlx_vars *vars)
     printf ("Lo hemos validado elementos, procesamos mapa para config\n");
     validate_scene_elements(&config);
     transfer_config_to_vars(&config, vars);
-   // printf("\nBELOW test---\n%c\n", vars->config.player.start_direction);
-	return (0);
+    return (0);
 }
