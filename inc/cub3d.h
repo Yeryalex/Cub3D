@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/14 13:40:59 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/14 14:26:20 by yrodrigu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,8 @@
 # define T4 "\n |__   _/ __/  | |_) | (_| | | | (_|  __| | (_) | | | | (_| | \n"
 # define T5 "   |_||_____|  |____/ \\__,_|_|  \\___\\___|_|\\___/|_| |_|\\__,_|"
 # ifndef O_DIRECTORY
-# 	define O_DIRECTORY 00200000
+#  define O_DIRECTORY 00200000
 # endif
-
-/* COLORS */
 # define RESET	"\e[0m"
 # define BLACK	"\e[30m"
 # define RED	"\e[31m"
@@ -68,9 +66,7 @@
 # define CYAN	"\e[36m"
 # define WHITE	"\e[37m"
 
-/* --- Estructuras --- */
-
-typedef struct	s_texture
+typedef struct s_texture
 {
 	void	*img_ptr;
 	char	*addr;
@@ -79,10 +75,10 @@ typedef struct	s_texture
 	int		endian;
 	int		width;
 	int		height;
-	char	*path; // Guardar la ruta original de texturas
+	char	*path;
 }	t_texture;
 
-typedef struct	s_rendering_2d
+typedef struct s_rendering_2d
 {
 	double	ray_x_planes;
 	double	ray_y_planes;
@@ -90,34 +86,35 @@ typedef struct	s_rendering_2d
 	double	sin_angle;
 }	t_rendering_2d;
 
-typedef struct	s_rendering_3d
+typedef struct s_rendering_3d
 {
-	double camera_x;
-	double ray_dir_x;
-	double ray_dir_y;
-	double ray_x;
-	double ray_y;
-	int map_x;
-	int map_y;
-	double delta_dist_x;
-	double delta_dist_y;
-	double wall_dist;
-	double proj_plane_dist;
-	double wall_height;
-	double start_y;
-	double end_y;
-	double wall_x;
-	double side_dist_x;
-	double	side_dist_y;
-	int step_x, step_y;
-	int side;
-	int tex_x;
-	double tex_step;
-	double tex_pos;
-	t_texture *tex;
+	double		camera_x;
+	double		ray_dir_x;
+	double		ray_dir_y;
+	double		ray_x;
+	double		ray_y;
+	int			map_x;
+	int			map_y;
+	double		delta_dist_x;
+	double		delta_dist_y;
+	double		wall_dist;
+	double		proj_plane_dist;
+	double		wall_height;
+	double		start_y;
+	double		end_y;
+	double		wall_x;
+	double		side_dist_x;
+	double		side_dist_y;
+	int			step_x;
+	int			step_y;
+	int			side;
+	int			tex_x;
+	double		tex_step;
+	double		tex_pos;
+	t_texture	*tex;
 }	t_rendering_3d;
 
-typedef struct	s_fill_info
+typedef struct s_fill_info
 {
 	char	**grid;
 	int		**visited;
@@ -125,33 +122,33 @@ typedef struct	s_fill_info
 	int		width;
 }	t_fill_info;
 
-typedef struct	s_color
+typedef struct s_color
 {
-	int r;
-	int g;
-	int b;
-	int combined;// Color combinado para mlx (ej: 0xRRGGBB)
-	int is_set;// Flag para saber si ya se parseó
+	int	r;
+	int	g;
+	int	b;
+	int	combined;
+	int	is_set;
 }	t_color;
 
-typedef struct	s_map
+typedef struct s_map
 {
-	char    **grid;
-	int     width;
-	int     height;
+	char	**grid;
+	int		width;
+	int		height;
 }	t_map;
 
-typedef struct	s_player
+typedef struct s_player
 {
-	double  pos_x;
-	double  pos_y;
+	double	pos_x;
+	double	pos_y;
 	double	angle;
-	double  dir_x; // Vector de direccion
-	double  dir_y;
-	double  plane_x; // (perpendicular a dir) ROTATE tmb raton
-	double  plane_y;
-	char    start_direction; // 'N', 'S', 'E', 'W'
-	int     found; // Flag para asegurar que solo hay un jugador
+	double	dir_x;
+	double	dir_y;
+	double	plane_x;
+	double	plane_y;
+	char	start_direction;
+	int		found;
 	bool	key_up;
 	bool	key_down;
 	bool	key_right;
@@ -160,32 +157,32 @@ typedef struct	s_player
 	bool	right_rotate;
 }	t_player;
 
-typedef struct	s_config
+typedef struct s_config
 {
-	int         win_width;
-	int         win_height;
-	int         res_set; // Flag para saber si la resolucion se parseo
-	t_texture   north_tex;
-	t_texture   south_tex;
-	t_texture   west_tex;
-	t_texture   east_tex;
-	t_color     floor_color;
-	t_color     ceiling_color;
-	t_map       map;
-	t_player    player;
-	int         elements_found; // Contador para elementos obligatorios
+	int			win_width;
+	int			win_height;
+	int			res_set;
+	t_texture	north_tex;
+	t_texture	south_tex;
+	t_texture	west_tex;
+	t_texture	east_tex;
+	t_color		floor_color;
+	t_color		ceiling_color;
+	t_map		map;
+	t_player	player;
+	int			elements_found;
 }	t_config;
 
-typedef struct	s_mlx_vars
+typedef struct s_mlx_vars
 {
-	void        *mlx_ptr;
-	void        *win_ptr;
-	void        *img_ptr; // Buffer de imagen para dibujar
-	char        *addr;    // Direccion del buffer
-	int         bits_per_pixel;
-	int         line_length;
-	int         endian;
-	t_config    config; // Contiene toda la configuracion parseada
+	void		*mlx_ptr;
+	void		*win_ptr;
+	void		*img_ptr;
+	char		*addr;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
+	t_config	config;
 }	t_mlx_vars;
 
 /* INIT*/
@@ -216,11 +213,10 @@ int		is_valid_cell(t_fill_info *info, int i, int j);
 
 /* LOADING */
 int		load_textures(t_mlx_vars *vars);
-void    ft_clear_2d(t_mlx_vars *vars);
-void    ft_clear_3d(t_mlx_vars *vars);
+void	ft_clear_2d(t_mlx_vars *vars);
+void	ft_clear_3d(t_mlx_vars *vars);
 void	draw_map(t_mlx_vars *vars);
 void	draw_square(int x, int y, int size, t_mlx_vars *game);
-
 
 /* KEYS MLX WINDOWS*/
 int		action_key(int keycode, t_mlx_vars *vars);
@@ -249,11 +245,11 @@ int		ft_x_close(t_mlx_vars *vars);
 /* DRAWING MAP*/
 int		drawing_loop(t_mlx_vars *vars);
 void	draw_maze(t_mlx_vars *vars, int i, double start_x);
-void 	put_pixel(int x, int y, int color, t_mlx_vars *game);
+void	put_pixel(int x, int y, int color, t_mlx_vars *game);
 int		get_texel_color(t_texture *tex, int x, int y);
 
 /*UTILS RENDERING*/
-void 	clear_image(t_mlx_vars *vars);
+void	clear_image(t_mlx_vars *vars);
 bool	ft_make_contact(double px, double py, t_mlx_vars *vars);
 void	ft_destroy_and_free(t_mlx_vars *vars);
 void	ft_render_2d(t_mlx_vars *vars, double start_x);
@@ -264,7 +260,7 @@ void	ft_wall_distance(t_rendering_3d *render);
 void	ft_distance_for_texture(t_rendering_3d *render);
 void	ft_texture_init(t_rendering_3d *render, t_mlx_vars *vars);
 void	ft_print_texture(t_rendering_3d *render, int i, t_mlx_vars *vars);
-void    ft_axis_player(t_player *player);
+void	ft_axis_player(t_player *player);
 
 /*PLAYER AND RAYCASTING*/
 void	ft_init_player(t_player *player);

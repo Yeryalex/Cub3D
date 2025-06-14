@@ -39,7 +39,7 @@ int	parse_scene_file(char *filename, t_config *config)
 
 	if (!ft_strnstr(filename, ".cub", ft_strlen(filename))
 		|| ft_strlen(filename) < 5)
-		exit_error("File error ", "Invalid file extension.\n", NULL);
+		exit_error("File error ", "Invalid file extension.", NULL);
 	dir_fd = open(filename, O_DIRECTORY);
 	if (dir_fd >= 0)
 	{

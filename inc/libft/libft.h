@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 12:17:45 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/02/24 17:42:33 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/14 14:44:29 by yrodrigu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 #  define BUFFER_SIZE 42
 # endif
 
-size_t			ft_strlen(const char *str);
+size_t		ft_strlen(const char *str);
 size_t		ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t		ft_strlcat(char *dst, const char *src, size_t dstsize);
 int			ft_isprint(int c);

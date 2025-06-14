@@ -6,7 +6,7 @@
 #    By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/10 12:06:04 by rbuitrag          #+#    #+#              #
-#    Updated: 2025/06/12 20:22:21 by rbuitrag         ###   ########.fr        #
+#    Updated: 2025/06/14 14:32:16 by yrodrigu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ HEADER = inc/cub3d.h
 LIBFT = inc/libft/libft.a
 MLX_A = inc/minilibx/libmlx_Linux.a
 
-CFLAGS = -Wall -Werror -Wextra  -g #-fsanitize=address -fsanitize=leak
+CFLAGS = -Wall -Werror -Wextra -g -fsanitize=leak #-fsanitize=address -fsanitize=leak
 
 CFILES =	main.c \
 			parsing/config_utils.c \

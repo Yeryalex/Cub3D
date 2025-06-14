@@ -30,7 +30,7 @@ void	exit_error(char *message, char *details, t_mlx_vars *vars)
 	if (message)
 		printf("%s ", message);
 	if (details)
-		printf("%s", details);
+		printf("%s\n", details);
 	if (vars && vars->mlx_ptr)
 	{
 		free_mlx_images(vars);
