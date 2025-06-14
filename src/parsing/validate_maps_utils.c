@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:24:50 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/12 19:56:54 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/14 12:07:49 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 void	flood_fill(t_fill_info *info, int i, int j)
 {
 	if (!is_valid_cell(info, i, j))
-		return;
+		return ;
 	if (info->grid[i][j] != ' ')
-		return;
+		return ;
 	info->visited[i][j] = 1;
 	flood_fill(info, i + 1, j);
 	flood_fill(info, i - 1, j);

@@ -6,22 +6,22 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 20:00:44 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/12 20:12:54 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/14 12:03:17 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
 
-int count_tokens(char **tokens)
+int	count_tokens(char **tokens)
 {
-    int count;
+	int	count;
 
-    count = 0;
-    if (!tokens)
-        return (0);
-    while (tokens[count])
-        count++;
-    return (count);
+	count = 0;
+	if (!tokens)
+		return (0);
+	while (tokens[count])
+		count++;
+	return (count);
 }
 
 static int	is_all_digits(char *str)
@@ -98,4 +98,3 @@ int	parse_color(char **tokens, t_config *config)
 		return (ERROR);
 	return (SUCCESS);
 }
-
