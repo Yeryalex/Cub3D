@@ -6,123 +6,107 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:24:50 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/05/16 11:47:27 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/14 12:07:49 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
 
-static int	is_valid_cell(char **grid, int i, int j, int height)
+void	flood_fill(t_fill_info *info, int i, int j)
 {
-    if (i < 0 || i >= height)
-        return (0);
-    if (j < 0 || !grid[i][j])
-        return (0);
-    return (1);
+	if (!is_valid_cell(info, i, j))
+		return ;
+	if (info->grid[i][j] != ' ')
+		return ;
+	info->visited[i][j] = 1;
+	flood_fill(info, i + 1, j);
+	flood_fill(info, i - 1, j);
+	flood_fill(info, i, j + 1);
+	flood_fill(info, i, j - 1);
 }
 
-static void	flood_fill(char **grid, int **visited, int i, int j, int height)
+static void	flood_borders(t_fill_info *info)
 {
-    if (!is_valid_cell(grid, i, j, height))
-        return;
-    if (visited[i][j] || grid[i][j] == '1')
-        return;
-    visited[i][j] = 1;
-    if (grid[i][j] == ' ' || grid[i][j] == '\0')
-    {
-        flood_fill(grid, visited, i + 1, j, height);
-        flood_fill(grid, visited, i - 1, j, height);
-        flood_fill(grid, visited, i, j + 1, height);
-        flood_fill(grid, visited, i, j - 1, height);
-    }
-}
-static void	flood_borders(char **grid, int **visited, int height)
-{
-    int	i;
+	int	i;
 	int	last;
 
-    i = 0;
-    while (i < height)
-    {
-        if (grid[i][0] && grid[i][0] != '1')
-            flood_fill(grid, visited, i, 0, height);
-        last = 0;
-        while (grid[i][last])
-            last++;
-        if (last > 0 && grid[i][last - 1] != '1')
-            flood_fill(grid, visited, i, last - 1, height);
-        i++;
-    }
+	i = 0;
+	while (i < info->height)
+	{
+		if (info->grid[i][0] && info->grid[i][0] != '1')
+			flood_fill(info, i, 0);
+		last = 0;
+		while (info->grid[i][last])
+			last++;
+		if (last > 0 && info->grid[i][last - 1] != '1')
+			flood_fill(info, i, last - 1);
+		i++;
+	}
 }
 
-static void	flood_top_bottom(char **grid, int **visited, int height)
+static void	flood_top_bottom(t_fill_info *info)
 {
-    int	i;
+	int	i;
 
-    i = 0;
-    while (grid[0][i])
-    {
-        if (grid[0][i] != '1')
-            flood_fill(grid, visited, 0, i, height);
-        i++;
-    }
-    i = 0;
-    while (grid[height - 1][i])
-    {
-        if (grid[height - 1][i] != '1')
-            flood_fill(grid, visited, height - 1, i, height);
-        i++;
-    }
+	i = 0;
+	while (info->grid[0][i])
+	{
+		if (info->grid[0][i] != '1')
+			flood_fill(info, 0, i);
+		i++;
+	}
+	i = 0;
+	while (info->grid[info->height - 1][i])
+	{
+		if (info->grid[info->height - 1][i] != '1')
+			flood_fill(info, info->height - 1, i);
+		i++;
+	}
 }
 
-static void	check_flood(char **grid, int **visited, int height)
+static void	check_flood(t_fill_info *info)
 {
-    int	i;
-	int j;
+	int	i;
+	int	j;
 
-    i = 0;
-    while (i < height)
-    {
-        j = 0;
-        while (grid[i][j])
-        {
-            if ((grid[i][j] == '0' || grid[i][j] == 'N' || grid[i][j] == 'S'
-                || grid[i][j] == 'E' || grid[i][j] == 'W') && visited[i][j])
-                exit_error("Map validation error ", "Map is not closed (flood fill)", NULL);
-            j++;
-        }
-        i++;
-    }
-}
-
-static void	free_visited(int **visited, int height)
-{
-    int	i;
-
-    i = 0;
-    while (i < height)
-        free(visited[i++]);
-    free(visited);
+	i = 0;
+	while (i < info->height)
+	{
+		j = 0;
+		while (info->grid[i][j])
+		{
+			if ((info->grid[i][j] == '0' || info->grid[i][j] == 'N'
+				|| info->grid[i][j] == 'S' || info->grid[i][j] == 'E'
+				|| info->grid[i][j] == 'W') && info->visited[i][j])
+				exit_error("Map validation error",
+					"Map is not closed (flood fill)", NULL);
+			j++;
+		}
+		i++;
+	}
 }
 
 void	validate_map_closed(char **grid, int height, int width)
 {
-    int	**visited;
-    int	i;
+	t_fill_info	info;
+	int			i;
 
-    visited = malloc(sizeof(int *) * height);
-    if (!visited)
-        exit_error("Memory error ", "Flood fill visited malloc", NULL);
-    i = 0;
-    while (i < height)
-    {
-        visited[i] = calloc(width, sizeof(int));
-        if (!visited[i])
-            exit_error("Memory error ", "Flood fill visited row malloc", NULL);
-        i++;
-    }
-    flood_borders(grid, visited, height);
-    flood_top_bottom(grid, visited, height);
-    check_flood(grid, visited, height);
-    free_visited(visited, height);
+	info.grid = grid;
+	info.height = height;
+	info.width = width;
+	info.visited = malloc(sizeof(int *) * height);
+	if (!info.visited)
+		exit_error("Memory error", "Flood fill visited malloc", NULL);
+	i = 0;
+	while (i < height)
+	{
+		info.visited[i] = calloc(width, sizeof(int));
+		if (!info.visited[i])
+			exit_error("Memory error", "Flood fill visited row malloc", NULL);
+		i++;
+	}
+	flood_borders(&info);
+	flood_top_bottom(&info);
+	check_flood(&info);
+	free_visited(info.visited, height);
 }
