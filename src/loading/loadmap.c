@@ -18,6 +18,7 @@ void	load_texture(t_texture *tex, void *mlx, char *path)
 	if (!tex->img_ptr)
 	{
 		ft_putstr_fd("Error loading texture: ", 2);
+		ft_putstr_fd("Path invalid: ", 2);
 		ft_putstr_fd(path, 2);
 		ft_putstr_fd("\n", 2);
 		exit(1);

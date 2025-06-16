@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/14 14:26:20 by yrodrigu         ###   ########.fr       */
+/*   Updated: 2025/06/16 21:08:50 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,6 +235,9 @@ void	free_map_grid(t_config *config);
 void	free_texture_paths(t_config *config);
 void	free_visited(int **visited, int height);
 int		count_tokens(char **tokens);
+char	*trim_spaces(char *str);
+int		is_valid_rgb(char **rgb, int *r, int *g, int *b);
+int		validate_and_extract_rgb(char **tokens, char ***rgb, int *r);
 
 /* MLX UTILS WINDOW*/
 int		quit_cub3d(t_mlx_vars *vars);

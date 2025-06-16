@@ -6,7 +6,7 @@
 #    By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/10 12:06:04 by rbuitrag          #+#    #+#              #
-#    Updated: 2025/06/16 13:05:13 by yrodrigu         ###   ########.fr        #
+#    Updated: 2025/06/16 21:14:38 by rbuitrag         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ CFILES =	main.c \
 			parsing/validate_color.c \
 			parsing/validate_map.c \
 			parsing/validate_maps_utils.c \
+			parsing/rgb_utils.c \
 			parsing/free.c \
 			parsing/init_mlx.c \
 			parsing/line_map.c \
