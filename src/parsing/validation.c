@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 09:50:19 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/14 12:26:51 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/17 19:09:55 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,12 @@ int	validate_map_borders(char **grid, int height, int width)
 		return (1);
 	while (grid[0][i])
 	{
+		//if (grid[0][i] != '1' && grid[0][i] != ' ' && grid[0][i] != '0')
 		if (grid[0][i] != '1' && grid[0][i] != ' ')
-			exit_error("Map error", "Map is not closed at the top", NULL);
+			exit_error("Map error", "Map is not closed correctly", NULL);
 		i++;
 	}
-	i = 0;
+ 	i = 0;
 	while (grid[height - 1][i])
 	{
 		if (grid[height - 1][i] != '1' && grid[height - 1][i] != ' ')

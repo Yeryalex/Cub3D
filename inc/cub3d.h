@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/16 21:08:50 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/17 19:52:40 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,6 +201,7 @@ int		parse_color(char **tokens, t_config *config);
 int		parse_texture(char **tokens, t_config *config);
 void	process_map_data(t_config *config);
 void	transfer_config_to_vars(t_config *config, t_mlx_vars *vars);
+
 
 /* VALIDATE*/
 void	validate_scene_elements(t_config *config);

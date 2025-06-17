@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 19:06:30 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/12 20:35:28 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/17 20:15:10 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ static int	handle_line(char *line, t_config *config, int *map_started)
 	tokens = ft_split(trimmed_line, ' ');
 	if (!tokens)
 		exit_error("Memory error", "ft_split failed", NULL);
+	int count = count_tokens(tokens);
+	printf("%i\n" , count);
 	result = handle_config_or_map_start(tokens,
 			trimmed_line, config, map_started);
 	if (result != -1)

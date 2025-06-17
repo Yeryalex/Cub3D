@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:45:24 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/14 12:17:42 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/17 20:14:04 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,15 @@ static void	set_element_flag(char **tokens, t_config *config)
 		config->elements_found |= EAST;
 }
 
+
 int	parse_texture(char **tokens, t_config *config)
 {
 	char	*target_path;
 
 	if (count_tokens(tokens) == 1)
 		return (ERROR);
+	if (tokens[2])
+        exit_error("Parsing error", "Invalid texture path", NULL);
 	if (access(tokens[1], F_OK) != 0)
 		return (ERROR);
 	target_path = ft_strdup(tokens[1]);
