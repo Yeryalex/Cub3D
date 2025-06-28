@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 09:50:19 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/17 19:09:55 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/28 10:56:01 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	validate_scene_elements(t_config *config)
 		exit_error("Validation error", "Invalid number of players", NULL);
 }
 
-int	validate_map_borders(char **grid, int height, int width)
+/*int	validate_map_borders(char **grid, int height, int width)
 {
 	int	i;
 
@@ -66,17 +66,63 @@ int	validate_map_borders(char **grid, int height, int width)
 		i++;
 	}
 	return (0);
+}*/
+
+static void	validate_top_bottom(char *line, char *msg)
+{
+	int	j;
+
+	j = 0;
+	while (line[j])
+	{
+		if (line[j] != '1' && line[j] != ' ')
+			exit_error("Map error", msg, NULL);
+		j++;
+	}
 }
+
+static void	validate_side(char *line, int width, char *msg)
+{
+	if (!line || ft_strlen(line) == 0)
+		exit_error("Map error", "Empty map row", NULL);
+	if (line[0] != '1' && line[0] != ' ')
+		exit_error("Map error", msg, NULL);
+	if ((int)ft_strlen(line) < width)
+	{
+		if (line[ft_strlen(line) - 1] != '1')
+			exit_error("Map error", msg, NULL);
+	}
+	else if (line[width - 1] != '1' && line[width - 1] != ' ')
+		exit_error("Map error", msg, NULL);
+}
+
+int	validate_map_borders(char **grid, int height, int width)
+{
+	int	i;
+
+	if (!grid || height <= 2)
+		exit_error("Map error", "Invalid map height", NULL);
+	validate_top_bottom(grid[0], "Top border not closed");
+	validate_top_bottom(grid[height - 1], "Bottom border not closed");
+	i = 1;
+	while (i < height - 1)
+	{
+		validate_side(grid[i], width, "Side border not closed");
+		i++;
+	}
+	return (0);
+}
+
 
 void	validate_enclosure(char **grid, int i, int j)
 {
 	if (!grid[i - 1] || !grid[i + 1]
-		|| !grid[i][j - 1] || !grid[i][j + 1]
-		|| grid[i - 1][j] == ' '
-		|| grid[i + 1][j] == ' '
-		|| grid[i][j - 1] == ' '
-		|| grid[i][j + 1] == ' ')
-	{
-		exit_error("Map error", "Open space detected walkable tile", NULL);
-	}
+		|| !grid[i][j - 1] || !grid[i][j + 1])
+		exit_error("Map error", "Open space at border", NULL);
+	if (grid[i - 1][j] == ' ' || grid[i + 1][j] == ' '
+		|| grid[i][j - 1] == ' ' || grid[i][j + 1] == ' '
+		|| grid[i - 1][j - 1] == ' ' || grid[i - 1][j + 1] == ' '
+		|| grid[i + 1][j - 1] == ' ' || grid[i + 1][j + 1] == ' ')
+		exit_error("Map error", "wrongly closed corner", NULL);
 }
+

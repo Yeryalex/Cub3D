@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 10:35:26 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/17 19:11:10 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/28 10:18:01 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,16 +74,20 @@ int	validate_map_content(char **grid, t_config *config)
 
 void	validate_map(t_config *config)
 {
-	int	height;
-	int	width;
-
-	if (!config || !config->map.grid)
+	char **original_map;
+	
+	original_map = config->map.grid;
+	
+	if (!config || !original_map)
 		exit_error("Map validation error", "Invalid map or config", NULL);
-	height = config->map.height;
-	width = config->map.width;
-	if (validate_map_borders(config->map.grid, height, width))
+	config->map.grid = normalize_map(
+		config->map.grid, &config->map.height, &config->map.width);
+	free_map_grid(original_map);
+	if (validate_map_borders(config->map.grid,
+			config->map.height, config->map.width))
 		exit_error("Map validation error", "Error general borders map", NULL);
 	if (validate_map_content(config->map.grid, config))
 		exit_error("Map validation error", "Content error general map", NULL);
-	validate_map_closed(config->map.grid, height, width);
+	validate_map_closed(config->map.grid,
+		config->map.height, config->map.width);
 }

@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 18:47:47 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/12 18:48:28 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/28 10:20:01 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,18 @@ void	free_texture_paths(t_config *config)
 	config->west_tex.path = NULL;
 }
 
-void	free_map_grid(t_config *config)
+void	free_map_grid(char **map_grid)
 {
 	int	i;
 
 	i = 0;
-	while (config->map.grid[i])
+	while (map_grid[i])
 	{
-		free(config->map.grid[i]);
+		free(map_grid[i]);
 		i++;
 	}
-	free(config->map.grid);
-	config->map.grid = NULL;
+	free(map_grid);
+	map_grid = NULL;
 }
 
 void	free_config(t_config *config)
@@ -44,5 +44,5 @@ void	free_config(t_config *config)
 		return ;
 	free_texture_paths(config);
 	if (config->map.grid)
-		free_map_grid(config);
+		free_map_grid(config->map.grid);
 }

@@ -6,19 +6,46 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:24:50 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/14 12:07:49 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/28 09:55:13 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
 
-void	flood_fill(t_fill_info *info, int i, int j)
+/*void	flood_fill(t_fill_info *info, int i, int j)
 {
 	if (!is_valid_cell(info, i, j))
 		return ;
 	if (info->grid[i][j] != ' ')
 		return ;
 	info->visited[i][j] = 1;
+	flood_fill(info, i + 1, j);
+	flood_fill(info, i - 1, j);
+	flood_fill(info, i, j + 1);
+	flood_fill(info, i, j - 1);
+}*/
+
+static int	is_in_bounds(t_fill_info *info, int i, int j)
+{
+	return (i >= 0 && i < info->height && j >= 0 && j < info->width);
+}
+
+static int	is_fillable(t_fill_info *info, int i, int j)
+{
+	if (!is_in_bounds(info, i, j))
+		return (0);
+	if (info->visited[i][j])
+		return (0);
+	if (info->grid[i][j] == '1')
+		return (0);
+	info->visited[i][j] = 1;
+	return (1);
+}
+
+void	flood_fill(t_fill_info *info, int i, int j)
+{
+	if (!is_fillable(info, i, j))
+		return ;
 	flood_fill(info, i + 1, j);
 	flood_fill(info, i - 1, j);
 	flood_fill(info, i, j + 1);

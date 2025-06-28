@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:25:02 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/16 21:12:02 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/28 10:13:36 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	add_map_line(char *line)
 	trimmed = ft_strtrim(line, " \t");
 	if (!trimmed)
 		exit_error("Memory error", "strtrim failed", NULL);
+	free(trimmed); 
 	return (SUCCESS);
 }
 char	*trim_spaces(char *str)

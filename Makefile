@@ -6,7 +6,7 @@
 #    By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/10 12:06:04 by rbuitrag          #+#    #+#              #
-#    Updated: 2025/06/16 21:14:38 by rbuitrag         ###   ########.fr        #
+#    Updated: 2025/06/28 11:00:52 by rbuitrag         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ HEADER = inc/cub3d.h
 LIBFT = inc/libft/libft.a
 MLX_A = inc/minilibx/libmlx_Linux.a
 
-CFLAGS = -Wall -Werror -Wextra -g # -fsanitize=leak #-fsanitize=address -fsanitize=leak
+CFLAGS = -Wall -Werror -Wextra #-g -fsanitize=leak -fsanitize=address
 
 CFILES =	main.c \
 			parsing/config_utils.c \
@@ -26,6 +26,7 @@ CFILES =	main.c \
 			parsing/validation.c \
 			parsing/validate_texture.c \
 			parsing/validate_color.c \
+			parsing/norma_map.c \
 			parsing/validate_map.c \
 			parsing/validate_maps_utils.c \
 			parsing/rgb_utils.c \
@@ -76,9 +77,9 @@ fclean: clean
 re: fclean all
 
 v: all
-	valgrind --leak-check=full --track-origins=yes -s ./cub3d maps/omnipotentes.cub
+	valgrind --leak-check=full --track-origins=yes -s ./cub3d maps/subject_map.cub
 va: all
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes \
-						  --suppressions=suppresionsX11 -q ./cub3d maps/omnipotentes.cub
+						  --suppressions=suppresionsX11 -q ./cub3d maps/subject_map.cub
 
 .PHONY: all clean fclean re library

@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/17 19:52:40 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/28 10:31:38 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,7 @@ void	transfer_config_to_vars(t_config *config, t_mlx_vars *vars);
 
 
 /* VALIDATE*/
+char	**normalize_map(char **map, int *height, int *width);
 void	validate_scene_elements(t_config *config);
 void	validate_map(t_config *config);
 void	validate_map_closed(char **grid, int height, int width);
@@ -232,7 +233,7 @@ int		is_config_identifier(char *token);
 int		is_empty_line(char *line);
 void	free_split(char **tokens);
 void	free_textures(t_mlx_vars *vars);
-void	free_map_grid(t_config *config);
+void	free_map_grid(char **map);
 void	free_texture_paths(t_config *config);
 void	free_visited(int **visited, int height);
 int		count_tokens(char **tokens);

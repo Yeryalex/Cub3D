@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:45:24 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/17 20:14:04 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/28 12:04:39 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	free_visited(int **visited, int height)
 
 static void	assign_texture_path(char **tokens, t_config *config, char *path)
 {
+
 	if (ft_strncmp(tokens[0], "NO", 2) == 0)
 		config->north_tex.path = path;
 	else if (ft_strncmp(tokens[0], "SO", 2) == 0)
@@ -52,15 +53,18 @@ int	parse_texture(char **tokens, t_config *config)
 	char	*target_path;
 
 	if (count_tokens(tokens) == 1)
-		return (ERROR);
+		return (free_split(tokens), ERROR);
 	if (tokens[2])
-        exit_error("Parsing error", "Invalid texture path", NULL);
+	{
+        free_split(tokens);
+		exit_error("Parsing error", "Invalid texture path", NULL);
+	}
 	if (access(tokens[1], F_OK) != 0)
-		return (ERROR);
+		return (free_split(tokens), ERROR);
 	target_path = ft_strdup(tokens[1]);
 	if (!target_path)
 		return (ERROR);
 	assign_texture_path(tokens, config, target_path);
 	set_element_flag(tokens, config);
-	return (SUCCESS);
+	return (free(target_path), SUCCESS);
 }
