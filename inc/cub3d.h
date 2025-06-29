@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/14 14:26:20 by yrodrigu         ###   ########.fr       */
+/*   Updated: 2025/06/29 13:59:16 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,6 +210,7 @@ void	validate_enclosure(char **grid, int i, int j);
 int		validate_map_borders(char **grid, int height, int width);
 int		is_valid_map_char(char c);
 int		is_valid_cell(t_fill_info *info, int i, int j);
+int		is_valid_rgb(char **rgb, int *r, int *g, int *b);
 
 /* LOADING */
 int		load_textures(t_mlx_vars *vars);
@@ -235,6 +236,8 @@ void	free_map_grid(t_config *config);
 void	free_texture_paths(t_config *config);
 void	free_visited(int **visited, int height);
 int		count_tokens(char **tokens);
+int		validate_and_extract_rgb(char **tokens, char **rgb, int *r);
+char	*trim_spaces(char *str);
 
 /* MLX UTILS WINDOW*/
 int		quit_cub3d(t_mlx_vars *vars);

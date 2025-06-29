@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 20:00:44 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/14 12:03:17 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/29 14:52:22 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,52 +49,94 @@ static t_color	*get_target_color(char *id, t_config *config)
 	return (NULL);
 }
 
-static int	is_valid_rgb(char **rgb)
+int	check_rgb(char *rgb_str)
 {
-	int	r;
-	int	g;
-	int	b;
+	if (!rgb_str || !is_all_digits(rgb_str) || ft_strlen(rgb_str) > 3)
+		return(ERROR);
+	return (SUCCESS);   
+}
 
-	if (!rgb || !rgb[0] || !rgb[1] || !rgb[2])
-		return (0);
-	if (!is_all_digits(rgb[0]) || !is_all_digits(rgb[1])
-		|| !is_all_digits(rgb[2]))
-		return (0);
-	if (ft_strlen(rgb[0]) > 3 || ft_strlen(rgb[1]) > 3
-		|| ft_strlen(rgb[2]) > 3)
-		return (0);
-	r = ft_atoi(rgb[0]);
-	g = ft_atoi(rgb[1]);
-	b = ft_atoi(rgb[2]);
-	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
-		return (0);
-	return (1);
+int	is_valid_rgb(char **rgb, int *r, int *g, int *b)
+{
+    char	*r_str;
+    char	*g_str;
+    char	*b_str;
+
+    r_str = trim_spaces(rgb[0]);
+    g_str = trim_spaces(rgb[1]);
+    b_str = trim_spaces(rgb[2]);
+
+	if (!check_rgb(r_str))
+	{
+		free(r_str);
+		free(g_str);
+		free(b_str);
+		ft_free_array(rgb);
+		return (ERROR);
+	}
+	if (!check_rgb(g_str))
+	{
+		free(r_str);
+		free(g_str);
+		free(b_str);
+		ft_free_array(rgb);
+		return (ERROR);
+	}
+	if (!check_rgb(b_str))
+	{
+		free(r_str);
+		free(g_str);
+		free(b_str);
+		ft_free_array(rgb);
+		return (ERROR);
+	}
+	/*   if (!r_str || !g_str || !b_str)
+        exit_error("Color error", "RGB format is invalid", NULL);
+    if (!is_all_digits(r_str) || !is_all_digits(g_str) || !is_all_digits(b_str))
+        exit_error("Color error", "RGB values must be digits only", NULL);
+    if (ft_strlen(r_str) > 3 || ft_strlen(g_str) > 3 || ft_strlen(b_str) > 3)
+       {
+		free(r_str);
+    	free(g_str);
+    	free(b_str);
+		 exit_error("Color error", "RGB values must be at most 3 digits", NULL);
+	   }    
+*/	*r = ft_atoi(r_str);
+    *g = ft_atoi(g_str);
+    *b = ft_atoi(b_str);
+    free(r_str);
+    free(g_str);
+    free(b_str);
+    if (*r < 0 || *r > 255 || *g < 0 || *g > 255 || *b < 0 || *b > 255)
+        exit_error("Color error", "RGB value out of range (0-255)", NULL);
+    return (1);
 }
 
 int	parse_color(char **tokens, t_config *config)
 {
-	t_color	*color;
-	char	**rgb;
+    t_color	*color;
+    char	**rgb;
+    int		rgb_vals[3];
 
-	if (!tokens || !*tokens || !tokens[1])
-		return (ERROR);
-	rgb = ft_split(tokens[1], ',');
-	if (!rgb || count_tokens(rgb) != 3 || !is_valid_rgb(rgb))
-		return (ft_free_array(rgb), ERROR);
-	color = get_target_color(tokens[0], config);
-	if (!color || color->is_set)
-		return (ft_free_array(rgb), ERROR);
-	color->r = ft_atoi(rgb[0]);
-	color->g = ft_atoi(rgb[1]);
-	color->b = ft_atoi(rgb[2]);
-	color->combined = (color->r << 16) | (color->g << 8) | color->b;
-	color->is_set = 1;
-	ft_free_array(rgb);
-	if (tokens[0][0] == 'F')
-		config->elements_found |= FLOOR;
-	else if (tokens[0][0] == 'C')
-		config->elements_found |= CEILING;
-	else
-		return (ERROR);
-	return (SUCCESS);
+	rgb = NULL;
+    if (!tokens || !*tokens || !tokens[1])
+        return (ERROR);
+    if (validate_and_extract_rgb(tokens, rgb, rgb_vals) == ERROR)
+        return (ERROR);
+    color = get_target_color(tokens[0], config);
+    if (!color || color->is_set)
+        return (ft_free_array(rgb), ERROR);
+    color->r = rgb_vals[0];
+    color->g = rgb_vals[1];
+    color->b = rgb_vals[2];
+    color->combined = (color->r << 16) | (color->g << 8) | color->b;
+    color->is_set = 1;
+    ft_free_array(rgb);
+    if (tokens[0][0] == 'F')
+        config->elements_found |= FLOOR;
+    else if (tokens[0][0] == 'C')
+        config->elements_found |= CEILING;
+    else
+        return (ERROR);
+    return (SUCCESS);
 }

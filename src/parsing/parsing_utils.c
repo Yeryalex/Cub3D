@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:25:02 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/14 11:57:04 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/29 13:31:37 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,23 @@ int	add_map_line(char *line)
 	if (!trimmed)
 		exit_error("Memory error", "strtrim failed", NULL);
 	return (SUCCESS);
+}
+char	*trim_spaces(char *str)
+{
+    int		start;
+    int		end;
+    char	*trimmed;
+
+    if (!str)
+        return (NULL);
+    start = 0;
+    while (str[start] && (str[start] == ' ' || str[start] == '\t'))
+        start++;
+    end = ft_strlen(str) - 1;
+    while (end >= start && (str[end] == ' ' || str[end] == '\t'))
+        end--;
+    trimmed = ft_substr(str, start, end - start + 1);
+	if (!trimmed)
+        exit_error("Memory error", "failed in trim_spaces", NULL);
+    return (trimmed);
 }

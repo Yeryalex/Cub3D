@@ -6,7 +6,7 @@
 #    By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/10 12:06:04 by rbuitrag          #+#    #+#              #
-#    Updated: 2025/06/16 13:05:13 by yrodrigu         ###   ########.fr        #
+#    Updated: 2025/06/29 13:34:53 by rbuitrag         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ CFILES =	main.c \
 			parsing/free.c \
 			parsing/init_mlx.c \
 			parsing/line_map.c \
+			parsing/rgb_utils.c \
 			loading/loadmap.c \
 			loading/drawing_map.c \
 			loading/map_2D.c \
@@ -78,6 +79,6 @@ v: all
 	valgrind --leak-check=full --track-origins=yes -s ./cub3d maps/omnipotentes.cub
 va: all
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes \
-						  --suppressions=suppresionsX11 -q ./cub3d maps/omnipotentes.cub
+						  --suppressions=suppresionsX11 -q ./cub3d maps/minimal.cub
 
 .PHONY: all clean fclean re library
