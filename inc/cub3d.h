@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/29 13:59:16 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/30 22:11:43 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,7 @@ int		parser_scene(char **av, t_mlx_vars *vars);
 int		parse_scene_file(char *filename, t_config *config);
 int		add_map_line(char *line);
 int		store_map_line(t_config *config, char *line, int index);
+void	normalize_map_lines(t_config *config);
 int		is_map_line(char *line);
 int		process_file_lines(t_config *config, int fd);
 int		parse_config_line(char **tokens, t_config *config);
@@ -205,15 +206,17 @@ void	transfer_config_to_vars(t_config *config, t_mlx_vars *vars);
 /* VALIDATE*/
 void	validate_scene_elements(t_config *config);
 void	validate_map(t_config *config);
-void	validate_map_closed(char **grid, int height, int width);
-void	validate_enclosure(char **grid, int i, int j);
-int		validate_map_borders(char **grid, int height, int width);
+void	validate_map_closed(char **grid, int height, int width, t_config *config);
+void	validate_enclosure(char **grid, int i, int j, t_config *config);
+int		validate_map_borders(char **grid, int height, int width, t_config *config);
+int		is_border_adjacent_to_walkable(char **grid, int i, int j, int height, int width);
 int		is_valid_map_char(char c);
 int		is_valid_cell(t_fill_info *info, int i, int j);
 int		is_valid_rgb(char **rgb, int *r, int *g, int *b);
 
 /* LOADING */
 int		load_textures(t_mlx_vars *vars);
+int		validate_texture_files(t_config *config);
 void	ft_clear_2d(t_mlx_vars *vars);
 void	ft_clear_3d(t_mlx_vars *vars);
 void	draw_map(t_mlx_vars *vars);
@@ -227,6 +230,7 @@ int		mouse_move(int x, int y, t_mlx_vars *vars);
 
 /* UTILS*/
 void	exit_error(char *message, char *details, t_mlx_vars *vars);
+void	exit_error_parsing(char *message, char *details, t_config *config);
 void	free_config(t_config *config);
 int		is_config_identifier(char *token);
 int		is_empty_line(char *line);

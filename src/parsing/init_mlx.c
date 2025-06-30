@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 18:50:11 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/12 20:30:52 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/30 21:11:04 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,5 @@ int	init_window_and_image(t_mlx_vars *vars)
 		return (-1);
 	}
 	mlx_put_image_to_window(vars->mlx_ptr, vars->win_ptr, vars->img_ptr, 0, 0);
-	load_textures(vars);
 	return (0);
 }

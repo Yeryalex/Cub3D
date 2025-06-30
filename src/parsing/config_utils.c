@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 09:16:17 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/29 14:35:22 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/30 21:26:13 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	init_config(t_config *config)
 	config->res_set = 1;
 	config->map.grid = ft_calloc(MAX_MAP_HEIGHT + 1, sizeof(char *));
 	if (!config->map.grid)
-		exit_error("Memory error ", "Failed memory for map grid", NULL);
+		exit_error_parsing("Memory error ", "Failed memory for map grid", config);
 	config->map.width = 0;
 	config->map.height = 0;
 }
@@ -69,6 +69,20 @@ void	copy_map_grid(t_config *src, t_config *dest, t_mlx_vars *vars)
 	dest->map.grid[i] = NULL;
 }
 
+static void	init_dest_config(t_config *dest, t_config *src)
+{
+	ft_bzero(dest, sizeof(t_config));
+	dest->win_width = src->win_width;
+	dest->win_height = src->win_height;
+	dest->res_set = src->res_set;
+	dest->floor_color = src->floor_color;
+	dest->ceiling_color = src->ceiling_color;
+	dest->map.width = src->map.width;
+	dest->map.height = src->map.height;
+	dest->player = src->player;
+	dest->map.grid = NULL;
+}
+
 void	transfer_config_to_vars(t_config *src, t_mlx_vars *vars)
 {
 	t_config	*dest;
@@ -76,19 +90,10 @@ void	transfer_config_to_vars(t_config *src, t_mlx_vars *vars)
 	if (!src || !vars)
 		return ;
 	dest = &vars->config;
-	ft_bzero(dest, sizeof(t_config));
-	dest->win_width = src->win_width;
-	dest->win_height = src->win_height;
-	dest->res_set = src->res_set;
+	init_dest_config(dest, src);
 	transfer_texture_paths(src, dest);
 	if (!validate_texture_paths(dest, src, vars))
 		return ;
-	dest->floor_color = src->floor_color;
-	dest->ceiling_color = src->ceiling_color;
-	dest->map.width = src->map.width;
-	dest->map.height = src->map.height;
-	dest->player = src->player;
-	dest->map.grid = NULL;
 	if (src->map.grid)
 		copy_map_grid(src, dest, vars);
 	free_config(src);

@@ -12,16 +12,45 @@
 
 #include "../../inc/cub3d.h"
 
-void	load_texture(t_texture *tex, void *mlx, char *path)
+static void	print_texture_error(char *path, char *direction)
+{
+	printf("Error\n");
+	if (path)
+		printf("Texture file not found: %s\n", path);
+	else
+		printf("%s texture path is NULL\n", direction);
+}
+
+int	validate_texture_files(t_config *config)
+{
+	if (!config->north_tex.path || access(config->north_tex.path, F_OK) != 0)
+	{
+		print_texture_error(config->north_tex.path, "North");
+		return (ERROR);
+	}
+	if (!config->south_tex.path || access(config->south_tex.path, F_OK) != 0)
+	{
+		print_texture_error(config->south_tex.path, "South");
+		return (ERROR);
+	}
+	if (!config->east_tex.path || access(config->east_tex.path, F_OK) != 0)
+	{
+		print_texture_error(config->east_tex.path, "East");
+		return (ERROR);
+	}
+	if (!config->west_tex.path || access(config->west_tex.path, F_OK) != 0)
+	{
+		print_texture_error(config->west_tex.path, "West");
+		return (ERROR);
+	}
+	return (SUCCESS);
+}
+
+void	load_texture(t_texture *tex, void *mlx, char *path, t_mlx_vars *vars)
 {
 	tex->img_ptr = mlx_xpm_file_to_image(mlx, path, &tex->width, &tex->height);
 	if (!tex->img_ptr)
-	{
-		ft_putstr_fd("Error loading texture: ", 2);
-		ft_putstr_fd(path, 2);
-		ft_putstr_fd("\n", 2);
-		exit(1);
-	}
+		exit_error("Error loading texture", path, vars);
 	tex->addr = mlx_get_data_addr(tex->img_ptr,
 			&tex->bits_per_pixel,
 			&tex->line_length,
@@ -32,13 +61,13 @@ void	load_texture(t_texture *tex, void *mlx, char *path)
 int	load_textures(t_mlx_vars *vars)
 {
 	load_texture(&vars->config.north_tex, vars->mlx_ptr,
-		vars->config.north_tex.path);
+		vars->config.north_tex.path, vars);
 	load_texture(&vars->config.south_tex, vars->mlx_ptr,
-		vars->config.south_tex.path);
+		vars->config.south_tex.path, vars);
 	load_texture(&vars->config.east_tex, vars->mlx_ptr,
-		vars->config.east_tex.path);
+		vars->config.east_tex.path, vars);
 	load_texture(&vars->config.west_tex, vars->mlx_ptr,
-		vars->config.west_tex.path);
+		vars->config.west_tex.path, vars);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:28:07 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/14 11:33:06 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/30 20:57:40 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,19 @@
 int	parse_config_line(char **tokens, t_config *config)
 {
 	if (tokens == NULL || tokens[0] == NULL)
-		return (free_split(tokens), ERROR);
+		return (ERROR);
 	if (!ft_strncmp(tokens[0], "NO", 2)
 		|| !ft_strncmp(tokens[0], "SO", 2)
 		|| !ft_strncmp(tokens[0], "WE", 2)
 		|| !ft_strncmp(tokens[0], "EA", 2))
 	{
 		if (!parse_texture(tokens, config))
-			return (free_split(tokens), ERROR);
+			return (ERROR);
 	}
 	else if (!ft_strncmp(tokens[0], "F", 1) || !ft_strncmp(tokens[0], "C", 1))
 	{
 		if (!parse_color(tokens, config))
-			return (free_split(tokens), ERROR);
+			return (ERROR);
 	}
 	return (SUCCESS);
 }
@@ -39,18 +39,19 @@ int	parse_scene_file(char *filename, t_config *config)
 
 	if (!ft_strnstr(filename, ".cub", ft_strlen(filename))
 		|| ft_strlen(filename) < 5)
-		exit_error("File error ", "Invalid file extension.", NULL);
+		exit_error_parsing("File error ", "Invalid file extension.", config);
 	dir_fd = open(filename, O_DIRECTORY);
 	if (dir_fd >= 0)
 	{
 		close(dir_fd);
-		exit_error("File error: ", "Its a directory, not a file\n", NULL);
+		exit_error_parsing("File error: ", "Its a directory, not a file\n", config);
 	}
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		exit_error("File open error: ", filename, NULL);
+		exit_error_parsing("File open error: ", filename, config);
 	config->map.height = process_file_lines(config, fd);
 	close(fd);
+	normalize_map_lines(config);
 	return (SUCCESS);
 }
 

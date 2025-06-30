@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:24:50 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/14 12:07:49 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/30 22:11:43 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void	flood_top_bottom(t_fill_info *info)
 	}
 }
 
-static void	check_flood(t_fill_info *info)
+static void	check_flood(t_fill_info *info, t_config *config)
 {
 	int	i;
 	int	j;
@@ -78,15 +78,14 @@ static void	check_flood(t_fill_info *info)
 			if ((info->grid[i][j] == '0' || info->grid[i][j] == 'N'
 				|| info->grid[i][j] == 'S' || info->grid[i][j] == 'E'
 				|| info->grid[i][j] == 'W') && info->visited[i][j])
-				exit_error("Map validation error",
-					"Map is not closed (flood fill)", NULL);
+				exit_error_parsing("mapa no cerrado", NULL, config);
 			j++;
 		}
 		i++;
 	}
 }
 
-void	validate_map_closed(char **grid, int height, int width)
+void	validate_map_closed(char **grid, int height, int width, t_config *config)
 {
 	t_fill_info	info;
 	int			i;
@@ -96,17 +95,17 @@ void	validate_map_closed(char **grid, int height, int width)
 	info.width = width;
 	info.visited = malloc(sizeof(int *) * height);
 	if (!info.visited)
-		exit_error("Memory error", "Flood fill visited malloc", NULL);
+		exit_error_parsing("Memory error", "Flood fill visited malloc", config);
 	i = 0;
 	while (i < height)
 	{
 		info.visited[i] = calloc(width, sizeof(int));
 		if (!info.visited[i])
-			exit_error("Memory error", "Flood fill visited row malloc", NULL);
+			exit_error_parsing("Memory error", "Flood fill visited row malloc", config);
 		i++;
 	}
 	flood_borders(&info);
 	flood_top_bottom(&info);
-	check_flood(&info);
+	check_flood(&info, config);
 	free_visited(info.visited, height);
 }

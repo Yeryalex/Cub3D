@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 19:06:30 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/29 14:43:53 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/30 21:36:53 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	handle_map_processing(char *line,
 			*map_started = 1;
 			return (MAP_LINE);
 		}
-		exit_error("Map error", "No map found in scene file", NULL);
+		return (ERROR);
 	}
 	return (SUCCESS);
 }
@@ -60,12 +60,12 @@ static int	handle_line(char *line, t_config *config, int *map_started)
 		return (ERROR);
 	trimmed_line = ft_strtrim(line, "\n");
 	if (!trimmed_line)
-		exit_error("Memory error", "strtrim failed", NULL);
+		return (-2);
 	tokens = ft_split(trimmed_line, ' ');
 	if (!tokens)
 	{
 		free(trimmed_line);
-		exit_error("Memory error", "ft_split failed", NULL);
+		return (-3);
 	}
 	result = handle_config_or_map_start(tokens,
 			trimmed_line, config, map_started);
@@ -75,19 +75,36 @@ static int	handle_line(char *line, t_config *config, int *map_started)
 	return (free_split(tokens), free(trimmed_line), result);
 }
 
-static void	handle_result(int result, t_config *config,
-	char *line, int *map_index)
+
+static void	handle_error_result(int result, char *line, t_config *config)
 {
+	free(line);
+	gnl_cleanup();
 	if (result == ERROR)
-		exit_error("Config error", "Invalid configuration line", NULL);
-	else if (result == MAP_LINE)
+		exit_error_parsing("Config error", "Invalid configuration line", config);
+	else if (result == -2)
+		exit_error_parsing("Memory error", "strtrim failed", config);
+	else if (result == -3)
+		exit_error_parsing("Memory error", "ft_split failed", config);
+	else
+		exit_error_parsing("Map error", "Invalid line in map", config);
+}
+
+static int	handle_map_line_result(int result, char *line,
+		t_config *config, int *map_line_index)
+{
+	if (result == MAP_LINE)
 	{
-		if (!store_map_line(config, line, *map_index))
-			exit_error("Map error", "Invalid map line", NULL);
-		*map_index = *map_index + 1;
+		if (!store_map_line(config, line, *map_line_index))
+		{
+			free(line);
+			gnl_cleanup();
+			exit_error_parsing("Map error", "Invalid map line", config);
+		}
+		(*map_line_index)++;
+		return (1);
 	}
-	else if (result != SUCCESS)
-		exit_error("Map error", "Invalid line in map", NULL);
+	return (0);
 }
 
 int	process_file_lines(t_config *config, int fd)
@@ -103,9 +120,17 @@ int	process_file_lines(t_config *config, int fd)
 	while (line)
 	{
 		result = handle_line(line, config, &map_started);
-		handle_result(result, config, line, &map_line_index);
+		if (result < 0 || result == ERROR)
+			handle_error_result(result, line, config);
+		if (handle_map_line_result(result, line, config, &map_line_index))
+		{
+			free(line);
+			line = get_next_line(fd);
+			continue ;
+		}
 		free(line);
 		line = get_next_line(fd);
 	}
+	gnl_cleanup();
 	return (map_line_index);
 }

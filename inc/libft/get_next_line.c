@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 13:12:32 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/29 14:32:03 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/06/30 20:57:40 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@ char	*multiple_free(char **ptr)
 	free(*ptr);
 	*ptr = NULL;
 	return (NULL);
+}
+
+void	gnl_cleanup(void)
+{
+	get_next_line(-2);
 }
 
 static char	*fd_lector(int fd, char *buff, char *saved_text)
@@ -76,6 +81,15 @@ char	*get_next_line(int fd)
 	char		*line;
 	char		*tmp;
 
+	if (fd == -2)
+	{
+		if (saved_text)
+		{
+			free(saved_text);
+			saved_text = NULL;
+		}
+		return (NULL);
+	}
 	if (fd == -1 || BUFFER_SIZE <= 0)
 		return (0);
 	buff = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
@@ -93,6 +107,5 @@ char	*get_next_line(int fd)
 	line = tmp;
 	if (!line)
 		return (multiple_free(&saved_text));
-	//multiple_free(&saved_text);
 	return (line);
 }
