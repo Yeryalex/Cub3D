@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 09:50:19 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/30 22:11:43 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/07/02 19:37:29 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,18 @@ int	is_valid_map_char(char c)
 void	validate_scene_elements(t_config *config)
 {
 	if (!config)
-		exit_error("Validation error", "Config is NULL", NULL);
+		exit_error_parsing("Validation error", "Config is NULL", NULL);
 	if (!config->res_set)
-		exit_error("Validation error", "Resolution not set", NULL);
+		exit_error_parsing("Validation error", "Resolution not set", config);
 	if (!config->north_tex.path || !config->south_tex.path
 		|| !config->east_tex.path || !config->west_tex.path)
-		exit_error("Validation error", "Missing texture paths", NULL);
+		exit_error_parsing("Validation error", "Missing texture paths", config);
 	if (!config->floor_color.is_set || !config->ceiling_color.is_set)
-		exit_error("Validation error", "Floor or ceiling color not set", NULL);
+		exit_error_parsing("Validation error", "Floor or ceiling color not set", config);
 	if (!config->map.grid)
-		exit_error("Validation error", "Map is missing", NULL);
+		exit_error_parsing("Validation error", "Map is missing", config);
 	if (config->player.found != 1)
-		exit_error("Validation error", "Invalid number of players", NULL);
+		exit_error_parsing("Validation error", "Invalid number of players", config);
 }
 
 int	validate_map_borders(char **grid, int height, int width, t_config *config)

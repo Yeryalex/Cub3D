@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:48:56 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/30 21:33:37 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/07/02 19:28:01 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ static void	free_mlx_images(t_mlx_vars *vars)
 		mlx_destroy_image(vars->mlx_ptr, vars->config.east_tex.img_ptr);
 	if (vars->config.west_tex.img_ptr)
 		mlx_destroy_image(vars->mlx_ptr, vars->config.west_tex.img_ptr);
+	if (vars->img_ptr)
+		mlx_destroy_image(vars->mlx_ptr, vars->img_ptr);
 }
 
 void	exit_error(char *message, char *details, t_mlx_vars *vars)

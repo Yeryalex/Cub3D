@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 20:00:44 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/30 20:04:02 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/07/02 19:17:19 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,13 @@ static t_color	*get_target_color(char *id, t_config *config)
 	else if (!ft_strncmp(id, "C", 1))
 		return (&config->ceiling_color);
 	return (NULL);
+}
+
+int	check_rgb(char *rgb_str)
+{
+	if (!rgb_str || !is_all_digits(rgb_str) || ft_strlen(rgb_str) > 3)
+		return(ERROR);
+	return (SUCCESS);   
 }
 
 int	is_valid_rgb(char **rgb, int *r, int *g, int *b)
