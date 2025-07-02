@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 09:50:19 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/07/02 19:37:29 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/07/02 20:38:08 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	is_valid_map_char(char c)
 		|| c == 'E' || c == 'W' || c == ' ');
 }
 
-void	validate_scene_elements(t_config *config)
+static void	validate_basic_config(t_config *config)
 {
 	if (!config)
 		exit_error_parsing("Validation error", "Config is NULL", NULL);
@@ -38,12 +38,46 @@ void	validate_scene_elements(t_config *config)
 	if (!config->north_tex.path || !config->south_tex.path
 		|| !config->east_tex.path || !config->west_tex.path)
 		exit_error_parsing("Validation error", "Missing texture paths", config);
+}
+
+static void	validate_colors_and_map(t_config *config)
+{
 	if (!config->floor_color.is_set || !config->ceiling_color.is_set)
 		exit_error_parsing("Validation error", "Floor or ceiling color not set", config);
 	if (!config->map.grid)
 		exit_error_parsing("Validation error", "Map is missing", config);
 	if (config->player.found != 1)
 		exit_error_parsing("Validation error", "Invalid number of players", config);
+}
+
+void	validate_scene_elements(t_config *config)
+{
+	validate_basic_config(config);
+	validate_colors_and_map(config);
+}
+
+static int	is_walkable_char(char c)
+{
+	return (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W');
+}
+
+static int	is_border_position(int i, int j, int height, char **grid)
+{
+	return (i == 0 || i == height - 1 || j == 0 
+		|| !grid[i][j + 1] || grid[i][j + 1] == '\0');
+}
+
+static void	check_border_cell(char **grid, int i, int j, t_config *config)
+{
+	int	height;
+	int	width;
+
+	height = config->map.height;
+	width = config->map.width;
+	if (is_border_position(i, j, height, grid) && is_walkable_char(grid[i][j]))
+		exit_error_parsing("mapa no cerrado", "Espacio walkable en el borde", config);
+	if (is_border_adjacent_to_walkable(grid, i, j, height, width))
+		exit_error_parsing("mapa no cerrado", "Borde no protegido cerca de espacio walkable", config);
 }
 
 int	validate_map_borders(char **grid, int height, int width, t_config *config)
@@ -59,13 +93,7 @@ int	validate_map_borders(char **grid, int height, int width, t_config *config)
 		j = 0;
 		while (grid[i][j])
 		{
-			if ((i == 0 || i == height - 1 || j == 0 || 
-				!grid[i][j + 1] || grid[i][j + 1] == '\0') &&
-				(grid[i][j] == '0' || grid[i][j] == 'N' || 
-				grid[i][j] == 'S' || grid[i][j] == 'E' || grid[i][j] == 'W'))
-				exit_error_parsing("mapa no cerrado", "Espacio walkable en el borde", config);
-			if (is_border_adjacent_to_walkable(grid, i, j, height, width))
-				exit_error_parsing("mapa no cerrado", "Borde no protegido cerca de espacio walkable", config);
+			check_border_cell(grid, i, j, config);
 			j++;
 		}
 		i++;
