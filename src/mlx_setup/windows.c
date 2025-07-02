@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:16:02 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/14 12:36:55 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/07/02 20:24:04 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int	listen_mlx_input(t_mlx_vars *vars)
 	mlx_hook(vars->win_ptr, KeyPress, KeyPressMask, ft_key_press, vars);
 	mlx_hook(vars->win_ptr, KeyRelease, KeyReleaseMask, ft_key_release, vars);
 	mlx_hook(vars->win_ptr, DestroyNotify, 0, ft_x_close, vars);
+	mlx_hook(vars->win_ptr, MotionNotify, PointerMotionMask, action_mouse, vars);
 	mlx_loop_hook(vars->mlx_ptr, drawing_loop, vars);
 	return (SUCCESS);
 }

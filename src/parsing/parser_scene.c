@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:28:07 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/30 20:57:40 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/07/02 20:15:36 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	parse_scene_file(char *filename, t_config *config)
 	if (dir_fd >= 0)
 	{
 		close(dir_fd);
-		exit_error_parsing("File error: ", "Its a directory, not a file\n", config);
+		exit_error_parsing("File error: ", "Its a directory, not a file", config);
 	}
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)

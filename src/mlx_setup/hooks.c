@@ -12,32 +12,51 @@
 
 #include "../../inc/cub3d.h"
 
-/*
 int mouse_move(int x, int y, t_mlx_vars *vars)
 {
-    if (!vars)
-        return (1);
-    if (x < 0 || x > vars->config.win_width
-	|| y < 0 || y > vars->config.win_height)
-        return (1);
-    if (x < vars->config.win_width / 2)
-        vars->config.player.plane_x -= 0.05;
-    else if (x > vars->config.win_width / 2)
-        vars->config.player.plane_y += 0.05;
-  return (0);
+	static int	last_x = -1;
+	int			delta_x;
+	float		rotation_speed;
+
+	if (!vars)
+		return (1);
+	if (x < 0 || x > vars->config.win_width
+		|| y < 0 || y > vars->config.win_height)
+		return (1);
+	if (last_x == -1)
+	{
+		last_x = x;
+		return (0);
+	}
+	delta_x = x - last_x;
+	rotation_speed = 0.03;
+	if (abs(delta_x) > 1)
+	{
+		if (delta_x > 0)
+			vars->config.player.angle += delta_x * rotation_speed;
+		else if (delta_x < 0) // Mouse hacia la izquierda
+			vars->config.player.angle -= (-delta_x) * rotation_speed;
+		if (vars->config.player.angle > 2 * PI)
+			vars->config.player.angle -= 2 * PI;
+		if (vars->config.player.angle < 0)
+			vars->config.player.angle += 2 * PI;
+		ft_axis_player(&vars->config.player);
+	}
+	
+	last_x = x;
+	return (0);
 }
 
 int	action_mouse(int x, int y, t_mlx_vars *vars)
 {
-    if (!vars)
-        return (0);
-    if (x < 0 || x > vars->config.win_width || y < 0
-        || y > vars->config.win_height)
-        return (0);
-    else
-        return (mouse_move(x, y, vars));
+	if (!vars)
+		return (0);
+	if (x < 0 || x > vars->config.win_width || y < 0
+		|| y > vars->config.win_height)
+		return (0);
+	else
+		return (mouse_move(x, y, vars));
 }
-*/
 
 int	action_key(int keycode, t_mlx_vars *vars)
 {

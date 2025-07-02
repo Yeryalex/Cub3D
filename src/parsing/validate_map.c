@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 10:35:26 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/30 22:11:43 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/07/02 20:23:58 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,10 @@ int	validate_map_content(char **grid, t_config *config)
 		i++;
 	}
 	if (!config->player.found)
+	{
 		exit_error_parsing("Map validation error", "No player found in map", config);
+		return (1);
+	}
 	return (0);
 }
 
