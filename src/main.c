@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:48:56 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/07/02 19:28:01 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/07/09 20:34:03 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,57 +61,19 @@ void	exit_error_parsing(char *message, char *details, t_config *config)
 	exit(EXIT_FAILURE);
 }
 
-static void	print_banner(void)
-{
-	printf(RED "\n");
-	printf("░█▀▀░█░█░█▀▄░▀▀█░█▀▄░░░█▀▀░█▀█░█▀█░▀█▀░█▀▄░█▀█░█░░░█▀▀\n");
-	printf("░█░░░█░█░█▀▄░░▀▄░█░█░░░█░░░█░█░█░█░░█░░█▀▄░█░█░█░░░▀▀█\n");
-	printf("░▀▀▀░▀▀▀░▀▀░░▀▀░░▀▀░░░░▀▀▀░▀▀▀░▀░▀░░▀░░▀░▀░▀▀▀░▀▀▀░▀▀▀\n");
-	printf(RESET "\n");
-}
-
-static void	print_game_controls(void)
-{
-	printf(CYAN "\tW" RESET ": move forward\t");
-	printf(CYAN "\tS" RESET ": move backward\n");
-	printf(CYAN "\tA" RESET ": strafe left\t");
-	printf(CYAN "\tD" RESET ": strafe right\n");
-	printf(CYAN "\t<" RESET ": rotate left\t");
-	printf(CYAN "\t>" RESET ": rotate right\n");
-	printf(CYAN "\t FREE GAME NOW, yrodrigu & rbuitrag 2025\n");
-}
-
-static void	print_team_logo(void)
-{
-	printf(GREEN "\n");
-	printf(T1);
-	printf(T2);
-	printf(T3);
-	printf(T4);
-	printf(T5);
-	printf(" \n");
-	printf(RESET "\n");
-	printf("\n");
-}
-
-static void	print_controls(void)
-{
-	print_banner();
-	print_game_controls();
-	print_team_logo();
-}
-
 int	main(int ac, char **av)
 {
 	t_mlx_vars	vars;
 
 	if (ac != 2)
 		exit_error("Usage: ./cub3d <path/to/map_file.cub>\n", NULL, NULL);
+	force_cleanup_all_state();
 	ft_memset(&vars, 0, sizeof(t_mlx_vars));
 	if (parser_scene(av, &vars) != 0)
 		exit_error("Error parsing scene file", NULL, &vars);
 	if (validate_texture_files(&vars.config) != SUCCESS)
-		exit_error_parsing("Error validating texture files", NULL, &vars.config);
+		exit_error_parsing("Error validating texture files",
+			NULL, &vars.config);
 	print_controls();
 	if (init_window_and_image(&vars))
 		exit_error("Failed to initialize window and image", NULL, &vars);

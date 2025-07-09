@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 13:12:32 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/30 20:57:40 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/07/09 20:45:41 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,6 @@ char	*multiple_free(char **ptr)
 	free(*ptr);
 	*ptr = NULL;
 	return (NULL);
-}
-
-void	gnl_cleanup(void)
-{
-	get_next_line(-2);
 }
 
 static char	*fd_lector(int fd, char *buff, char *saved_text)
@@ -74,12 +69,29 @@ static char	*ft_line_remover(char *line)
 	return (saved_text);
 }
 
+static char	*process_line(char *line, char **saved_text)
+{
+	char	*tmp;
+
+	if (!line)
+	{
+		*saved_text = NULL;
+		return (NULL);
+	}
+	*saved_text = ft_line_remover(line);
+	tmp = ft_strdup(line);
+	free(line);
+	line = tmp;
+	if (!line)
+		return (multiple_free(saved_text));
+	return (line);
+}
+
 char	*get_next_line(int fd)
 {
 	char		*buff;
 	static char	*saved_text;
 	char		*line;
-	char		*tmp;
 
 	if (fd == -2)
 	{
@@ -96,16 +108,5 @@ char	*get_next_line(int fd)
 	line = fd_lector(fd, buff, saved_text);
 	free(buff);
 	buff = NULL;
-	if (!line)
-	{
-		saved_text = NULL;
-		return (NULL);
-	}
-	saved_text = ft_line_remover(line);
-	tmp = ft_strdup(line);
-	free(line);
-	line = tmp;
-	if (!line)
-		return (multiple_free(&saved_text));
-	return (line);
+	return (process_line(line, &saved_text));
 }

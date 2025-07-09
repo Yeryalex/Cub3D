@@ -6,7 +6,7 @@
 #    By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/10 12:06:04 by rbuitrag          #+#    #+#              #
-#    Updated: 2025/06/30 22:16:32 by rbuitrag         ###   ########.fr        #
+#    Updated: 2025/07/09 20:45:09 by rbuitrag         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ HEADER = inc/cub3d.h
 LIBFT = inc/libft/libft.a
 MLX_A = inc/minilibx/libmlx_Linux.a
 
-CFLAGS = -Wall -Werror -Wextra -g # -fsanitize=leak #-fsanitize=address -fsanitize=leak
+CFLAGS = -Wall -Werror -Wextra -g -fsanitize=leak #-fsanitize=address #-fsanitize=leak
 
 CFILES =	main.c \
 			parsing/config_utils.c \
@@ -28,10 +28,13 @@ CFILES =	main.c \
 			parsing/validate_color.c \
 			parsing/validate_map.c \
 			parsing/validate_maps_utils.c \
+			parsing/validate_scene.c \
+			parsing/check_map_space.c \
 			parsing/free.c \
 			parsing/init_mlx.c \
 			parsing/line_map.c \
 			parsing/rgb_utils.c \
+			parsing/handle_map.c \
 			loading/loadmap.c \
 			loading/drawing_map.c \
 			loading/map_2D.c \
@@ -41,6 +44,8 @@ CFILES =	main.c \
 			mlx_setup/windows.c \
 			player/player.c \
 			player/player_utils.c \
+			utils/print_credits.c \
+			utils/gnl_utils.c \
 			
 		
 GREEN = "\033[92m"

@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 09:16:17 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/30 21:26:13 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/07/09 19:18:21 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,10 @@ void	init_config(t_config *config)
 	config->res_set = 1;
 	config->map.grid = ft_calloc(MAX_MAP_HEIGHT + 1, sizeof(char *));
 	if (!config->map.grid)
-		exit_error_parsing("Memory error ", "Failed memory for map grid", config);
+		exit_error_parsing("Memory error ",
+			"Failed memory for map grid", config);
 	config->map.width = 0;
 	config->map.height = 0;
-}
-
-void	transfer_texture_paths(t_config *src, t_config *dest)
-{
-	dest->north_tex.path = ft_strdup(src->north_tex.path);
-	dest->south_tex.path = ft_strdup(src->south_tex.path);
-	dest->east_tex.path = ft_strdup(src->east_tex.path);
-	dest->west_tex.path = ft_strdup(src->west_tex.path);
 }
 
 int	validate_texture_paths(t_config *config, t_config *src, t_mlx_vars *vars)
@@ -91,7 +84,10 @@ void	transfer_config_to_vars(t_config *src, t_mlx_vars *vars)
 		return ;
 	dest = &vars->config;
 	init_dest_config(dest, src);
-	transfer_texture_paths(src, dest);
+	dest->north_tex.path = ft_strdup(src->north_tex.path);
+	dest->south_tex.path = ft_strdup(src->south_tex.path);
+	dest->east_tex.path = ft_strdup(src->east_tex.path);
+	dest->west_tex.path = ft_strdup(src->west_tex.path);
 	if (!validate_texture_paths(dest, src, vars))
 		return ;
 	if (src->map.grid)

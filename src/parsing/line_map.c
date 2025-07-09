@@ -6,45 +6,11 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 19:06:30 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/30 21:36:53 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/07/09 19:34:46 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
-
-static int	handle_config_or_map_start(
-	char **tokens, char *trimmed_line, t_config *config, int *map_started)
-{
-	if (!*map_started && is_config_identifier(tokens[0]))
-	{
-		if (!parse_config_line(tokens, config))
-			return (ERROR);
-		return (SUCCESS);
-	}
-	if (!*map_started && is_map_line(trimmed_line))
-	{
-		*map_started = 1;
-		return (MAP_LINE);
-	}
-	return (-1);
-}
-
-static int	handle_map_processing(char *line,
-		char *trimmed_line, int *map_started)
-{
-	if (*map_started)
-	{
-		if (is_empty_line(line))
-			return (ERROR);
-		if (is_map_line(trimmed_line))
-		{
-			*map_started = 1;
-			return (MAP_LINE);
-		}
-		return (ERROR);
-	}
-	return (SUCCESS);
-}
 
 static int	handle_line(char *line, t_config *config, int *map_started)
 {
@@ -75,13 +41,13 @@ static int	handle_line(char *line, t_config *config, int *map_started)
 	return (free_split(tokens), free(trimmed_line), result);
 }
 
-
 static void	handle_error_result(int result, char *line, t_config *config)
 {
 	free(line);
 	gnl_cleanup();
 	if (result == ERROR)
-		exit_error_parsing("Config error", "Invalid configuration line", config);
+		exit_error_parsing("Config error",
+			"Invalid configuration line", config);
 	else if (result == -2)
 		exit_error_parsing("Memory error", "strtrim failed", config);
 	else if (result == -3)

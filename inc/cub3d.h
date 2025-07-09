@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/30 22:11:43 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/07/09 20:50:13 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,17 +202,27 @@ int		parse_color(char **tokens, t_config *config);
 int		parse_texture(char **tokens, t_config *config);
 void	process_map_data(t_config *config);
 void	transfer_config_to_vars(t_config *config, t_mlx_vars *vars);
+int		handle_map_processing(char *line,
+			char *trimmed_line, int *map_started);
+int		handle_config_or_map_start(char **tokens, char *trimmed_line,
+			t_config *config, int *map_started);
 
 /* VALIDATE*/
 void	validate_scene_elements(t_config *config);
 void	validate_map(t_config *config);
-void	validate_map_closed(char **grid, int height, int width, t_config *config);
+void	validate_map_closed(char **grid, int height, int width,
+			t_config *config);
 void	validate_enclosure(char **grid, int i, int j, t_config *config);
-int		validate_map_borders(char **grid, int height, int width, t_config *config);
-int		is_border_adjacent_to_walkable(char **grid, int i, int j, int height, int width);
+int		validate_map_borders(char **grid, int height, int width,
+			t_config *config);
+int		is_border_adjacent_to_walkable(char **grid, int i, int j,
+			t_config *config);
 int		is_valid_map_char(char c);
 int		is_valid_cell(t_fill_info *info, int i, int j);
 int		is_valid_rgb(char **rgb, int *r, int *g, int *b);
+void	validate_colors_and_map(t_config *config);
+void	validate_basic_config(t_config *config);
+int		check_adjacent_walkable(char **grid, int i, int j, t_config *config);
 
 /* LOADING */
 int		load_textures(t_mlx_vars *vars);
@@ -242,6 +252,10 @@ void	free_visited(int **visited, int height);
 int		count_tokens(char **tokens);
 int		validate_and_extract_rgb(char **tokens, char **rgb, int *r);
 char	*trim_spaces(char *str);
+int		is_all_digits(char *str);
+void	print_controls(void);
+void	force_cleanup_all_state(void);
+void	gnl_cleanup(void);
 
 /* MLX UTILS WINDOW*/
 int		quit_cub3d(t_mlx_vars *vars);

@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:25:02 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/30 20:57:40 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/07/09 19:40:16 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,11 @@ void	normalize_map_lines(t_config *config)
 		{
 			normalized_line = malloc(config->map.width + 1);
 			if (!normalized_line)
-				exit_error_parsing("Memory error", "Failed to normalize map line", config);
+				exit_error_parsing("Memory error",
+					"Failed to normalize map line", config);
 			ft_memcpy(normalized_line, config->map.grid[i], current_len);
-			ft_memset(normalized_line + current_len, ' ', config->map.width - current_len);
+			ft_memset(normalized_line + current_len, ' ',
+				config->map.width - current_len);
 			normalized_line[config->map.width] = '\0';
 			old_line = config->map.grid[i];
 			config->map.grid[i] = normalized_line;
@@ -60,7 +62,8 @@ int	store_map_line(t_config *config, char *line, int index)
 	{
 		free(line);
 		free(line_trimmed);
-		exit_error_parsing("Memory error", "Failed memory for map line", config);
+		exit_error_parsing("Memory error",
+			"Failed memory for map line", config);
 	}
 	free(line_trimmed);
 	return (1);
@@ -92,6 +95,7 @@ int	add_map_line(char *line)
 	free(trimmed);
 	return (SUCCESS);
 }
+
 char	*trim_spaces(char *str)
 {
 	int		start;

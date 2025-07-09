@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:24:50 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/06/30 22:11:43 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/07/09 19:15:20 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ static void	check_flood(t_fill_info *info, t_config *config)
 	}
 }
 
-void	validate_map_closed(char **grid, int height, int width, t_config *config)
+void	validate_map_closed(char **grid, int height, int width,
+		t_config *config)
 {
 	t_fill_info	info;
 	int			i;
@@ -101,7 +102,8 @@ void	validate_map_closed(char **grid, int height, int width, t_config *config)
 	{
 		info.visited[i] = calloc(width, sizeof(int));
 		if (!info.visited[i])
-			exit_error_parsing("Memory error", "Flood fill visited row malloc", config);
+			exit_error_parsing("Memory error",
+				"Flood fill visited row malloc", config);
 		i++;
 	}
 	flood_borders(&info);

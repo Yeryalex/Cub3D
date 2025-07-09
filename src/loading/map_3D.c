@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_3D.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yrodrigu <yrodrigu@student.42barcelo>      +#+  +:+       +#+        */
+/*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 12:13:37 by yrodrigu          #+#    #+#             */
-/*   Updated: 2025/06/16 13:35:20 by yrodrigu         ###   ########.fr       */
+/*   Updated: 2025/07/09 19:13:12 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	ft_dda_loop(t_rendering_3d *render, t_mlx_vars *vars)
 	}
 }
 
-void ft_wall_distance(t_rendering_3d *render)
+void	ft_wall_distance(t_rendering_3d *render)
 {
 	if (render->side == 0)
 	{
@@ -93,7 +93,8 @@ void ft_wall_distance(t_rendering_3d *render)
 			render->step_x = 64;
 		else
 			render->step_x = 0;
-		render->wall_dist = (render->map_x * 64 - render->ray_x + render->step_x) / render->ray_dir_x;
+		render->wall_dist = (render->map_x * 64 - render->ray_x
+				+ render->step_x) / render->ray_dir_x;
 	}
 	else
 	{
@@ -101,14 +102,12 @@ void ft_wall_distance(t_rendering_3d *render)
 			render->step_y = 64;
 		else
 			render->step_y = 0;
-		render->wall_dist = (render->map_y * 64 - render->ray_y + render->step_y) / render->ray_dir_y;
+		render->wall_dist = (render->map_y * 64 - render->ray_y
+				+ render->step_y) / render->ray_dir_y;
 	}
-
 	render->wall_height = (64 / render->wall_dist) * render->proj_plane_dist;
-
 	render->start_y = (RES_WINHEIGHT - render->wall_height) / 2;
 	render->end_y = render->start_y + render->wall_height;
-
 	if (render->start_y < 0)
 		render->start_y = 0;
 	if (render->end_y > RES_WINHEIGHT)
