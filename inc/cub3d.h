@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/07/12 09:34:02 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/07/12 10:17:41 by yrodrigu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@
 # define FLOOR 0x12
 # define CEILING 0x25
 # define MAX_MAP_HEIGHT 200
-# define RES_WINHEIGHT 1080
-# define RES_WINWIDHT 1920
+# define RES_WINHEIGHT 840
+# define RES_WINWIDHT 1240
 # define PI 3.14159265359
 # define PLANES 0
 # define T1 " _  _  ____    ____                      _ \n"

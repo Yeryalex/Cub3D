@@ -51,6 +51,10 @@ int	parse_scene_file(char *filename, t_config *config)
 	if (fd < 0)
 		exit_error_parsing("File open error: ", filename, config);
 	config->map.height = process_file_lines(config, fd);
+	if (config->map.height > MAX_MAP_HEIGHT + 1)
+		exit_error_parsing("Height Error: ", 
+			"Max height reached", config);
+	printf("%i\n", config->map.height);
 	close(fd);
 	normalize_map_lines(config);
 	return (SUCCESS);
