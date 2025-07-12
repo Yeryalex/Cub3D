@@ -44,7 +44,7 @@ void	validate_enclosure(char **grid, int i, int j, t_config *config)
 		|| grid[i][j - 1] == ' '
 		|| grid[i][j + 1] == ' ')
 	{
-		exit_error_parsing("mapa no cerrado", NULL, config);
+		exit_error_parsing("map not closed", NULL, config);
 	}
 }
 

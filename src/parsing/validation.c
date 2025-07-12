@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 09:50:19 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/07/09 20:13:56 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/07/12 09:02:27 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ static void	check_border_cell(char **grid, int i, int j, t_config *config)
 	if ((i == 0 || i == height - 1 || j == 0 || !grid[i][j + 1]
 		|| grid[i][j + 1] == '\0') && (c == '0' || c == 'N' || c == 'S'
 		|| c == 'E' || c == 'W'))
-		exit_error_parsing("mapa no cerrado",
-			"Espacio walkable en el borde", config);
+		exit_error_parsing("map not closed",
+			"Non-closed edge", config);
 	if (is_border_adjacent_to_walkable(grid, i, j, config))
-		exit_error_parsing("mapa no cerrado",
-			"Borde no protegido cerca de espacio walkable", config);
+		exit_error_parsing("map not closed",
+			"Non-closed edge", config);
 }
 
 int	validate_map_borders(char **grid, int height, int width, t_config *config)

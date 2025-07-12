@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:24:50 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/07/09 19:15:20 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/07/12 08:59:58 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static void	check_flood(t_fill_info *info, t_config *config)
 			if ((info->grid[i][j] == '0' || info->grid[i][j] == 'N'
 				|| info->grid[i][j] == 'S' || info->grid[i][j] == 'E'
 				|| info->grid[i][j] == 'W') && info->visited[i][j])
-				exit_error_parsing("mapa no cerrado", NULL, config);
+				exit_error_parsing("map not closed", NULL, config);
 			j++;
 		}
 		i++;

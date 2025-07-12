@@ -42,7 +42,7 @@ int	mouse_move(int x, int y, t_mlx_vars *vars)
 		return (0);
 	}
 	delta_x = x - last_x;
-	rotation_speed = 0.03;
+	rotation_speed = 0.003;
 	if (abs(delta_x) > 1)
 		apply_rotation(vars, delta_x, rotation_speed);
 	last_x = x;

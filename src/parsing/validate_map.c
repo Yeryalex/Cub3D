@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 10:35:26 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/07/09 19:27:50 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/07/12 08:59:58 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	validate_cell(t_config *config, char **grid, int i, int j)
 	if (is_open_space(grid, i, j))
 	{
 		if (i == 0 || !grid[i + 1] || j == 0 || grid[i][j + 1] == '\0')
-			exit_error_parsing("mapa no cerrado", NULL, config);
+			exit_error_parsing("map not closed", NULL, config);
 		validate_enclosure(grid, i, j, config);
 	}
 }
