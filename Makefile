@@ -6,7 +6,7 @@
 #    By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/10 12:06:04 by rbuitrag          #+#    #+#              #
-#    Updated: 2025/07/12 09:07:42 by rbuitrag         ###   ########.fr        #
+#    Updated: 2025/07/12 09:23:17 by rbuitrag         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ HEADER = inc/cub3d.h
 LIBFT = inc/libft/libft.a
 MLX_A = inc/minilibx/libmlx_Linux.a
 
-CFLAGS = -Wall -Werror -Wextra -g #-fsanitize=leak -fsanitize=address #-fsanitize=leak
+CFLAGS = -Wall -Werror -Wextra -g -fsanitize=leak -fsanitize=address #-fsanitize=leak
 
 CFILES =	main.c \
 			parsing/config_utils.c \
@@ -81,7 +81,7 @@ fclean: clean
 re: fclean all
 
 v: all
-	valgrind --leak-check=full --track-origins=yes -s ./cub3d maps/omnipotentes.cub
+	valgrind --leak-check=full -s ./cub3d maps/omnipotentes.cub
 va: all
 	-valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes \
 						  --suppressions=suppresionsX11 -q ./cub3d maps/minimal.cub || true

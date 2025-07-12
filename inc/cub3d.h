@@ -6,7 +6,7 @@
 /*   By: rbuitrag <rbuitrag@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 09:17:43 by rbuitrag          #+#    #+#             */
-/*   Updated: 2025/07/09 20:50:13 by rbuitrag         ###   ########.fr       */
+/*   Updated: 2025/07/12 09:34:02 by rbuitrag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 
 /* --- Constantes --- */
 # define WIN_TITLE "Cub3D por yrodrigu & rbuitrag en 42 BCN 2025"
-# define MOVE_SPEED 1.3
+# define MOVE_SPEED 5
 # define COLLISION_MARGIN 10 // Evita quedarse pegado, revisar unidad
 # define SUCCESS 1
 # define ERROR 0
@@ -44,8 +44,8 @@
 # define FLOOR 0x12
 # define CEILING 0x25
 # define MAX_MAP_HEIGHT 200
-# define RES_WINHEIGHT 860
-# define RES_WINWIDHT 1024
+# define RES_WINHEIGHT 1080
+# define RES_WINWIDHT 1920
 # define PI 3.14159265359
 # define PLANES 0
 # define T1 " _  _  ____    ____                      _ \n"
